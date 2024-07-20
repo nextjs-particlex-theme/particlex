@@ -1,3 +1,8 @@
+> ⚠️ **This project is under construction, stay tuned.**
+>
+> Maybe you can check out my former project: [hexo-theme-particlex](https://github.com/IceOfSummer/hexo-theme-particlex) , 
+> I am trying to refactor this project to current new project.
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
