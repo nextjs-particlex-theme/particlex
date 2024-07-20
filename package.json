@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "eslint ./src --fix && next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint ./src --fix",
     "test": "jest"
   },
   "dependencies": {

@@ -1,5 +1,5 @@
-import Hexo from "hexo";
-import {HexoConfig, Post} from "@/api/hexo-api-types";
+import Hexo from 'hexo'
+import { HexoConfig, Post } from '@/api/hexo-api-types'
 
 declare global {
   var __hexo__: Hexo | undefined
