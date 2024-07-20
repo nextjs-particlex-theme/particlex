@@ -15,7 +15,8 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function Home() {
   return (
     <div>
-      Hello world
+      <p style={{ height: '100vh' }} className="bg-sky-200">Hello world</p>
+      <p style={{ height: '200vh' }}>Hello world</p>
     </div>
   )
 }
