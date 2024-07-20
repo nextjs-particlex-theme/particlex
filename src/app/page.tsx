@@ -1,6 +1,7 @@
-import Image from 'next/image'
 import { Metadata } from 'next'
 import { getHexoConfig } from '@/api/hexo-api'
+
+
 
 export async function generateMetadata(): Promise<Metadata> {
   const config = await getHexoConfig()
@@ -13,8 +14,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function Home() {
   return (
-    <main>
+    <div>
       Hello world
-    </main>
+    </div>
   )
 }
