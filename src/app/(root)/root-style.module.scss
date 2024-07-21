@@ -1,0 +1,108 @@
+.imageContainer {
+  width: 100vw;
+  height: 100vh;
+  background-position: 50% center;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loop:nth-child(1) {
+  animation: loop1 10s linear infinite;
+  background: #fff;
+  border-radius: 38% 62% 63% 37%/41% 44% 56% 59%;
+  opacity: 0.3;
+  transform: rotate(30deg);
+}
+.loop:nth-child(2) {
+  animation: loop2 15s linear infinite;
+  background: #fff;
+  border-radius: 38% 62% 63% 37%/41% 44% 56% 59%;
+  opacity: 0.45;
+  transform: rotate(60deg);
+}
+.loop:nth-child(3) {
+  animation: loop3 10s linear infinite;
+  background: #fff;
+  border-radius: 38% 62% 63% 37%/41% 44% 56% 59%;
+  opacity: 0.3;
+  transform: rotate(90deg);
+}
+.loop:nth-child(4) {
+  animation: loop4 15s linear infinite;
+  background: #fff;
+  border-radius: 38% 62% 63% 37%/41% 44% 56% 59%;
+  opacity: 0.45;
+  transform: rotate(120deg);
+}
+.loopContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  .loop {
+    z-index: 10;
+  }
+  @media (max-width: 900px) {
+    .loop {
+      display: none;
+      height: 350px;
+      position: absolute;
+      width: 350px;
+    }
+  }
+  @media (min-width: 900px) {
+    $containerWith: 500px;
+    .loop {
+      display: inline-block;
+      height: $containerWith;
+      position: absolute;
+      width: $containerWith;
+    }
+    width: $containerWith;
+    height: $containerWith;
+  }
+  .titleContainer {
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: bold;
+  }
+}
+
+@keyframes loop1 {
+  from {
+    transform: rotate(30deg);
+  }
+  to {
+    transform: rotate(390deg);
+  }
+}
+@keyframes loop2 {
+  from {
+    transform: rotate(60deg);
+  }
+  to {
+    transform: rotate(420deg);
+  }
+}
+@keyframes loop3 {
+  from {
+    transform: rotate(90deg);
+  }
+  to {
+    transform: rotate(450deg);
+  }
+}
+@keyframes loop4 {
+  from {
+    transform: rotate(120deg);
+  }
+  to {
+    transform: rotate(480deg);
+  }
+}

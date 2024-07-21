@@ -16,29 +16,20 @@ interface HeaderProps {
   title: string
 }
 
-type HeaderStyle = {
-  height: string
-  backgroundColorClass: string
-}
 
-const Header:React.FC<HeaderProps> = props => {
-  const [headerStyle, setHeaderStyle] = useState<HeaderStyle>({
-    height: '3.3rem',
-    backgroundColorClass: props.autoTransparentOnTop ? 'bg-transparent' : 'bg-blue-300'
-  })
+const Index:React.FC<HeaderProps> = props => {
+  const [headerClass, setHeaderClass] = useState(props.autoTransparentOnTop ? styles.headerTransparentVisible : styles.headerVisible)
   useEffect(() => {
     const wheelListener = (ev: WheelEvent) => {
+      console.log(styles)
       if (ev.deltaY < 0) {
-        setHeaderStyle({
-          height: '3.3rem',
-          backgroundColorClass: props.autoTransparentOnTop && document.documentElement.scrollTop <= window.innerHeight ? 'bg-transparent' : 'bg-blue-300'
-        })
-        console.log(document.documentElement.scrollTop, window.innerHeight)
+        if (document.documentElement.scrollTop <= window.innerHeight && props.autoTransparentOnTop) {
+          setHeaderClass(styles.headerTransparentVisible)
+        } else {
+          setHeaderClass(styles.headerVisible)
+        }
       } else {
-        setHeaderStyle({
-          backgroundColorClass: 'bg-blue-300',
-          height: '0'
-        })
+        setHeaderClass(styles.headerHide)
       }
     }
     addEventListener('wheel', wheelListener)
@@ -48,29 +39,29 @@ const Header:React.FC<HeaderProps> = props => {
   }, [props.autoTransparentOnTop])
 
   return (
-    <div className={`font-bold text-sm pl-16 text-zinc-600 flex-row flex ${styles.header} ${headerStyle.backgroundColorClass}`} style={{ height: headerStyle.height }}>
-      <Link href="/" className="pl-10">
+    <div className={`font-bold text-sm pl-16 text-zinc-600 flex-row flex ${styles.header} ${headerClass}`}>
+      <Link href="/public" className="pl-10">
         { props.title }
       </Link>
       <div className="flex">
-        <Link href="/" className="flex pl-10">
+        <Link href="/public" className="flex pl-10 items-center">
           <FontAwesomeIcon icon={faHouse} size="lg" width="1rem" />
           <span className="pl-2">Home</span>
         </Link>
-        <Link href="/about" className="flex pl-10">
-          <FontAwesomeIcon icon={faIdCard} size="lg" width="1rem" />
+        <Link href="/about" className="flex pl-10 items-center">
+          <FontAwesomeIcon icon={faIdCard} size="lg" width="1.1rem" />
           <span className="pl-2">About</span>
         </Link>
-        <Link href="/archives" className="flex pl-10">
+        <Link href="/archives" className="flex pl-10 items-center">
           <FontAwesomeIcon icon={faBoxArchive} size="lg" width="1rem" />
           <span className="pl-2">Archives</span>
         </Link>
-        <Link href="/categories" className="flex pl-10">
+        <Link href="/categories" className="flex pl-10 items-center">
           <FontAwesomeIcon icon={faBookmark} size="lg" width="0.7rem" />
           <span className="pl-2">Categories</span>
         </Link>
-        <Link href="/categories" className="flex pl-10">
-          <FontAwesomeIcon icon={faTags} size="lg" width="1rem" />
+        <Link href="/categories" className="flex pl-10 items-center">
+          <FontAwesomeIcon icon={faTags} size="lg" width="0.9rem" />
           <span className="pl-2">Tags</span>
         </Link>
       </div>
@@ -78,4 +69,4 @@ const Header:React.FC<HeaderProps> = props => {
   )
 }
 
-export default Header
+export default Index

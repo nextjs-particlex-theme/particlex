@@ -1,0 +1,21 @@
+.header {
+  transition: all 0.4s;
+  position: fixed;
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  overflow: hidden;
+  align-items: center;
+}
+.headerTransparentVisible {
+  background-color: #00000020;
+  color: var(--color-white);
+  height: 3.3rem;
+}
+.headerVisible {
+  background-color: #92cafa;
+  height: 3.3rem;
+}
+.headerHide {
+  height: 0;
+}

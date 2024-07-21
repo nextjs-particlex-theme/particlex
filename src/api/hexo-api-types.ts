@@ -8,6 +8,30 @@ export type Category = {
   name: string
 }
 
+type ThemeConfig = {
+  /**
+   * 背景图片
+   */
+  background?: string[]
+  /**
+   * 头像
+   */
+  avatar?: string
+  /**
+   * 右侧卡片
+   */
+  card?: {
+    /**
+     * 是否开启
+     */
+    enable?: boolean
+    /**
+     * 简介
+     */
+    description?: string
+  }
+}
+
 export type HexoConfig = {
   title: string
   subtitle: string
@@ -15,7 +39,7 @@ export type HexoConfig = {
   author: string
   language: string
   timezone: string
-
+  theme_config: ThemeConfig
 }
 
 //
