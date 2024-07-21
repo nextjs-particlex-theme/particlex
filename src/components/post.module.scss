@@ -1,0 +1,93 @@
+.postContainer {
+  h1 {
+    font-size: 30px !important
+  }
+
+  h1,h2,h3,h4,h5,h6 {
+    color: #1e3e3f;
+    font-weight: 700;
+    margin: 15px 0
+  }
+
+  h2 {
+    font-size: 27px
+  }
+
+  h3 {
+    font-size: 24px
+  }
+
+  h4 {
+    font-size: 21px
+  }
+
+  h5 {
+    font-size: 18px
+  }
+
+  h6 {
+    font-size: 15px
+  }
+
+  hr {
+    border-style: dashed none none;
+    border-width: 1.5px
+  }
+
+  audio,iframe,img,video {
+    border-radius: 10px
+  }
+
+  mark {
+    background: rgba(255,241,51,.376);
+    border-radius: 4px;
+    color: unset;
+    line-height: 2.5;
+    padding: 4px 8px
+  }
+
+  ol,p,ul {
+    line-height: 1.7;
+    margin: 15px 0;
+    list-style-type: disc;
+  }
+
+  pre {
+    border: 1px solid #ebeef5;
+    border-radius: 15px;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.102);
+    margin: 25px 0;
+    overflow: hidden;
+  }
+
+
+  table tbody tr td:nth-child(2n) {
+    background: rgba(199,224,251,.302)
+  }
+
+  table tbody tr td:nth-child(odd) {
+    background: rgba(217,232,255,.302)
+  }
+
+  table thead tr th {
+    background: #a3ddfb;
+    padding: 8px 20px
+  }
+
+  table tr td {
+    padding: 8px 20px
+  }
+
+  ol li,ul li {
+    margin: 8px 0
+  }
+
+  ol,ul {
+    padding-left: 40px
+  }
+
+  .code,pre {
+    font-family: Fira Code,Noto Sans SC,monospace
+  }
+}
+

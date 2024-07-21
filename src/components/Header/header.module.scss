@@ -6,6 +6,7 @@
   padding-right: 1rem;
   overflow: hidden;
   align-items: center;
+  z-index: var(--z-index-top);
 }
 .headerTransparentVisible {
   background-color: #00000020;

@@ -5,6 +5,11 @@
 @layer base {
     :root {
         --color-white: #fff;
+        --color-text-sub: #5c6b72;
+        --color-text: #1e3e3f;
+        --color-primary: #66afef;
+        --z-index-top: 100000;
+        --z-index-common: 10000
     }
 }
 
@@ -16,10 +21,19 @@ body {
     width: 100%;
 }
 
+.link-styled-container a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+a:hover {
+    opacity: .8;
+}
+
 ::-webkit-scrollbar {
     height: 12px;
     width: 12px;
 }
+
 ::-webkit-scrollbar-thumb {
     background: #8ab5ff linear-gradient(
             45deg,

@@ -1,0 +1,39 @@
+.codeContent {
+  background: none;
+  font-size: 13px;
+  line-height: 2;
+  overflow: auto;
+  padding: 50px 30px 20px
+}
+
+.languageTag {
+  background: linear-gradient(90deg,#ed6ea0 0,#ec8c69);
+  border-radius: 0 0 10px 10px;
+  box-shadow: 1px 1px .75rem rgba(237,110,161,.302);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  left: 30px;
+  padding: 10px 15px;
+  position: absolute;
+  top: 0
+}
+.toolBar {
+  position: absolute;
+  top: 0.6rem;
+  right: 0;
+  > svg {
+    margin-right: 1.5rem;
+  }
+  > svg:hover {
+    cursor: pointer;
+  }
+}
+
+.icon {
+}
+
+.iconClick {
+  color: var(--color-primary);
+  transform: scale(1.1);
+}

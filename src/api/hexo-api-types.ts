@@ -66,15 +66,15 @@ export type Post = {
    */
   slug: string
   /**
-   * 相对于博客根目录的路径
+   * 相对于博客访问路径. 例如博客文件：`_posts/2024/02/xxx.md` 会被转换成 `/2024/02/xxx`
    */
   source: string
   /**
    * categories
    */
-  categories: Query<Category>
+  categories: Category[]
   /**
    * tag
    */
-  tags: Query<typeof Tag>
+  tags: (typeof Tag)[]
 }

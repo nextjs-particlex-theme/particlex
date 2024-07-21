@@ -1,8 +1,11 @@
-import {getAllPostsPaths} from "@/api/hexo-api";
-import {test} from '@jest/globals';
+import { getAllPosts } from '@/api/hexo-api'
+import {expect, test} from '@jest/globals'
 
-test('Test Resolve Folder', async () => {
-  const paths = await getAllPostsPaths()
-  paths[0].categories.toArray()[0].name
-  console.log(paths);
+test('check getAllPosts type safety', async () => {
+  const paths = await getAllPosts()
+  console.log(paths)
+  paths.forEach(val => {
+    expect(Array.isArray(val.categories)).toBeTruthy()
+    expect(Array.isArray(val.tags)).toBeTruthy()
+  })
 })

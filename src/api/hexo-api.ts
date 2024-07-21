@@ -1,5 +1,6 @@
 import Hexo from 'hexo'
 import { HexoConfig, Post } from '@/api/hexo-api-types'
+import {Moment} from "moment";
 
 declare global {
   var __hexo__: Hexo | undefined
@@ -26,12 +27,33 @@ const getHexoInstance = async (): Promise<Hexo> => {
 
 
 /**
- * 获取所有文章
+ * 获取所有文章. 仅会获取 `source/_posts` 目录中的内容
  */
-export const getAllPostsPaths = async (): Promise<Post[]> => {
+export const getAllPosts = async (): Promise<Post[]> => {
   const hexo = await getHexoInstance()
   const data = await hexo.database.model('Post').find({}).sort('-date').toArray()
-  return (data as unknown as Post[])
+  const returnVal: Post[] = []
+
+  data.forEach(v => {
+    const PREFIX = '_posts'
+    let source = v.source as string
+    if (source.startsWith(PREFIX)) {
+      source = source.substring(PREFIX.length)
+      const SUFFIX = '.md'
+      if (source.endsWith(SUFFIX)) {
+        source = source.substring(0, source.length - SUFFIX.length)
+      }
+    }
+    // @ts-ignore
+    returnVal.push({
+      ...v,
+      categories: v.categories.toArray(),
+      tags: v.tags.toArray(),
+      source: source
+    })
+  })
+
+  return returnVal.slice(0, 1)
 }
 
 /**
