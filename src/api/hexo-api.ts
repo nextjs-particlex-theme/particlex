@@ -53,7 +53,7 @@ export const getAllPosts = async (): Promise<Post[]> => {
     })
   })
 
-  return returnVal.slice(0, 1)
+  return returnVal.slice(0, 4)
 }
 
 /**

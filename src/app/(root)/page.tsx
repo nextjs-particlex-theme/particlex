@@ -3,7 +3,7 @@ import { getAllPosts, getHexoConfig } from '@/api/hexo-api'
 import Index from '@/components/Header'
 import React from 'react'
 import RootImageHeader from '@/app/(root)/RootImageHeader'
-import PostPreview from '@/components/PostPreview'
+import PostPreview from './PostPreview'
 
 
 
