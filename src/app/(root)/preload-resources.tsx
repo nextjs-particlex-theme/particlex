@@ -15,7 +15,7 @@ export function PreloadResources() {
       link.href = path + '/fonts.min.css'
       document.head.appendChild(link)
     }
-    path = process.env.NEXT_PUBLIC_HIGHLIGHT_JS_STYLE_PATH
+    path = process.env.NEXT_PUBLIC_HIGHLIGHT_JS_CSS_PATH
     if (path) {
       const link = document.createElement('link')
       link.rel = 'stylesheet'

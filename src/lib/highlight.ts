@@ -26,16 +26,7 @@ function releaseQueue(i: HLJSApi) {
   }
 }
 
-if (!process.env.HIGHLIGHT_JS_RESOLVE_TYPE || process.env.HIGHLIGHT_JS_RESOLVE_TYPE === 'bundled') {
-  registerAll().then(i => {
-    releaseQueue(i)
-  }).catch(e => {
-    throw e
-  })
-} else if (process.env.HIGHLIGHT_JS_RESOLVE_TYPE === 'external') {
-  if (!process.env.HIGHLIGHT_JS_RESOLVE_DATA) {
-    throw new Error('HIGHLIGHT_JS_RESOLVE_DATA is required.')
-  }
+if (process.env.NEXT_PUBLIC_HIGHLIGHT_JS_PATH){
   // @ts-ignore
   if (!window.hljs) {
     throw new Error('Could not find hljs instance on `window`!')
@@ -43,7 +34,11 @@ if (!process.env.HIGHLIGHT_JS_RESOLVE_TYPE || process.env.HIGHLIGHT_JS_RESOLVE_T
   // @ts-ignore
   releaseQueue(window.hljs)
 } else {
-  throw new Error('Unknown HIGHLIGHT_JS_RESOLVE_TYPE: ' + process.env.HIGHLIGHT_JS_RESOLVE_TYPE)
+  registerAll().then(i => {
+    releaseQueue(i)
+  }).catch(e => {
+    throw e
+  })
 }
 
 const getHljsInstance = async (): Promise<HLJSApi> => {
