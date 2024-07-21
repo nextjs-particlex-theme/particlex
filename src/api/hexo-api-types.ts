@@ -1,6 +1,5 @@
 import { Moment } from 'moment/moment'
 import { Tag } from 'hexo/dist/models'
-import Query from 'warehouse/dist/query'
 
 
 export type Category = {

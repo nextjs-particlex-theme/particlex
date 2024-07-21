@@ -22,7 +22,6 @@ const PostContent:React.FC<PostContentProps> = props => {
           if (ele instanceof Element) {
             const text = ele.childNodes[0]
             if (text instanceof Text) {
-              console.log(text.nodeValue)
               return (
                 <PartialCodeBlock content={text.data} lang={ele.attribs['class']}/>
               )
@@ -33,7 +32,7 @@ const PostContent:React.FC<PostContentProps> = props => {
       }
     })
     setChild(child)
-  }, [props.html])
+  }, [])
 
   return (
     <div className={`${postStyle.postContainer} link-styled-container`}>

@@ -1,3 +1,6 @@
+// 如果要修改该值，需要同步修改 './RootImageHeader.tsx' 的 `POST_CONTAINER_MARGIN` 变量
+$postContainerMargin: 32px;
+
 .imageContainer {
   width: 100vw;
   height: 100vh;
@@ -6,6 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.4s;
 }
 
 .loop:nth-child(1) {
@@ -130,4 +134,8 @@
     transition: box-shadow .25s ease-out,right .25s ease-out;
     z-index: 2
   }
+}
+
+.postContainer {
+  margin: $postContainerMargin;
 }

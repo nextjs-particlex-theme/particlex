@@ -88,7 +88,7 @@ const _PartialCodeBlock: React.FC<PartialCodeBlockProps> = props => {
           partialHide ?
             (
               <div className={style.partialCover}>
-                <a href="javascript:void(0);" onClick={showAllClick}>
+                <a onClick={showAllClick}>
                   显示全部
                 </a>
               </div>

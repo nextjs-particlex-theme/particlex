@@ -1,6 +1,5 @@
 import Hexo from 'hexo'
 import { HexoConfig, Post } from '@/api/hexo-api-types'
-import {Moment} from "moment";
 
 declare global {
   var __hexo__: Hexo | undefined
