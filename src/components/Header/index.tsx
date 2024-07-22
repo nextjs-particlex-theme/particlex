@@ -18,12 +18,7 @@ interface HeaderProps {
 
 
 const Index:React.FC<HeaderProps> = props => {
-  const [headerClass, setHeaderClass] = useState(() => {
-    if (props.autoTransparentOnTop) {
-      return document.documentElement.scrollTop <= window.innerHeight ? styles.headerTransparentVisible : styles.headerVisible
-    }
-    return styles.headerVisible
-  })
+  const [headerClass, setHeaderClass] = useState(styles.headerVisible)
   const lastScrollTop = useRef(0)
 
   useEffect(() => {
@@ -50,6 +45,14 @@ const Index:React.FC<HeaderProps> = props => {
       removeEventListener('scroll', wheelListener)
     }
   }, [props.autoTransparentOnTop])
+
+  useEffect(() => {
+    if (props.autoTransparentOnTop) {
+      setHeaderClass(document.documentElement.scrollTop <= window.innerHeight ? styles.headerTransparentVisible : styles.headerVisible)
+    } else {
+      setHeaderClass(styles.headerVisible)
+    }
+  }, [])
 
   return (
     <div className={`font-bold text-sm pl-16 text-zinc-600 flex-row flex ${styles.header} ${headerClass}`}>

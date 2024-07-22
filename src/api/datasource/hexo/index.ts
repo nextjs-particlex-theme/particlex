@@ -100,7 +100,7 @@ const hexo: BlogDataSource = {
     const returnVal = await queryAllPosts()
     // TODO 考虑做真分页
     const head = page * size
-    console.log(head, returnVal.length)
+
     if (head >= returnVal.length) {
       return []
     }

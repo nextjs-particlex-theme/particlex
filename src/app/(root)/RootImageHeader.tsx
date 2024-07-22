@@ -46,7 +46,6 @@ const RootImageHeader:React.FC<RootImageHeaderProps> = props => {
 
 
   const navToPosts = () => {
-    console.log(window.innerHeight)
     // lockOffset.current = true
     window.scrollTo({
       top: window.innerHeight + MAX_OFFSET - POST_CONTAINER_MARGIN,
