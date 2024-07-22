@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { getAllPosts, getHexoConfig } from '@/api/hexo-api'
+import datasource from '@/api/datasource'
 import Index from '@/components/Header'
 import React from 'react'
 import RootImageHeader from '@/app/(root)/RootImageHeader'
@@ -8,7 +8,7 @@ import PostPreview from './PostPreview'
 
 
 export async function generateMetadata(): Promise<Metadata> {
-  const config = await getHexoConfig()
+  const config = await datasource.getConfig()
 
   return {
     title: config.title,
@@ -18,8 +18,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 
 export default async function Home() {
-  const { title, theme_config, description, subtitle } = await getHexoConfig()
-  const posts = await getAllPosts()
+  const { title, theme_config, description, subtitle } = await datasource.getConfig()
+  const posts = await datasource.pagePosts(0, 3)
 
   return (
     <div>

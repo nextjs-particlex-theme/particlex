@@ -1,11 +1,10 @@
-import { Post } from '@/api/hexo-api-types'
+import { Post } from '@/api/datasource/types'
 import { faCalendar, faBoxArchive } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import Link from 'next/link'
-import '@/lib/highlight'
-import PostContent from '@/components/PostContent'
 import styles from './root-style.module.scss'
+import postStyle from '@/components/post.module.scss'
 
 interface PostPreviewProps {
   post: Post
@@ -14,7 +13,8 @@ interface PostPreviewProps {
 const PostPreview:React.FC<PostPreviewProps> = props => {
   const { post } = props
   return (
-    <div className={`w-[56rem] bg-white rounded-3xl p-12 shadow-lg box-border max-h-[1024px] overflow-hidden relative ${styles.postContainer}`}>
+    <div
+      className={`w-[56rem] bg-white rounded-3xl p-12 shadow-lg box-border max-h-[1024px] overflow-hidden relative ${styles.postContainer}`}>
       <div className="flex flex-col items-center mb-8">
         <div className="p-8 link-styled-container">
           <Link href={post.source} className="text-2xl font-bold">{post.title}</Link>
@@ -40,7 +40,9 @@ const PostPreview:React.FC<PostPreviewProps> = props => {
           </div>
         </div>
       </div>
-      <PostContent html={post.content} />
+      <div className={`${postStyle.postContainer} link-styled-container`}>
+        {post.content}
+      </div>
       <div className={styles.postCover}>
         <Link href={post.source}>
           阅读全文

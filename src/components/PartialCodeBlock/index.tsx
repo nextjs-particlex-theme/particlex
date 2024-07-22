@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
-import getHljsInstance from '@/lib/highlight'
+'use client'
+import React, { useRef, useState } from 'react'
 import style from './post-content.module.scss'
 import { faArrowTurnDown, faCopy } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -18,28 +18,8 @@ interface RichContentProps extends PartialCodeBlockProps {
 const _RichContent: React.FC<RichContentProps> = props => {
   const codeContainer = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    const parser = new DOMParser()
-    getHljsInstance().then(r => {
-      if (codeContainer.current) {
-        const container = codeContainer.current
-        if (process.env.NODE_ENV === 'development') {
-          container.removeAttribute('data-highlighted')
-        }
-        r.highlightElement(container)
-        setTimeout(() => {
-          if (container.clientHeight > window.innerHeight / 2) {
-            props.onRequirePartialHide()
-          }
-        }, 100)
-      }
-    })
-  }, [props.content])
-
   return (
-    <div className={style.codeContent} ref={codeContainer} style={props.wrapLine ? { textWrap: 'wrap' } : undefined}>
-      { props.content }
-    </div>
+    <div className={style.codeContent} ref={codeContainer} style={props.wrapLine ? { textWrap: 'wrap' } : undefined} dangerouslySetInnerHTML={{ __html: props.content }}/>
   )
 }
 

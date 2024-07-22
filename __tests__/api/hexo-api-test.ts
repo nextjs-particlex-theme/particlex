@@ -1,8 +1,8 @@
-import { getAllPosts } from '@/api/hexo-api'
-import {expect, test} from '@jest/globals'
+import { expect, test } from '@jest/globals'
+import datasource from '@/api/datasource'
 
 test('check getAllPosts type safety', async () => {
-  const paths = await getAllPosts()
+  const paths = await datasource.pagePosts()
   console.log(paths)
   paths.forEach(val => {
     expect(Array.isArray(val.categories)).toBeTruthy()

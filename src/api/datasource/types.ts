@@ -1,5 +1,6 @@
 import { Moment } from 'moment/moment'
 import { Tag } from 'hexo/dist/models'
+import type { ReactNode } from 'react'
 
 
 export type Category = {
@@ -31,10 +32,10 @@ type ThemeConfig = {
   }
 }
 
-export type HexoConfig = {
+export type Config = {
   title: string
-  subtitle: string
-  description: string
+  subtitle?: string
+  description?: string
   author: string
   language: string
   timezone: string
@@ -47,19 +48,20 @@ export type HexoConfig = {
 // }
 
 export type Post = {
-  _id: string
+  _id: string | number
   /**
    * 标题
    */
   title: string
   /**
    * 创建时间
+   * TODO 替换为时间戳
    */
   date: Moment
   /**
-   * html 编码后的内容
+   * html 编码后的内容. SSR yyds.
    */
-  content: string
+  content: ReactNode
   /**
    * 不带后缀的文件名
    */
@@ -76,4 +78,17 @@ export type Post = {
    * tag
    */
   tags: (typeof Tag)[]
+}
+
+export interface BlogDataSource {
+  /**
+   * 获取配置
+   */
+  getConfig: () => Promise<Config>
+  /**
+   * 分页获取用于首页展示的博客文章.
+   * @param page 从0开始的页码
+   * @param size 每页大小
+   */
+  pagePosts: (page?: number, size?: number) => Promise<Post[]>
 }
