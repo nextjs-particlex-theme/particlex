@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHouse, faIdCard, faBoxArchive, faBookmark, faTags  } from '@fortawesome/free-solid-svg-icons'
@@ -18,10 +18,24 @@ interface HeaderProps {
 
 
 const Index:React.FC<HeaderProps> = props => {
-  const [headerClass, setHeaderClass] = useState(props.autoTransparentOnTop ? styles.headerTransparentVisible : styles.headerVisible)
+  const [headerClass, setHeaderClass] = useState(() => {
+    if (props.autoTransparentOnTop) {
+      return document.documentElement.scrollTop <= window.innerHeight ? styles.headerTransparentVisible : styles.headerVisible
+    }
+    return styles.headerVisible
+  })
+  const lastScrollTop = useRef(0)
+
   useEffect(() => {
-    const wheelListener = (ev: WheelEvent) => {
-      if (ev.deltaY < 0) {
+    const wheelListener = () => {
+      const gap = Math.abs(lastScrollTop.current - document.documentElement.scrollTop)
+      // FIX: 点击首页圆球滑动到底部文章后会显示 header.
+      if (gap < 45 && document.documentElement.scrollTop < window.innerHeight + 100) {
+        return
+      }
+      const isUp = lastScrollTop.current >= document.documentElement.scrollTop
+      lastScrollTop.current = document.documentElement.scrollTop
+      if (isUp) {
         if (document.documentElement.scrollTop <= window.innerHeight && props.autoTransparentOnTop) {
           setHeaderClass(styles.headerTransparentVisible)
         } else {
@@ -31,9 +45,9 @@ const Index:React.FC<HeaderProps> = props => {
         setHeaderClass(styles.headerHide)
       }
     }
-    addEventListener('wheel', wheelListener)
+    addEventListener('scroll', wheelListener)
     return () => {
-      removeEventListener('wheel', wheelListener)
+      removeEventListener('scroll', wheelListener)
     }
   }, [props.autoTransparentOnTop])
 
