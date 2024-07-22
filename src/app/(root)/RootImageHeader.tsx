@@ -35,7 +35,6 @@ const RootImageHeader:React.FC<RootImageHeaderProps> = props => {
       }
       // 当滑动距离 `x` 为 0.8 * window.innerHeight 时，此时 y(offset) 应该为最大值
       // 斜率为 maxOffset / (1.4 * window.innerHeight)
-      // FIXME: 首页圆圈点击时仍然会有部分背景图可见
       const k = MAX_OFFSET / (0.8 * window.innerHeight)
       setOffset(Math.min(MAX_OFFSET, k * document.documentElement.scrollTop))
     }

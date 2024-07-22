@@ -1,10 +1,9 @@
 import Hexo from 'hexo'
-import { Config, Post } from '@/api/datasource/types'
-import reactParse, { domToReact, Element, Text } from 'html-react-parser'
+import { BlogDataSource, Config, Post } from '@/api/datasource/types'
+import reactParse, { Element, Text } from 'html-react-parser'
 import React from 'react'
 import PartialCodeBlock from '@/components/PartialCodeBlock'
 import hljs from 'highlight.js'
-import { BlogDataSource } from '@/api/datasource/types'
 
 
 declare global {
@@ -52,54 +51,63 @@ const highlight = (html: string): React.ReactNode => {
   })
 }
 
-/**
- * 获取用户配置
- */
-export const getHexoConfig = async (): Promise<Config> => {
+async function queryAllPosts() {
   const hexo = await getHexoInstance()
-  return hexo.config as unknown as Config
+  const data = await hexo.database.model('Post').find({}).sort('-date').toArray()
+  const returnVal: Post[] = []
+
+  data.forEach(v => {
+    const PREFIX = '_posts'
+    let source = v.source as string
+    if (source.startsWith(PREFIX)) {
+      source = source.substring(PREFIX.length)
+      const SUFFIX = '.md'
+      if (source.endsWith(SUFFIX)) {
+        source = source.substring(0, source.length - SUFFIX.length)
+      }
+    }
+    returnVal.push({
+      _id: v._id ?? `${Date.now()}${Math.floor(Math.random() * 10)}`,
+      title: v.title,
+      content: highlight(v.content),
+      date: v.date,
+      slug: v.slug,
+      categories: v.categories.toArray(),
+      tags: v.tags.toArray(),
+      source: source
+    })
+  })
+  return returnVal
 }
 
 const hexo: BlogDataSource = {
   async getConfig() {
-    const hexo = await getHexoInstance()
-    return hexo.config as unknown as Config
+    const { config } = await getHexoInstance()
+    return {
+      title: config.title,
+      author: config.author,
+      description: config.description,
+      subtitle: config.subtitle,
+      indexPageSize: config.theme_config.indexPageSize ?? 5,
+      background: config.theme_config.background ?? [],
+      avatar: config.avatar,
+    }
   },
   /**
    * 获取所有文章. 仅会获取 `source/_posts` 目录中的内容
    */
   async pagePosts(page = 0, size = 5) {
-    const hexo = await getHexoInstance()
-    const data = await hexo.database.model('Post').find({}).sort('-date').toArray()
-    const returnVal: Post[] = []
-
-    data.forEach(v => {
-      const PREFIX = '_posts'
-      let source = v.source as string
-      if (source.startsWith(PREFIX)) {
-        source = source.substring(PREFIX.length)
-        const SUFFIX = '.md'
-        if (source.endsWith(SUFFIX)) {
-          source = source.substring(0, source.length - SUFFIX.length)
-        }
-      }
-      returnVal.push({
-        _id: v._id ?? `${Date.now()}${Math.floor(Math.random() * 10)}`,
-        title: v.title,
-        content: highlight(v.content),
-        date: v.date,
-        slug: v.slug,
-        categories: v.categories.toArray(),
-        tags: v.tags.toArray(),
-        source: source
-      })
-    })
+    const returnVal = await queryAllPosts()
     // TODO 考虑做真分页
     const head = page * size
+    console.log(head, returnVal.length)
     if (head >= returnVal.length) {
       return []
     }
     return returnVal.slice(head, Math.min(head + size, returnVal.length))
+  },
+  async pagePostsSize() {
+    return (await queryAllPosts()).length
   }
 }
 

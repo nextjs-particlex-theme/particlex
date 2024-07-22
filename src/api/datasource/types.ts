@@ -8,38 +8,24 @@ export type Category = {
   name: string
 }
 
-type ThemeConfig = {
-  /**
-   * 背景图片
-   */
-  background?: string[]
-  /**
-   * 头像
-   */
-  avatar?: string
-  /**
-   * 右侧卡片
-   */
-  card?: {
-    /**
-     * 是否开启
-     */
-    enable?: boolean
-    /**
-     * 简介
-     */
-    description?: string
-  }
-}
 
 export type Config = {
   title: string
   subtitle?: string
   description?: string
   author: string
-  language: string
-  timezone: string
-  theme_config: ThemeConfig
+  /**
+   * 首页页码大小
+   */
+  indexPageSize: number
+  /**
+   * 背景图片
+   */
+  background: string[]
+  /**
+   * 头像
+   */
+  avatar?: string
 }
 
 //
@@ -90,5 +76,11 @@ export interface BlogDataSource {
    * @param page 从0开始的页码
    * @param size 每页大小
    */
-  pagePosts: (page?: number, size?: number) => Promise<Post[]>
+  // wdf, why happen this error?
+  // eslint-disable-next-line no-unused-vars
+  pagePosts(page?: number, size?: number): Promise<Post[]>
+  /**
+   * {@link BlogDataSource#pagePosts} 的总博客文章数量
+   */
+  pagePostsSize: () => Promise<number>
 }
