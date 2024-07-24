@@ -14,6 +14,7 @@
     "hexo": "^7.3.0",
     "highlight.js": "^11.10.0",
     "html-react-parser": "^5.1.12",
+    "jsdom": "^24.1.1",
     "mime": "^4.0.4",
     "next": "14.2.5",
     "react": "^18",

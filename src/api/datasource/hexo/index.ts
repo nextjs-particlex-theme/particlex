@@ -6,6 +6,7 @@ import PartialCodeBlock from '@/components/PartialCodeBlock'
 import hljs from 'highlight.js'
 import type Document from 'warehouse/dist/document'
 import path from 'node:path'
+import { generateShallowToc } from '@/api/datasource/util'
 
 declare global {
   // eslint-disable-next-line no-unused-vars
@@ -73,6 +74,9 @@ async function queryAllPosts() {
   return returnVal
 }
 
+/**
+ * 将 hexo 的 Post 转化为具有完整类型声明的 Post
+ */
 function hexoPostToTypedPost(v: Document<any>): Post {
   let source = v.source as string
   if (source.endsWith('.md')) {
@@ -89,10 +93,14 @@ function hexoPostToTypedPost(v: Document<any>): Post {
     slug: v.slug,
     categories: v.categories ? v.categories.data : [],
     tags: v.tags ? v.tags.data : [],
-    source: source
+    source: source,
+    toc: generateShallowToc(v.content)
   })
 }
 
+/**
+ * 将 hexo 静态资源转换成有完整类型声明的 StaticResource
+ */
 function hexoAssertToStaticResource(v: Document<any>): StaticResource {
   return new StaticResource(path.resolve(process.env.HEXO_ABSOLUTE_PATH, <string>v._id), v.path)
 }

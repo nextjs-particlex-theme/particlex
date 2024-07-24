@@ -37,6 +37,11 @@ export interface Resource {
   getAccessPath: () => string
 }
 
+export type TocItem = {
+  title: string
+  child: TocItem[]
+}
+
 type PostConstructor = {
   id: string | number
   title: string
@@ -46,6 +51,7 @@ type PostConstructor = {
   source: string
   categories: Category[]
   tags: Tag[]
+  toc: TocItem[]
 }
 
 export class StaticResource implements Resource {
@@ -103,6 +109,10 @@ export class Post implements Resource {
    * tag
    */
   public tags: Tag[]
+  /**
+   * Toc
+   */
+  public toc: TocItem[]
 
   constructor(data: PostConstructor) {
     this.id = data.id
@@ -113,6 +123,7 @@ export class Post implements Resource {
     this.source = data.source
     this.categories = data.categories
     this.tags = data.tags
+    this.toc = data.toc
   }
 
   get formattedTime(): string {
