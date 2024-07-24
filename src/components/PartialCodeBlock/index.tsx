@@ -1,8 +1,7 @@
 'use client'
 import React, { useRef, useState } from 'react'
 import style from './post-content.module.scss'
-import { faArrowTurnDown, faCopy } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Icons } from '@/app/svg-symbols'
 
 interface PartialCodeBlockProps {
   content: string
@@ -61,8 +60,13 @@ const _PartialCodeBlock: React.FC<PartialCodeBlockProps> = props => {
         <RichContent {...props} wrapLine={wrapLineActive} onRequirePartialHide={onRequireHide} />
         <div className={style.languageTag}>{props.lang}</div>
         <div className={style.toolBar}>
-          <FontAwesomeIcon title="自动换行" icon={faArrowTurnDown} className={wrapLineActive ? style.iconClick : style.icon} onClick={onWrapLineClick}/>
-          <FontAwesomeIcon title="复制" onMouseDown={onCopyDown} onMouseUp={onCopyUp} icon={faCopy} className={copyIconClass}/>
+          <span title="自动换行">
+            <svg width={15} height={15} onClick={onWrapLineClick}
+              className={wrapLineActive ? style.iconClick : style.icon}><use
+                xlinkHref={Icons.WRAP_LINE}/></svg>
+          </span>
+          <svg width={15} height={15} onMouseDown={onCopyDown} onMouseUp={onCopyUp} className={copyIconClass}><use
+            xlinkHref={Icons.COPY}/></svg>
         </div>
         {
           partialHide ?

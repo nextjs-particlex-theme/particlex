@@ -1,7 +1,9 @@
 import './globals.css'
-import { PreloadResources } from '@/app/(root)/preload-resources'
+import { PreloadResources } from './preload-resources'
 import { Metadata } from 'next'
 import datasource from '@/api/datasource'
+import React from 'react'
+import SvgSymbols from '@/app/svg-symbols'
 if (!process.env.NEXT_PUBLIC_CND_PUBLIC_PATH_BASE_URL) {
   // @ts-ignore
   import('../common/font/fonts.min.css')
@@ -12,7 +14,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     title: config.title,
-    description: config.description
+    description: config.description,
+    icons: '/images/favicon.ico',
   }
 }
 
@@ -20,11 +23,14 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
+  post: React.ReactNode
+  resource: React.ReactNode
 }>) {
   return (
     <html lang="zh">
       <PreloadResources/>
       <body>
+        <SvgSymbols/>
         {children}
       </body>
     </html>

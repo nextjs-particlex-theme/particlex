@@ -1,10 +1,9 @@
 import { Post } from '@/api/datasource/types'
-import { faCalendar, faBoxArchive } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import Link from 'next/link'
 import styles from './root-style.module.scss'
 import postStyle from '@/components/post.module.scss'
+import { Icons } from '@/app/svg-symbols'
 
 interface PostPreviewProps {
   post: Post
@@ -24,19 +23,22 @@ const PostPreview:React.FC<PostPreviewProps> = props => {
             {
               post.categories.length > 0 ?
                 (
-                  <Link href="/categories" className="[&>span]:ml-2">
-                    <FontAwesomeIcon icon={faBoxArchive} width="1rem"/>
+                  <div className="[&>span]:ml-2 flex">
+                    <svg width={16} height={16}>
+                      <use xlinkHref={Icons.BOX_ARCHIVE}/>
+                    </svg>
+                    {/*<FontAwesomeIcon icon={faBoxArchive} width="1rem"/>*/}
                     {
-                      post.categories.map(v => (<span key={v._id}>{v.name}</span>))
+                      post.categories.map(v => (<Link href={v.path} key={v.name}>{v.name}</Link>))
                     }
-                  </Link>
+                  </div>
                 )
                 : null
             }
           </div>
-          <div>
-            <FontAwesomeIcon icon={faCalendar} width="1rem"/>
-            <span className="ml-2">{post.date.format('YYYY/MM/DD')}</span>
+          <div className="flex">
+            <svg width={16} height={16}><use xlinkHref={Icons.CALENDAR}/></svg>
+            <span className="ml-2">{post.formattedTime}</span>
           </div>
         </div>
       </div>

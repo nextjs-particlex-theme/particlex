@@ -1,12 +1,14 @@
 import Hexo from 'hexo'
-import { BlogDataSource, Config, Post } from '@/api/datasource/types'
+import { BlogDataSource, Post, Resource, StaticResource } from '@/api/datasource/types'
 import reactParse, { Element, Text } from 'html-react-parser'
 import React from 'react'
 import PartialCodeBlock from '@/components/PartialCodeBlock'
 import hljs from 'highlight.js'
-
+import type Document from 'warehouse/dist/document'
+import path from 'node:path'
 
 declare global {
+  // eslint-disable-next-line no-unused-vars
   var __hexo__: Hexo | undefined
 }
 
@@ -35,7 +37,7 @@ const getHexoInstance = async (): Promise<Hexo> => {
  */
 const highlight = (html: string): React.ReactNode => {
   return reactParse(html, {
-    replace: (domNode, index) => {
+    replace: (domNode) => {
       if (domNode instanceof Element && domNode.tagName === 'pre' && domNode.children.length === 1) {
         const ele = domNode.children[0]
         if (ele instanceof Element) {
@@ -66,21 +68,39 @@ async function queryAllPosts() {
         source = source.substring(0, source.length - SUFFIX.length)
       }
     }
-    returnVal.push({
-      _id: v._id ?? `${Date.now()}${Math.floor(Math.random() * 10)}`,
-      title: v.title,
-      content: highlight(v.content),
-      date: v.date,
-      slug: v.slug,
-      categories: v.categories.toArray(),
-      tags: v.tags.toArray(),
-      source: source
-    })
+    returnVal.push(hexoPostToTypedPost(v))
   })
   return returnVal
 }
 
-const hexo: BlogDataSource = {
+function hexoPostToTypedPost(v: Document<any>): Post {
+  let source = v.source as string
+  if (source.endsWith('.md')) {
+    source = source.substring(0, source.length - 3)
+  }
+  if (source.startsWith('_post')) {
+    source = source.substring('_post/*'.length)
+  }
+  return new Post({
+    id: v._id ?? `${Date.now()}${Math.floor(Math.random() * 10)}`,
+    title: v.title,
+    content: highlight(v.content),
+    date: v.date,
+    slug: v.slug,
+    categories: v.categories ? v.categories.data : [],
+    tags: v.tags ? v.tags.data : [],
+    source: source
+  })
+}
+
+function hexoAssertToStaticResource(v: Document<any>): StaticResource {
+  return new StaticResource(path.resolve(process.env.HEXO_ABSOLUTE_PATH, <string>v._id), v.path)
+}
+
+class HexoDataSource implements BlogDataSource {
+
+  constructor() {}
+
   async getConfig() {
     const { config } = await getHexoInstance()
     return {
@@ -92,11 +112,11 @@ const hexo: BlogDataSource = {
       background: config.theme_config.background ?? [],
       avatar: config.avatar,
     }
-  },
+  }
   /**
    * 获取所有文章. 仅会获取 `source/_posts` 目录中的内容
    */
-  async pagePosts(page = 0, size = 5) {
+  async pageHomePosts(page = 0, size = 5) {
     const returnVal = await queryAllPosts()
     // TODO 考虑做真分页
     const head = page * size
@@ -105,10 +125,46 @@ const hexo: BlogDataSource = {
       return []
     }
     return returnVal.slice(head, Math.min(head + size, returnVal.length))
-  },
+  }
   async pagePostsSize() {
     return (await queryAllPosts()).length
   }
+  async getAllPost(): Promise<Record<string, Post>> {
+    const hexo = await getHexoInstance()
+
+    const r: Record<string, Post> = {}
+    hexo.model('Page').find({}).toArray().map(hexoPostToTypedPost).forEach(v => {
+      r[v.source] = v
+    })
+    const homePost = await queryAllPosts()
+    homePost.forEach(v => {
+      r[v.source] = v
+    })
+    return r
+  }
+  async getAllStaticResource(): Promise<Record<string, StaticResource>> {
+    const hexo = await getHexoInstance()
+    const resources = hexo.model('Asset').find({}).toArray().filter(v => {
+      if (v._id && typeof v._id === 'string') {
+        return v._id.startsWith('source/images')
+      }
+      return false
+    }).map(hexoAssertToStaticResource)
+    const r: Record<string, StaticResource> = {}
+    
+    resources.forEach(v => {
+      r[v.accessPath] = v
+    })
+    return r
+  }
+  async getAllResource(): Promise<Record<string, Resource>> {
+    return {
+      ...(await this.getAllPost()),
+      ...(await this.getAllStaticResource())
+    }
+  }
 }
+
+const hexo = new HexoDataSource()
 
 export default hexo

@@ -1,11 +1,12 @@
-import { Moment } from 'moment/moment'
-import { Tag } from 'hexo/dist/models'
 import type { ReactNode } from 'react'
 
+export type Tag = {
+
+}
 
 export type Category = {
-  _id: string
   name: string
+  path: string
 }
 
 
@@ -28,42 +29,104 @@ export type Config = {
   avatar?: string
 }
 
-//
-// export type Tag = {
-//
-// }
 
-export type Post = {
-  _id: string | number
+export interface Resource {
+  /**
+   * 获取访问路径，不会以 '/' 开头
+   */
+  getAccessPath: () => string
+}
+
+type PostConstructor = {
+  id: string | number
+  title: string
+  date: number
+  content: ReactNode
+  slug: string
+  source: string
+  categories: Category[]
+  tags: Tag[]
+}
+
+export class StaticResource implements Resource {
+
+  /**
+   * 文件路径
+   * @private
+   */
+  filepath: string
+
+  /**
+   * 访问路径
+   * @private
+   */
+  accessPath: string
+
+  constructor(filepath: string, accessPath: string) {
+    this.filepath = filepath
+    this.accessPath = accessPath
+  }
+
+  getAccessPath() {
+    return this.accessPath
+  }
+
+}
+
+export class Post implements Resource {
+  public id: string | number
   /**
    * 标题
    */
-  title: string
+  public title: string
   /**
    * 创建时间
-   * TODO 替换为时间戳
    */
-  date: Moment
+  public date: number
   /**
    * html 编码后的内容. SSR yyds.
    */
-  content: ReactNode
+  public content: ReactNode
   /**
    * 不带后缀的文件名
    */
-  slug: string
+  public slug: string
   /**
    * 相对于博客访问路径. 例如博客文件：`_posts/2024/02/xxx.md` 会被转换成 `/2024/02/xxx`
    */
-  source: string
+  public source: string
   /**
    * categories
    */
-  categories: Category[]
+  public categories: Category[]
   /**
    * tag
    */
-  tags: (typeof Tag)[]
+  public tags: Tag[]
+
+  constructor(data: PostConstructor) {
+    this.id = data.id
+    this.title = data.title
+    this.date = data.date
+    this.content = data.content
+    this.slug = data.slug
+    this.source = data.source
+    this.categories = data.categories
+    this.tags = data.tags
+  }
+
+  get formattedTime(): string {
+    const date = new Date(this.date)
+    let month: string | number = date.getMonth() + 1
+    month = month < 10 ? '0' + month : month
+    let day: string | number = date.getDate()
+    day = day < 10 ? '0' + day : day
+    return `${date.getFullYear()}/${month}/${day}`
+  }
+
+  getAccessPath() {
+    return this.source
+  }
 }
 
 export interface BlogDataSource {
@@ -78,9 +141,35 @@ export interface BlogDataSource {
    */
   // wdf, why happen this error?
   // eslint-disable-next-line no-unused-vars
-  pagePosts(page?: number, size?: number): Promise<Post[]>
+  pageHomePosts(page?: number, size?: number): Promise<Post[]>
   /**
-   * {@link BlogDataSource#pagePosts} 的总博客文章数量
+   * {@link BlogDataSource#pageHomePosts} 的总博客文章数量
    */
   pagePostsSize: () => Promise<number>
+  /**
+   * 获取所有文章，包括首页的文章
+   * <ul>
+   *   <li>k: 访问路径</li>
+   *   <li>v: 静态资源</li>
+   * </ul>
+   */
+  getAllPost(): Promise<Record<string, Post>>
+  /**
+   * 获取所有静态资源.
+   * @return {} 静态资源
+   * <ul>
+   *   <li>k: 访问路径</li>
+   *   <li>v: 静态资源</li>
+   * </ul>
+   */
+  getAllStaticResource(): Promise<Record<string, StaticResource>>
+  /**
+   * 获取所有资源.
+   * @return {} 资源
+   * <ul>
+   *   <li>k: 访问路径</li>
+   *   <li>v: 资源</li>
+   * </ul>
+   */
+  getAllResource(): Promise<Record<string, Resource>>
 }

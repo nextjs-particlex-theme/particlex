@@ -22,10 +22,11 @@
   position: absolute;
   top: 0.6rem;
   right: 0;
-  > svg {
+  display: flex;
+  > * {
     margin-right: 1.5rem;
   }
-  > svg:hover {
+  > * {
     cursor: pointer;
   }
 }

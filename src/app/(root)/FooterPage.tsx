@@ -6,7 +6,7 @@ interface FooterPageProps {
   currentPage: number
 }
 
-const FooterPage:React.FC<FooterPageProps> = props => {
+const FooterPage:React.FC<FooterPageProps> = () => {
   // TODO
   return null
 }
