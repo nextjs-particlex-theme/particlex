@@ -1,5 +1,5 @@
 import { TocItem } from '@/api/datasource/types'
-import { JSDOM, DOMWindow } from 'jsdom'
+import { JSDOM } from 'jsdom'
 
 const LEVEL_MAPPING: Record<string, number> = {
   H1: 0,

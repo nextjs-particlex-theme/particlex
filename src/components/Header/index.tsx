@@ -16,7 +16,7 @@ interface HeaderProps {
 }
 
 
-const Index:React.FC<HeaderProps> = props => {
+const Header:React.FC<HeaderProps> = props => {
   const [headerClass, setHeaderClass] = useState(styles.headerVisible)
   const lastScrollTop = useRef(0)
 
@@ -55,11 +55,11 @@ const Index:React.FC<HeaderProps> = props => {
 
   return (
     <div className={`font-bold text-sm pl-16 text-zinc-600 flex-row flex ${styles.header} ${headerClass}`}>
-      <Link href="/public" className="pl-10">
+      <Link href="/" className="pl-10">
         { props.title }
       </Link>
       <div className="flex">
-        <Link href="/public" className="flex pl-10 items-center">
+        <Link href="/" className="flex pl-10 items-center">
           <svg viewBox="0 0 576 512" width={15} height={15}>
             <path
               fill="currentColor"
@@ -98,4 +98,4 @@ const Index:React.FC<HeaderProps> = props => {
   )
 }
 
-export default Index
+export default Header

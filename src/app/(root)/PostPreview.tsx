@@ -3,7 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import styles from './root-style.module.scss'
 import postStyle from '@/components/post.module.scss'
-import { Icons } from '@/app/svg-symbols'
+import PostMetadata from '@/components/PostMetadata'
 
 interface PostPreviewProps {
   post: Post
@@ -18,29 +18,7 @@ const PostPreview:React.FC<PostPreviewProps> = props => {
         <div className="p-8 link-styled-container">
           <Link href={post.source} className="text-2xl font-bold">{post.title}</Link>
         </div>
-        <div className="flex [&>div]:mr-6 text-subtext">
-          <div>
-            {
-              post.categories.length > 0 ?
-                (
-                  <div className="[&>span]:ml-2 flex">
-                    <svg width={16} height={16}>
-                      <use xlinkHref={Icons.BOX_ARCHIVE}/>
-                    </svg>
-                    {/*<FontAwesomeIcon icon={faBoxArchive} width="1rem"/>*/}
-                    {
-                      post.categories.map(v => (<Link href={v.path} key={v.name}>{v.name}</Link>))
-                    }
-                  </div>
-                )
-                : null
-            }
-          </div>
-          <div className="flex">
-            <svg width={16} height={16}><use xlinkHref={Icons.CALENDAR}/></svg>
-            <span className="ml-2">{post.formattedTime}</span>
-          </div>
-        </div>
+        <PostMetadata post={post}/>
       </div>
       <div className={`${postStyle.postContainer} link-styled-container`}>
         {post.content}

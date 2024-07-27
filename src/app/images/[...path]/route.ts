@@ -23,7 +23,8 @@ export async function generateStaticParams() {
   const resource = await datasource.getAllStaticResource()
 
   return Object.values(resource).map(v => ({
-    path: v.getAccessPath().split('/'),
+    // 删除 image 开头
+    path: v.getAccessPath().split('/').splice(1),
   }))
 }
 
@@ -34,11 +35,11 @@ interface ResourceRouteParam {
 }
 
 export async function GET(_: unknown, { params }: ResourceRouteParam) {
-  const resource = await datasource.getAllResource()
+  const resource = await datasource.getAllStaticResource()
   const res = resource[params.path.join('/')] as StaticResource
 
   if (!res.filepath) {
-    return new Response()
+    throw new Error('Unexpected error, could not find resource with path ' + params.path.join('/'))
   }
   return new Response(base64ToUint8Array(fs.readFileSync(res.filepath, { encoding: 'base64' })), {
     headers: {

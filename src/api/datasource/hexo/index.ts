@@ -33,6 +33,16 @@ const getHexoInstance = async (): Promise<Hexo> => {
 }
 
 /**
+ * 直接让 highlight.js 自动高冷渲染太慢了，必须主动指定语言，这里为了防止一些简写或者某些特定的语言，设置一些回退选项
+ */
+const LANGUAGE_MAPPING_FALLBACK: Record<string, string | undefined> = {
+  vue: 'html',
+  js: 'javascript',
+  ts: 'typescript',
+  sh: 'bash'
+}
+
+/**
  * 高亮一段可能包含代码块的代码.
  * @param html 可能html内容
  */
@@ -45,7 +55,10 @@ const highlight = (html: string): React.ReactNode => {
           const text = ele.childNodes[0]
           if (text instanceof Text) {
             const lang = ele.attribs['class'] ?? 'plaintext'
-            const lighted = hljs.highlightAuto(text.data, [lang]).value
+            const fb = LANGUAGE_MAPPING_FALLBACK[lang]
+            const langSubset = fb ? [lang, fb] : [lang]
+
+            const lighted = hljs.highlightAuto(text.data, langSubset).value
             return React.createElement(PartialCodeBlock, { content: lighted, lang })
           }
         }
@@ -160,8 +173,9 @@ class HexoDataSource implements BlogDataSource {
     }).map(hexoAssertToStaticResource)
     const r: Record<string, StaticResource> = {}
     
+    const remove = 'image/*'
     resources.forEach(v => {
-      r[v.accessPath] = v
+      r[v.accessPath.substring(remove.length)] = v
     })
     return r
   }

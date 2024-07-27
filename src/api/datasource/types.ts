@@ -63,7 +63,8 @@ export class StaticResource implements Resource {
   filepath: string
 
   /**
-   * 访问路径
+   * 相对<b>静态资源根目录</b>的访问路径.
+   * 例如资源在 url 中以 `/images/foo/bar.png` 访问，则这里的值为 `foo/bar.png`
    * @private
    */
   accessPath: string
@@ -169,7 +170,7 @@ export interface BlogDataSource {
    * 获取所有静态资源.
    * @return {} 静态资源
    * <ul>
-   *   <li>k: 访问路径</li>
+   *   <li>k: 访问路径, see: {@link StaticResource#accessPath}</li>
    *   <li>v: 静态资源</li>
    * </ul>
    */
