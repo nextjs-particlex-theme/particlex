@@ -5,6 +5,7 @@ import { Metadata } from 'next'
 import { Post } from '@/api/datasource/types'
 import postStyle from '@/components/post.module.scss'
 import PostMetadata from '@/components/PostMetadata'
+import TableOfContent, { MAIN_CONTENT_ID } from '@/components/TableOfContent'
 
 export async function generateStaticParams(): Promise<Param[]> {
   const posts = await datasource.getAllPost()
@@ -37,9 +38,10 @@ const PostPage: React.FC<{params: Param}> = async ({ params }) => {
           {post.title}
         </div>
         <PostMetadata post={post} className="mt-4 mb-12"/>
-        <div className={`${postStyle.postContainer} link-styled-container`}>
+        <div className={`${postStyle.postContainer} link-styled-container`} id={MAIN_CONTENT_ID}>
           { post.content }
         </div>
+        <TableOfContent tocItems={post.toc}/>
       </div>
     </div>
   )

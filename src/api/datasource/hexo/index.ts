@@ -107,7 +107,14 @@ function hexoPostToTypedPost(v: Document<any>): Post {
     categories: v.categories ? v.categories.data : [],
     tags: v.tags ? v.tags.data : [],
     source: source,
-    toc: generateShallowToc(v.content)
+    toc: generateShallowToc(v.content, nodes => {
+      const t = nodes.item(1) as any
+      const a = nodes.item(0) as any
+      return {
+        title: t.data,
+        anchor: a.getAttribute('href') ?? t.data
+      }
+    })
   })
 }
 

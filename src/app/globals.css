@@ -9,12 +9,13 @@
         --color-text: #1e3e3f;
         --color-primary: #66afef;
         --z-index-top: 100000;
-        --z-index-common: 10000
+        --z-index-common: 10000;
+        --background-color: #f6f8fa;
     }
 }
 
 body {
-    background: #f6f8fa;
+    background: var(--background-color);
     color: #1e3e3f;
     font: 500 14px Lexend, "Noto Sans SC", sans-serif;
     overflow-x: hidden;

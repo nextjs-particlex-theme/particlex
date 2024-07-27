@@ -10,20 +10,23 @@ const LEVEL_MAPPING: Record<string, number> = {
   H6: 5,
 }
 
+
+// eslint-disable-next-line no-undef
+type TitleCaster = (nodes: NodeListOf<ChildNode>) => Omit<TocItem, 'child'>
+
 /**
- * 根据 html 自动生成 Toc，要求根元素下包含 <h1> <h2> 等标签，而不是被内嵌在其它子元素中。
- *
- * @param html
+ * 根据 html 自动生成 Toc，要求必须平铺 h1 h2 等标签。
+ * @see [/__tests__/api/util.test.ts](/__tests__/api/util.test.ts)
  */
-export function generateShallowToc(html?: string): TocItem[] {
+export function generateShallowToc(html?: string, caster?: TitleCaster): TocItem[] {
   if (!html) {
     return []
   }
   const dom = new JSDOM(html, { contentType: 'text/html' })
 
-  const root = dom.window.document.body.childNodes.item(0)
+  const root = dom.window.document.body
 
-  let parentStack: TocItem[] = [{ title: 'FakeRoot', child: [] }]
+  let parentStack: TocItem[] = [{ title: 'FakeRoot', child: [], anchor: '#' }]
   root.childNodes.forEach(v => {
     const currentLevel = LEVEL_MAPPING[v.nodeName]
     if (currentLevel === undefined) {
@@ -36,10 +39,21 @@ export function generateShallowToc(html?: string): TocItem[] {
       for (let i = currentLevel + 1; i < parentStack.length; i++) {
         parentStack.pop()
       }
-      const item: TocItem = {
-        title: heading.innerHTML,
-        child: []
+      let item: TocItem
+      if (caster) {
+        const data = caster(heading.childNodes)
+        item = {
+          ...data,
+          child: []
+        }
+      } else {
+        item = {
+          title: heading.innerHTML,
+          anchor: '#' + heading.innerHTML,
+          child: []
+        }
       }
+
       parentStack[currentLevel].child.push(item)
       parentStack[currentLevel + 1] = item
     }

@@ -1,0 +1,74 @@
+.toc-out-container {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    max-height: 80%;
+    font-size: 1rem;
+    transform: translateY(-50%);
+    transition: all 0.3s;
+    color: rgb(2 6 23);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.toc-container {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 60vh;
+    max-width: 300px;
+
+    & > * {
+        box-sizing: border-box;
+        padding: 3px 0;
+    }
+
+    .title-1 {
+        position: sticky;
+        top: -1px;
+        background: var(--background-color);
+    }
+
+    @mixin subTitleBase($level: 0) {
+        color: rgb(148 163 184);
+        border-color: rgb(148 163 184);
+        border-left-width: 2px;
+        padding-left: 10px * $level;
+    }
+
+    .title-2 {
+        @include subTitleBase(2);
+    }
+
+    .title-3 {
+        @include subTitleBase(3);
+        color: rgb(203 213 225);
+    }
+
+    .title-4 {
+        @include subTitleBase(4);
+    }
+
+    .title-5 {
+        @include subTitleBase(5);
+    }
+
+    .title-6 {
+        @include subTitleBase(6);
+    }
+
+    .active-title {
+        color: var(--color-primary);
+    }
+
+    .active-title {
+        &.title-2,&.title-3,&.title-4,&.title-5,&.title-6 {
+            border-color: var(--color-primary);
+            border-left-width: 4px;
+            transform: translateX(-1px);
+        }
+    }
+
+}
+

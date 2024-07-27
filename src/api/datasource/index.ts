@@ -6,11 +6,12 @@ let datasource: BlogDataSource
 if (process.env.DATASOURCE_CACHE_ENABLE === 'true') {
   const cacheHolder: Record<string, any> = {}
 
+  // eslint-disable-next-line no-undef
   datasource = new Proxy(hexo, {
     get(target: BlogDataSource, p: string | symbol): any {
       // @ts-ignore
       const orig = target[p]
-      if (typeof orig) {
+      if (typeof orig === 'function') {
         return function (...args: unknown[]) {
           const key = orig.name + ':' + args.join('_')
           if (cacheHolder[key]) {

@@ -39,6 +39,10 @@ export interface Resource {
 
 export type TocItem = {
   title: string
+  /**
+   * 锚点，以 # 开头
+   */
+  anchor: string
   child: TocItem[]
 }
 
@@ -151,8 +155,6 @@ export interface BlogDataSource {
    * @param page 从0开始的页码
    * @param size 每页大小
    */
-  // wdf, why happen this error?
-  // eslint-disable-next-line no-unused-vars
   pageHomePosts(page?: number, size?: number): Promise<Post[]>
   /**
    * {@link BlogDataSource#pageHomePosts} 的总博客文章数量
