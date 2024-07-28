@@ -140,6 +140,7 @@ class HexoDataSource implements BlogDataSource {
       indexPageSize: config.theme_config.indexPageSize ?? 5,
       background: config.theme_config.background ?? [],
       avatar: config.avatar,
+      homePage: config.authorHome ?? '#',
     }
   }
   /**

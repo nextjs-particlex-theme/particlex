@@ -27,6 +27,10 @@ export type Config = {
    * 头像
    */
   avatar?: string
+  /**
+   * 主页
+   */
+  homePage: string
 }
 
 
