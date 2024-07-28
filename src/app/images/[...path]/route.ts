@@ -1,7 +1,7 @@
 import datasource from '@/api/datasource'
 import * as fs from 'node:fs'
 import mime from 'mime'
-import { StaticResource } from '@/api/datasource/types'
+import type { StaticResource } from '@/api/datasource/types'
 
 function base64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4)

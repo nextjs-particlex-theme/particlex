@@ -1,4 +1,4 @@
-import { TocItem } from '@/api/datasource/types'
+import type { TocItem } from '@/api/datasource/types'
 import { JSDOM } from 'jsdom'
 
 const LEVEL_MAPPING: Record<string, number> = {

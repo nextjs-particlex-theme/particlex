@@ -1,4 +1,4 @@
-import { Post } from '@/api/datasource/types'
+import type { Post } from '@/api/datasource/types'
 import React from 'react'
 import Link from 'next/link'
 import styles from './root-style.module.scss'

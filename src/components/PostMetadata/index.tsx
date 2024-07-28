@@ -1,5 +1,5 @@
 import React from 'react'
-import { Post } from '@/api/datasource/types'
+import type { Post } from '@/api/datasource/types'
 import { Icons } from '@/app/svg-symbols'
 import Link from 'next/link'
 

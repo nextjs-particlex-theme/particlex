@@ -1,6 +1,6 @@
 import './globals.css'
 import { PreloadResources } from './preload-resources'
-import { Metadata } from 'next'
+import type { Metadata } from 'next'
 import datasource from '@/api/datasource'
 import React from 'react'
 import SvgSymbols from '@/app/svg-symbols'

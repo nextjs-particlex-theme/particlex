@@ -1,5 +1,6 @@
 import Hexo from 'hexo'
-import { BlogDataSource, Post, Resource, StaticResource } from '@/api/datasource/types'
+import type { BlogDataSource, Resource } from '@/api/datasource/types'
+import { Post, StaticResource } from '@/api/datasource/types'
 import reactParse, { Element, Text } from 'html-react-parser'
 import React from 'react'
 import PartialCodeBlock from '@/components/PartialCodeBlock'

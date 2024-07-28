@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import type React from 'react'
 
 interface FooterPageProps {
   totalPages: number

@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react'
-import { TocItem } from '@/api/datasource/types'
+import type { TocItem } from '@/api/datasource/types'
 import Link from 'next/link'
 import('./toc.scss')
 
