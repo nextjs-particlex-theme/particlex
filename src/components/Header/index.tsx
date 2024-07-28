@@ -15,10 +15,13 @@ interface HeaderProps {
   title: string
 }
 
-
+/**
+ * 头部组件
+ */
 const Header:React.FC<HeaderProps> = props => {
-  const [headerClass, setHeaderClass] = useState(styles.headerVisible)
+  const [headerClass, setHeaderClass] = useState(styles.headerNormalVisible)
   const lastScrollTop = useRef(0)
+  const [headerVisible, setHeaderVisible] = useState(true)
 
   useEffect(() => {
     const wheelListener = () => {
@@ -33,10 +36,11 @@ const Header:React.FC<HeaderProps> = props => {
         if (document.documentElement.scrollTop <= window.innerHeight && props.autoTransparentOnTop) {
           setHeaderClass(styles.headerTransparentVisible)
         } else {
-          setHeaderClass(styles.headerVisible)
+          setHeaderClass(styles.headerNormalVisible)
         }
+        setHeaderVisible(true)
       } else {
-        setHeaderClass(styles.headerHide)
+        setHeaderVisible(false)
       }
     }
     addEventListener('scroll', wheelListener)
@@ -49,12 +53,12 @@ const Header:React.FC<HeaderProps> = props => {
     if (props.autoTransparentOnTop) {
       setHeaderClass(document.documentElement.scrollTop <= window.innerHeight ? styles.headerTransparentVisible : styles.headerVisible)
     } else {
-      setHeaderClass(styles.headerVisible)
+      setHeaderClass(styles.headerNormalVisible)
     }
   }, [props.autoTransparentOnTop])
 
   return (
-    <div className={`font-bold text-sm pl-16 text-zinc-600 flex-row flex ${styles.header} ${headerClass}`}>
+    <div className={`font-bold text-sm pl-16 text-zinc-600 flex-row flex ${styles.header} ${headerClass}`} style={headerVisible ? undefined : { height: 0 }}>
       <Link href="/" className="pl-10">
         { props.title }
       </Link>

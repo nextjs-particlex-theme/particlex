@@ -8,15 +8,13 @@
   align-items: center;
   z-index: var(--z-index-top);
 }
+
 .headerTransparentVisible {
   background-color: #00000020;
   color: var(--color-white);
   height: 3.3rem;
 }
-.headerVisible {
+.headerNormalVisible {
   background-color: #92cafa;
   height: 3.3rem;
-}
-.headerHide {
-  height: 0;
 }
