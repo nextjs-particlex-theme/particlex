@@ -74,15 +74,6 @@ async function queryAllPosts() {
   const returnVal: Post[] = []
 
   data.forEach(v => {
-    const PREFIX = '_posts'
-    let source = v.source as string
-    if (source.startsWith(PREFIX)) {
-      source = source.substring(PREFIX.length)
-      const SUFFIX = '.md'
-      if (source.endsWith(SUFFIX)) {
-        source = source.substring(0, source.length - SUFFIX.length)
-      }
-    }
     returnVal.push(hexoPostToTypedPost(v))
   })
   return returnVal
@@ -93,12 +84,23 @@ async function queryAllPosts() {
  */
 function hexoPostToTypedPost(v: Document<any>): Post {
   let source = v.source as string
-  if (source.endsWith('.md')) {
-    source = source.substring(0, source.length - 3)
+  switch (source) {
+  case 'categories/index.md': 
+    source = 'categories'
+    break
+  case 'about/index.md':
+    source = 'about'
+    break
+  default:
+    if (source.endsWith('.md')) {
+      source = source.substring(0, source.length - 3)
+    }
+    if (source.startsWith('_post')) {
+      source = source.substring('_post/*'.length)
+    }
+    break
   }
-  if (source.startsWith('_post')) {
-    source = source.substring('_post/*'.length)
-  }
+
   return new Post({
     id: v._id ?? `${Date.now()}${Math.floor(Math.random() * 10)}`,
     title: v.title,

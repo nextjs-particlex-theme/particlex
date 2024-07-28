@@ -132,6 +132,10 @@ const TableOfContent:React.FC<TableOfContentProps> = props => {
     }, 100)
   }
 
+  if (expandedTocItems.length === 0) {
+    return null
+  }
+
   return (
     <div className="toc-out-container" style={{ width: containerWidth }}>
       <div className="toc-container">
