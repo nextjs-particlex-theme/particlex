@@ -33,10 +33,7 @@ const RootImageHeader:React.FC<RootImageHeaderProps> = props => {
       if (lockOffset.current) {
         return
       }
-      // 当滑动距离 `x` 为 0.8 * window.innerHeight 时，此时 y(offset) 应该为最大值
-      // 斜率为 maxOffset / (1.4 * window.innerHeight)
-      const k = MAX_OFFSET / (0.8 * window.innerHeight)
-      setOffset(Math.min(MAX_OFFSET, k * document.documentElement.scrollTop))
+      setOffset(Math.min(MAX_OFFSET, document.documentElement.scrollTop / 5))
     }
     window.addEventListener('scroll', onScroll)
     return () => {
