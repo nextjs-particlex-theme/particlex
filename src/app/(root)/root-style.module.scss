@@ -139,3 +139,27 @@ $postContainerMargin: 32px;
 .postContainer {
   margin: $postContainerMargin;
 }
+
+.paginationItem {
+  $width: 2.5rem;
+  display: inline-block;
+  width: $width;
+  height: $width;
+  text-align: center;
+  line-height: $width;
+  margin: 0 0.43rem;
+  transition: all 0.4s;
+
+}
+
+.paginationSelectable {
+  border-radius: 5px;
+  &:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+  }
+}
+
+.paginationSelected {
+  color: var(--color-primary);
+}

@@ -11,7 +11,7 @@ export async function generateStaticParams() {
   const size = Math.ceil(await datasource.pagePostsSize() / config.indexPageSize)
 
   const result: Params[] = []
-  for (let i = 2; i <= size; i++) {
+  for (let i = 1; i <= size; i++) {
     result.push({
       page: i.toString(10),
     })
@@ -22,6 +22,6 @@ export async function generateStaticParams() {
 
 export default async function HomePage(props: {params: Params}) {
   return (
-    <HomeBase currentPage={Number.parseInt(props.params.page)}/>
+    <HomeBase currentPage={Number.parseInt(props.params.page) - 1}/>
   )
 }
