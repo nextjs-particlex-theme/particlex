@@ -87,8 +87,16 @@
     padding-left: 40px
   }
 
-  .code,pre {
+  code,pre {
     font-family: Fira Code,Noto Sans SC,monospace
   }
+  code {
+    background: rgba(189,220,247,.42);
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 2.5;
+    padding: 4px 8px
+  }
+
 }
 

@@ -7,7 +7,7 @@ import PartialCodeBlock from '@/components/PartialCodeBlock'
 import hljs from 'highlight.js'
 import type Document from 'warehouse/dist/document'
 import path from 'node:path'
-import { generateShallowToc } from '@/api/datasource/util'
+import { generateShallowToc, purifyCategoryData, purifyTagData } from '@/api/datasource/util'
 
 declare global {
   // eslint-disable-next-line no-unused-vars
@@ -85,9 +85,6 @@ async function queryAllPosts() {
 function hexoPostToTypedPost(v: Document<any>): Post {
   let source = v.source as string
   switch (source) {
-  case 'categories/index.md': 
-    source = 'categories'
-    break
   case 'about/index.md':
     source = 'about'
     break
@@ -101,14 +98,16 @@ function hexoPostToTypedPost(v: Document<any>): Post {
     break
   }
 
+
+
   return new Post({
     id: v._id ?? `${Date.now()}${Math.floor(Math.random() * 10)}`,
     title: v.title,
     content: highlight(v.content),
-    date: v.date,
+    date: v.date.valueOf(),
     slug: v.slug,
-    categories: v.categories ? v.categories.data : [],
-    tags: v.tags ? v.tags.data : [],
+    categories: v.categories && v.categories.data ? v.categories.data.map(purifyCategoryData) : [],
+    tags: v.tags && v.tags.data ? v.tags.data.map(purifyTagData) : [],
     source: source,
     toc: generateShallowToc(v.content, nodes => {
       const t = nodes.item(1) as any

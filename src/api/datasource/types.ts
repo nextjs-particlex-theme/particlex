@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { deepCopy } from '@/lib/ObjectUtils'
 
 export type Tag = {
 
@@ -50,6 +51,15 @@ export type TocItem = {
   child: TocItem[]
 }
 
+/**
+ * 构造器参数. 注意: <b>任何对象，都不应该直接使用数据源提供的对象，以免代入多余属性</b>
+ * <p>
+ * 考虑使用下面的方法来过滤数据源对象多余的属性：
+ * <ul>
+ *   <li>{@link purifyCategoryData}</li>
+ *   <li>{@link purifyTagData}</li>
+ * </ul>
+ */
 type PostConstructor = {
   id: string | number
   title: string
@@ -86,6 +96,19 @@ export class StaticResource implements Resource {
     return this.accessPath
   }
 
+}
+
+/**
+ * Client component available post object.
+ */
+export type ClientSafePost = {
+  id: string | number
+  title: string
+  date: number
+  source: string
+  categories: Category[]
+  tags: Tag[]
+  formattedTime: string
 }
 
 export class Post implements Resource {
@@ -147,6 +170,22 @@ export class Post implements Resource {
   getAccessPath() {
     return this.source
   }
+
+  /**
+   * 转换成客户端组件可用的对象.
+   */
+  toClientSafePost(): ClientSafePost {
+    return {
+      title: this.title,
+      date: this.date,
+      categories: deepCopy(this.categories),
+      tags: deepCopy(this.tags),
+      source: this.source,
+      id: this.id,
+      formattedTime: this.formattedTime
+    }
+  }
+
 }
 
 export interface BlogDataSource {

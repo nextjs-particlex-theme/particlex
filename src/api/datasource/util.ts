@@ -1,4 +1,4 @@
-import type { TocItem } from '@/api/datasource/types'
+import type { Category, Tag, TocItem } from '@/api/datasource/types'
 import { JSDOM } from 'jsdom'
 
 const LEVEL_MAPPING: Record<string, number> = {
@@ -60,4 +60,24 @@ export function generateShallowToc(html?: string, caster?: TitleCaster): TocItem
     // FIXME 如何处理? 父节点不存在，例如 h1 里面 套了个 h3.
   })
   return parentStack[0].child
+}
+
+/**
+ * 取出 tag 需要的属性
+ */
+export function purifyTagData(tag: Tag): Tag {
+  // TODO.
+  return {
+    ...tag
+  }
+}
+
+/**
+ * 取出 category 需要的属性
+ */
+export const purifyCategoryData = (category: Category): Category => {
+  return {
+    name: category.name,
+    path: category.path
+  }
 }

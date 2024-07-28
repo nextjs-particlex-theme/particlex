@@ -1,17 +1,18 @@
 import React from 'react'
-import type { Post } from '@/api/datasource/types'
+import type { ClientSafePost, Post } from '@/api/datasource/types'
 import { Icons } from '@/app/svg-symbols'
 import Link from 'next/link'
 
 interface PostMetadataProps {
-  post: Readonly<Post>
+  post: Readonly<Post | ClientSafePost>
   className?: string
+  hideDate?: boolean
 }
 
 /**
  * 博客元数据。用于展示 tag 等
  */
-const PostMetadata: React.FC<PostMetadataProps> = ({ post, className }) => {
+const PostMetadata: React.FC<PostMetadataProps> = ({ hideDate, post, className }) => {
   return (
     <div className={`flex [&>div]:mr-6 text-subtext ${className}`}>
       {
@@ -28,12 +29,15 @@ const PostMetadata: React.FC<PostMetadataProps> = ({ post, className }) => {
           )
           : null
       }
-      <div className="flex">
-        <svg width={16} height={16}>
-          <use xlinkHref={Icons.CALENDAR}/>
-        </svg>
-        <span className="ml-2">{post.formattedTime}</span>
-      </div>
+      { hideDate ? 
+        null :
+        <div className="flex">
+          <svg width={16} height={16}>
+            <use xlinkHref={Icons.CALENDAR}/>
+          </svg>
+          <span className="ml-2">{post.formattedTime}</span>
+        </div>
+      }
     </div>
   )
 }
