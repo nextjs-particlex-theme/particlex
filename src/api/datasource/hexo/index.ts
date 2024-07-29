@@ -23,7 +23,7 @@ const getHexoInstance = async (): Promise<Hexo> => {
     return global.__hexo__
   }
   if (!fs.statSync(process.env.HEXO_PATH).isDirectory()) {
-    throw new Error('Invalid hexo path!')
+    throw new Error('Invalid hexo path: ' + path.resolve(process.env.HEXO_PATH))
   }
   const hexo = new Hexo(process.env.HEXO_PATH, {
     silent: true
@@ -35,7 +35,7 @@ const getHexoInstance = async (): Promise<Hexo> => {
 
   const homePost = await hexo.database.model('Post').find({}).sort('-date').toArray()
   if (homePost.length === 0) {
-    throw new Error('Couldn\'t find any post in your source/_posts directory! Please check your hexo path or create at least one post.')
+    throw new Error('Couldn\'t find any post in your source/_posts directory! Please check your hexo path or create at least one post. Hexo path: ' + path.resolve(process.env.HEXO_PATH))
   }
 
   global.__hexo__ = hexo
