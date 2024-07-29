@@ -8,6 +8,7 @@ import hljs from 'highlight.js'
 import type Document from 'warehouse/dist/document'
 import path from 'node:path'
 import { generateShallowToc, purifyCategoryData, purifyTagData } from '@/api/datasource/util'
+import * as fs from 'node:fs'
 
 declare global {
   // eslint-disable-next-line no-unused-vars
@@ -21,6 +22,9 @@ const getHexoInstance = async (): Promise<Hexo> => {
   if (global.__hexo__) {
     return global.__hexo__
   }
+  if (!fs.statSync(process.env.HEXO_PATH).isDirectory()) {
+    throw new Error('Invalid hexo path!')
+  }
   const hexo = new Hexo(process.env.HEXO_PATH, {
     silent: true
   })
@@ -28,6 +32,11 @@ const getHexoInstance = async (): Promise<Hexo> => {
   await hexo.init()
 
   await hexo.load()
+
+  const homePost = await hexo.database.model('Post').find({}).sort('-date').toArray()
+  if (homePost.length === 0) {
+    throw new Error('Couldn\'t find any post in your source/_posts directory! Please check your hexo path or create at least one post.')
+  }
 
   global.__hexo__ = hexo
   return hexo
