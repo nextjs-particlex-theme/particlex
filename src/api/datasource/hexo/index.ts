@@ -133,13 +133,14 @@ class HexoDataSource implements BlogDataSource {
 
   async getConfig() {
     const { config } = await getHexoInstance()
+    const themeConfig = config.theme_config ?? {}
     return {
       title: config.title,
       author: config.author,
       description: config.description,
       subtitle: config.subtitle,
-      indexPageSize: config.theme_config.indexPageSize ?? 5,
-      background: config.theme_config.background ?? [],
+      indexPageSize: themeConfig.indexPageSize ?? 5,
+      background: themeConfig.background ?? [],
       avatar: config.avatar,
       homePage: config.authorHome ?? '#',
     }
