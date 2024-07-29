@@ -19,13 +19,23 @@ function base64ToUint8Array(base64String: string) {
 }
 
 
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<{ path: string[] }[]> {
   const resource = await datasource.getAllStaticResource()
 
-  return Object.values(resource).map(v => ({
+  const r = Object.values(resource).map(v => ({
     // 删除 image 开头
     path: v.getAccessPath().split('/').splice(1),
   }))
+  if (r.length > 0) {
+    return r
+  }
+  // Build will fail if return an empty array.
+  // https://github.com/vercel/next.js/issues/61213
+  return [
+    {
+      path: ['fallback']
+    }
+  ]
 }
 
 interface ResourceRouteParam {
@@ -38,8 +48,12 @@ export async function GET(_: unknown, { params }: ResourceRouteParam) {
   const resource = await datasource.getAllStaticResource()
   const res = resource[params.path.join('/')] as StaticResource
 
-  if (!res.filepath) {
-    throw new Error('Unexpected error, could not find resource with path ' + params.path.join('/'))
+  if (!res) {
+    return new Response('If you see this page, it means you don\'t have any files in your source/images folder.' +
+      'Because of the limitation of next.js, we have to create a fallback page. \n\n' +
+      'But if you have files in source/images and this page still generated, it maybe the bug of the theme.', {
+      status: 200
+    })
   }
   return new Response(base64ToUint8Array(fs.readFileSync(res.filepath, { encoding: 'base64' })), {
     headers: {
