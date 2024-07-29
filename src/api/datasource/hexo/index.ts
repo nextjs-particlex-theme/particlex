@@ -21,7 +21,7 @@ const getHexoInstance = async (): Promise<Hexo> => {
   if (global.__hexo__) {
     return global.__hexo__
   }
-  const hexo = new Hexo(process.env.HEXO_ABSOLUTE_PATH, {
+  const hexo = new Hexo(process.env.HEXO_PATH, {
     silent: true
   })
 
@@ -161,20 +161,20 @@ class HexoDataSource implements BlogDataSource {
   async pagePostsSize() {
     return (await queryAllPosts()).length
   }
-  async getAllPost(): Promise<Record<string, Post>> {
+  async getAllPost(): Promise<Map<string, Post>> {
     const hexo = await getHexoInstance()
 
-    const r: Record<string, Post> = {}
+    const r = new Map<string, Post>()
     hexo.model('Page').find({}).toArray().map(hexoPostToTypedPost).forEach(v => {
-      r[v.source] = v
+      r.set(v.source, v)
     })
     const homePost = await queryAllPosts()
     homePost.forEach(v => {
-      r[v.source] = v
+      r.set(v.source, v)
     })
     return r
   }
-  async getAllStaticResource(): Promise<Record<string, StaticResource>> {
+  async getAllStaticResource(): Promise<Map<string, StaticResource>> {
     const hexo = await getHexoInstance()
     const resources = hexo.model('Asset').find({}).toArray().filter(v => {
       if (v._id && typeof v._id === 'string') {
@@ -182,15 +182,15 @@ class HexoDataSource implements BlogDataSource {
       }
       return false
     }).map(hexoAssertToStaticResource)
-    const r: Record<string, StaticResource> = {}
+    const r = new Map<string, StaticResource>()
     
     const remove = 'image/*'
     resources.forEach(v => {
-      r[v.accessPath.substring(remove.length)] = v
+      r.set(v.accessPath.substring(remove.length), v)
     })
     return r
   }
-  async getAllResource(): Promise<Record<string, Resource>> {
+  async getAllResource(): Promise<Map<string, Resource>> {
     return {
       ...(await this.getAllPost()),
       ...(await this.getAllStaticResource())

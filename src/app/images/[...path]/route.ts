@@ -1,7 +1,6 @@
 import datasource from '@/api/datasource'
 import * as fs from 'node:fs'
 import mime from 'mime'
-import type { StaticResource } from '@/api/datasource/types'
 
 function base64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4)
@@ -18,14 +17,19 @@ function base64ToUint8Array(base64String: string) {
   return outputArray
 }
 
+type StaticParams = { path: string[] }[]
 
-export async function generateStaticParams(): Promise<{ path: string[] }[]> {
+export async function generateStaticParams(): Promise<StaticParams> {
   const resource = await datasource.getAllStaticResource()
 
-  const r = Object.values(resource).map(v => ({
-    // 删除 image 开头
-    path: v.getAccessPath().split('/').splice(1),
-  }))
+  const r: StaticParams = []
+  resource.forEach(v => {
+    r.push({
+      // 删除 image 开头
+      path: v.getAccessPath().split('/').splice(1),
+    })
+  })
+
   if (r.length > 0) {
     return r
   }
@@ -46,7 +50,7 @@ interface ResourceRouteParam {
 
 export async function GET(_: unknown, { params }: ResourceRouteParam) {
   const resource = await datasource.getAllStaticResource()
-  const res = resource[params.path.join('/')] as StaticResource
+  const res = resource.get(params.path.join('/'))
 
   if (!res) {
     return new Response('If you see this page, it means you don\'t have any files in your source/images folder.' +

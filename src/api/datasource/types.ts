@@ -210,7 +210,7 @@ export interface BlogDataSource {
    *   <li>v: 静态资源</li>
    * </ul>
    */
-  getAllPost(): Promise<Record<string, Post>>
+  getAllPost(): Promise<Map<string, Post>>
   /**
    * 获取所有静态资源.
    * @return {} 静态资源
@@ -219,7 +219,7 @@ export interface BlogDataSource {
    *   <li>v: 静态资源</li>
    * </ul>
    */
-  getAllStaticResource(): Promise<Record<string, StaticResource>>
+  getAllStaticResource(): Promise<Map<string, StaticResource>>
   /**
    * 获取所有资源.
    * @return {} 资源
@@ -228,5 +228,5 @@ export interface BlogDataSource {
    *   <li>v: 资源</li>
    * </ul>
    */
-  getAllResource(): Promise<Record<string, Resource>>
+  getAllResource(): Promise<Map<string, Resource>>
 }

@@ -2,22 +2,40 @@ import datasource from '@/api/datasource'
 import React from 'react'
 import Header from '@/components/Header'
 import type { Metadata } from 'next'
-import type { Post } from '@/api/datasource/types'
 import postStyle from '@/components/post.module.scss'
 import PostMetadata from '@/components/PostMetadata'
 import TableOfContent, { MAIN_CONTENT_ID } from '@/components/TableOfContent'
+import Link from 'next/link'
 
 export async function generateStaticParams(): Promise<Param[]> {
   const posts = await datasource.getAllPost()
-  return Object.values(posts).map(v => ({
-    path: v.getAccessPath().split('/')
-  }))
+  const r: Param[] = []
+
+  posts.forEach(v => {
+    r.push({
+      path: v.getAccessPath().split('/')
+    })
+  })
+
+  if (r.length > 0) {
+    return r
+  }
+  return [
+    {
+      path: ['post', 'fallback']
+    }
+  ]
 }
 
 export async function generateMetadata({ params }: {params: Param}): Promise<Metadata> {
   const config = await datasource.getAllPost()
-  const post = config[params.path.join('/')] as Post
+  const post = config.get(params.path.join('/'))
 
+  if (!post) {
+    return {
+      title: 'Fallback Page'
+    }
+  }
   return {
     title: post.title
   }
@@ -28,7 +46,16 @@ interface Param {
 }
 
 const PostPage: React.FC<{params: Param}> = async ({ params }) => {
-  const post = (await datasource.getAllPost())[params.path.join('/')]
+  const post = (await datasource.getAllPost()).get(params.path.join('/'))
+  if (!post) {
+    return (
+      <div>
+        If you see this page, it means you do not have any files in your source/images folder.
+        Because of the <Link href="https://github.com/vercel/next.js/issues/61213">limitation of next.js</Link>, we have to create a fallback page.
+        But if you have files in source/images and this page still generated, it maybe the bug of the theme.
+      </div>
+    )
+  }
   const meta = await datasource.getConfig()
   return (
     <div>

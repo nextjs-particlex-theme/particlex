@@ -6,7 +6,7 @@
     "dev": "NODE_OPTIONS='--trace-deprecation' next dev",
     "build": "eslint ./src --fix && next build",
     "start": "next start",
-    "lint": "eslint ./src --fix",
+    "lint": "tsc --noEmit && eslint ./src --fix",
     "test": "jest",
     "analyze": "cross-env ANALYZE=true npm run build"
   },
