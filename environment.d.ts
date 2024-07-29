@@ -3,7 +3,7 @@ declare namespace NodeJS {
     /**
      * hexo 博客的路径
      */
-    readonly HEXO_ABSOLUTE_PATH: string
+    readonly HEXO_PATH: string
     /**
      * CDN 中公共路径的 url
      */

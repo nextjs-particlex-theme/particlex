@@ -124,7 +124,7 @@ function hexoPostToTypedPost(v: Document<any>): Post {
  * 将 hexo 静态资源转换成有完整类型声明的 StaticResource
  */
 function hexoAssertToStaticResource(v: Document<any>): StaticResource {
-  return new StaticResource(path.resolve(process.env.HEXO_ABSOLUTE_PATH, <string>v._id), v.path)
+  return new StaticResource(path.resolve(process.env.HEXO_PATH, <string>v._id), v.path)
 }
 
 class HexoDataSource implements BlogDataSource {

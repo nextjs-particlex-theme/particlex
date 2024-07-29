@@ -1,0 +1,46 @@
+name: 'nextjs-particlex-theme'
+description: 'A theme use next.js to generate SSG files for your blog.'
+inputs:
+  who-to-greet:  # id of input
+    description: 'Who to greet'
+    required: true
+    default: 'World'
+outputs:
+  random-number:
+    description: "Random number"
+    value: ${{ steps.random-number-generator.outputs.random-number }}
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout Main Repository
+      uses: actions/checkout@v4
+      with:
+        repository: IceOfSummer/nextjs-particlex-theme@alpha
+        path: nextjs-particlex-theme
+
+    - name: Checkout Datasource Repository
+      uses: actions/checkout@v4
+      with:
+        path: datasource
+
+    - name: Cache NPM dependencies
+      uses: actions/cache@v2
+      with:
+        path: nextjs-particlex-theme/node_modules
+        key: ${{ runner.OS }}-npm-cache
+        restore-keys: |
+          ${{ runner.OS }}-npm-cache
+
+    - name: Install Dependencies
+      run: 'cd nextjs-particlex-theme && npm install'
+
+    - name: Build
+      env:
+        HEXO_PATH: '../datasource'
+      run: 'cd nextjs-particlex-theme && npm run build'
+
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: nextjs-particlex-theme/out
