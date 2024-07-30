@@ -11,8 +11,6 @@ interface RootImageHeaderProps {
 
 
 const MAX_OFFSET = 84
-// 如果要修改该值，需要同步修改 './root-style.module.scss' 的 `$postContainerMargin` 变量
-const POST_CONTAINER_MARGIN = 32
 
 const RootImageHeader:React.FC<RootImageHeaderProps> = props => {
   const [image, setImage] = useState<string>()
@@ -45,7 +43,7 @@ const RootImageHeader:React.FC<RootImageHeaderProps> = props => {
   const navToPosts = () => {
     // lockOffset.current = true
     window.scrollTo({
-      top: window.innerHeight + MAX_OFFSET - POST_CONTAINER_MARGIN,
+      top: window.innerHeight ,
       behavior: 'smooth'
     })
     setTimeout(() => {
