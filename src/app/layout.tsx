@@ -7,7 +7,7 @@ import SvgSymbols from '@/app/svg-symbols'
 import Footer from '@/components/Footer'
 if (!process.env.NEXT_PUBLIC_CND_PUBLIC_PATH_BASE_URL) {
   // @ts-ignore
-  import('../common/font/fonts.min.css')
+  import('./fonts.min.css')
 }
 
 export async function generateMetadata(): Promise<Metadata> {
