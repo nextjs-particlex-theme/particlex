@@ -32,6 +32,10 @@ export type Config = {
    * 主页
    */
   homePage: string
+  /**
+   * 图标链接
+   */
+  favicon?: string
 }
 
 
@@ -63,7 +67,7 @@ export type TocItem = {
 type PostConstructor = {
   id: string | number
   title: string
-  date: number
+  date?: number
   content: ReactNode
   slug: string
   source: string
@@ -104,7 +108,7 @@ export class StaticResource implements Resource {
 export type ClientSafePost = {
   id: string | number
   title: string
-  date: number
+  date?: number
   source: string
   categories: Category[]
   tags: Tag[]
@@ -120,7 +124,7 @@ export class Post implements Resource {
   /**
    * 创建时间
    */
-  public date: number
+  public date?: number
   /**
    * html 编码后的内容. SSR yyds.
    */
@@ -159,6 +163,9 @@ export class Post implements Resource {
   }
 
   get formattedTime(): string {
+    if (!this.date) {
+      return ''
+    }
     const date = new Date(this.date)
     let month: string | number = date.getMonth() + 1
     month = month < 10 ? '0' + month : month
@@ -192,7 +199,7 @@ export interface BlogDataSource {
   /**
    * 获取配置
    */
-  getConfig: () => Promise<Config>
+  getConfig(): Promise<Config>
   /**
    * 分页获取用于首页展示的博客文章.
    * @param page 从0开始的页码
@@ -202,7 +209,7 @@ export interface BlogDataSource {
   /**
    * {@link BlogDataSource#pageHomePosts} 的总博客文章数量
    */
-  pagePostsSize: () => Promise<number>
+  pagePostsSize(): Promise<number>
   /**
    * 获取所有文章，包括首页的文章
    * <ul>
@@ -220,13 +227,5 @@ export interface BlogDataSource {
    * </ul>
    */
   getAllStaticResource(): Promise<Map<string, StaticResource>>
-  /**
-   * 获取所有资源.
-   * @return {} 资源
-   * <ul>
-   *   <li>k: 访问路径</li>
-   *   <li>v: 资源</li>
-   * </ul>
-   */
-  getAllResource(): Promise<Map<string, Resource>>
 }
+

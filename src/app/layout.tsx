@@ -13,11 +13,15 @@ if (!process.env.NEXT_PUBLIC_CND_PUBLIC_PATH_BASE_URL) {
 export async function generateMetadata(): Promise<Metadata> {
   const config = await datasource.getConfig()
 
-  return {
+  const metadata: Metadata = {
     title: config.title,
     description: config.description,
-    icons: '/images/favicon.ico',
   }
+  if (config.favicon) {
+    metadata.icons = config.favicon
+  }
+
+  return metadata
 }
 
 export default function RootLayout({

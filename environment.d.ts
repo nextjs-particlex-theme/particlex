@@ -1,9 +1,9 @@
 declare namespace NodeJS {
   export interface ProcessEnv {
     /**
-     * hexo 博客的路径
+     * 博客的路径, 建议使用绝对路径.
      */
-    readonly HEXO_PATH: string
+    readonly BLOG_PATH: string
     /**
      * CDN 中公共路径的 url
      */

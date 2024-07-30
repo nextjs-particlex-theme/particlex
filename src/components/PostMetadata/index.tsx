@@ -29,7 +29,7 @@ const PostMetadata: React.FC<PostMetadataProps> = ({ hideDate, post, className }
           )
           : null
       }
-      { hideDate ? 
+      { hideDate || !post.formattedTime ?
         null :
         <div className="flex">
           <svg width={16} height={16}>
