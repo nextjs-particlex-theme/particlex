@@ -2,7 +2,13 @@ import type { BlogDataSource, Config } from '@/api/datasource/types'
 import { StaticResource } from '@/api/datasource/types'
 import { Post } from '@/api/datasource/types'
 import path from 'node:path'
-import { generateShallowToc, highlight, markdownToHtml, resourcesToMap } from '@/api/datasource/util'
+import {
+  generateShallowToc,
+  highlight,
+  markdownToHtml,
+  resourcesToMap,
+  utilMarkdownGenerateCaster
+} from '@/api/datasource/util'
 import readline from 'node:readline'
 import fs from 'node:fs'
 import yaml from 'yaml'
@@ -39,7 +45,7 @@ type AbstractBlogDatasourceConfig = {
 }
 
 type PostContent = {
-  metadata: any
+  metadata?: any
   content: string
 }
 
@@ -72,9 +78,13 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
    */
   abstract resolveStaticResourceWebPath(path: string): string
 
-  pageHomePosts(page: number = 0, size: number = 5): Promise<Post[]> {
+  async pageHomePosts(page: number = 0, size: number = 5): Promise<Post[]> {
     const files = globSync(this.config.homePostGlob, { cwd: process.env.BLOG_PATH })
-    return this.parseMarkdownFiles(files, page * size, size)
+    return (await this.parseMarkdownFiles(files, page * size, size)).sort((a, b) => {
+      const v1 = a.date ?? 0
+      const v2 = b.date ?? 0
+      return v2 - v1
+    })
   }
 
   pagePostsSize(): Promise<number> {
@@ -124,8 +134,12 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
       })
 
       rl.on('close', () => {
+        const metadata = yaml.parse(metadataStrArr.join('\n'))
+        if (!metadata) {
+          console.log()
+        }
         resolve({
-          metadata: yaml.parse(metadataStrArr.join('\n')),
+          metadata,
           content: markdownToHtml(content.join('\n'))
         })
       })
@@ -143,20 +157,16 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
       const { metadata, content } = await this.parseHexoPostContent(path.resolve(process.env.BLOG_PATH, file))
       let source = this.resolvePostWebPath(file)
 
+      if (!metadata) {
+        continue
+      }
       r.push(new Post({
         title: metadata.title,
         date: metadata.date ? new Date(metadata.date).valueOf() : undefined,
         source,
         id: source,
         slug: '',
-        toc: generateShallowToc(content, nodes => {
-          const t = nodes.item(1) as any
-          const a = nodes.item(0) as any
-          return {
-            title: t.data,
-            anchor: a.getAttribute('href') ?? t.data
-          }
-        }),
+        toc: generateShallowToc(content, utilMarkdownGenerateCaster),
         content: highlight(content),
         tags: [],
         categories: [],

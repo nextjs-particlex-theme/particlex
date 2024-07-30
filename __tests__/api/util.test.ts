@@ -104,26 +104,3 @@ test('generateShallowToc_nestedHeading_ignoreNestedHeading', () => {
   ]
   expect(content).toStrictEqual(expected)
 })
-
-test('generateShallowToc_useCustomCaster_parseSuccess', () => {
-  const content = generateShallowToc(`
-    <h1 id="link"><a href="#link" class="headerlink" title="hello"></a>hello</h1>
-  `, nodes => {
-    const t = nodes.item(1) as any
-    const l = nodes.item(0) as HTMLAreaElement
-    expect(t).toBeTruthy()
-    return {
-      title: t.data,
-      anchor: l.getAttribute('href')!
-    }
-  })
-  const expected: TocItem[] = [
-    {
-      title: 'hello',
-      anchor: '#link',
-      child: []
-    }
-  ]
-
-  expect(content).toStrictEqual(expected)
-})

@@ -17,7 +17,17 @@ const LEVEL_MAPPING: Record<string, number> = {
 
 
 // eslint-disable-next-line no-undef
-type TitleCaster = (nodes: NodeListOf<ChildNode>) => Omit<TocItem, 'child'>
+type TitleCaster = (heading: HTMLHeadingElement) => Omit<TocItem, 'child'>
+
+/**
+ * 如果使用 {@link markdownToHtml} 生成 html 内容，则可使用该方法来生成 TOC
+ */
+export const utilMarkdownGenerateCaster: TitleCaster = (heading) => {
+  return {
+    title: heading.innerHTML,
+    anchor: '#' + heading.getAttribute('id')
+  }
+}
 
 /**
  * 根据 html 自动生成 Toc，要求必须平铺 h1 h2 等标签。
@@ -46,7 +56,7 @@ export function generateShallowToc(html?: string, caster?: TitleCaster): TocItem
       }
       let item: TocItem
       if (caster) {
-        const data = caster(heading.childNodes)
+        const data = caster(heading)
         item = {
           ...data,
           child: []
@@ -91,7 +101,9 @@ export const purifyCategoryData = (category: Category): Category => {
  * markdown 转 html
  */
 export const markdownToHtml = (markdownContent: string): string => {
-  const sd = new showdown.Converter()
+  const sd = new showdown.Converter({
+    prefixHeaderId: '_heading'
+  })
   return sd.makeHtml(markdownContent)
 }
 
