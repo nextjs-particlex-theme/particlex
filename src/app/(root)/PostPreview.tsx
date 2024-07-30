@@ -16,7 +16,7 @@ const PostPreview:React.FC<PostPreviewProps> = props => {
       className={`w-[56rem] bg-white rounded-3xl p-12 shadow-lg box-border max-h-[1024px] overflow-hidden relative ${styles.postContainer}`}>
       <div className="flex flex-col items-center mb-8">
         <div className="p-8 link-styled-container">
-          <Link href={post.source} className="text-2xl font-bold">{post.title}</Link>
+          <Link href={post.getAccessPath()} className="text-2xl font-bold">{post.title}</Link>
         </div>
         <PostMetadata post={post}/>
       </div>
@@ -24,7 +24,7 @@ const PostPreview:React.FC<PostPreviewProps> = props => {
         {post.content}
       </div>
       <div className={styles.postCover}>
-        <Link href={post.source}>
+        <Link href={post.getAccessPath()}>
           阅读全文
         </Link>
       </div>

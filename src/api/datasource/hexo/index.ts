@@ -15,12 +15,21 @@ class HexoDatasource extends AbstractMarkdownBlogDataSource {
     })
   }
 
-  resolvePostWebPath(path: string): string {
-    let source = path.substring(path.indexOf('source/_posts/') + 'source/_posts/'.length + 1)
-    return source.substring(0, source.length - 3)
+  resolvePostWebPath(filepath: string): string[] {
+    const sp = filepath.split(path.sep)
+    if (sp[sp.length - 1].endsWith('.md')) {
+      const t = sp[sp.length - 1]
+      sp[sp.length - 1] = t.substring(0, t.length - 3)
+    }
+    if (sp[1] === '_posts') {
+      return sp.slice(2)
+    } else {
+      return sp.slice(1)
+    }
   }
-  resolveStaticResourceWebPath(path: string): string {
-    return path.substring('source/*'.length)
+  resolveStaticResourceWebPath(filepath: string): string[] {
+    const sp = filepath.split(path.sep)
+    return sp.slice(1)
   }
 
   getConfig(): Promise<Config> {

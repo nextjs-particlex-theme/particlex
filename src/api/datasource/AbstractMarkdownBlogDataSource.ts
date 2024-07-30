@@ -1,12 +1,10 @@
 import type { BlogDataSource, Config } from '@/api/datasource/types'
-import { StaticResource } from '@/api/datasource/types'
-import { Post } from '@/api/datasource/types'
+import { Post, StaticResource } from '@/api/datasource/types'
 import path from 'node:path'
 import {
   generateShallowToc,
   highlight,
   markdownToHtml,
-  resourcesToMap,
   utilMarkdownGenerateCaster
 } from '@/api/datasource/util'
 import readline from 'node:readline'
@@ -53,13 +51,30 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
 
   protected readonly config: AbstractBlogDatasourceConfig
 
-  constructor(config: AbstractBlogDataSourceCons) {
+  private postCache: Map<string, Post> | undefined
+  
+  private resourceCache: Map<string, StaticResource> | undefined
+  
+  protected constructor(config: AbstractBlogDataSourceCons) {
     this.config = {
       homePostGlob: `${config.homePostDirectory}/**/*.md`,
       postGlob: `${config.postDirectory}/**/*.md`,
       resourceGlob: `${config.resourceDirectory}/**/*`
     }
+    this.getAllPost().then(r => {
+      const postCache = new Map<string, Post>()
+      for (let post of r) {
+        postCache.set(this.buildCacheKey(post.source), post)
+      }
+      this.postCache = postCache
+    })
+
   }
+  
+  protected buildCacheKey(path: string[]): string {
+    return path.join('-')
+  }
+  
 
   /**
    * 获取配置
@@ -68,15 +83,15 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
 
   /**
    * 获取博客的 web 访问路径.
-   * @param path 博客文件路径
+   * @param path 博客文件路径.
    */
-  abstract resolvePostWebPath(path: string): string
+  abstract resolvePostWebPath(path: string): string[]
 
   /**
    * 获取静态文件的 web 访问路径
-   * @param path 静态文件路径
+   * @param path 静态文件路径. 需要注意操作系统的分隔符.
    */
-  abstract resolveStaticResourceWebPath(path: string): string
+  abstract resolveStaticResourceWebPath(path: string): string[]
 
   async pageHomePosts(page: number = 0, size: number = 5): Promise<Post[]> {
     const files = globSync(this.config.homePostGlob, { cwd: process.env.BLOG_PATH })
@@ -91,19 +106,16 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
     return Promise.resolve(globSync(this.config.homePostGlob, { cwd: process.env.BLOG_PATH }).length)
   }
 
-  async getAllPost(): Promise<Map<string, Post>> {
+  async getAllPost(): Promise<Post[]> {
     const files = globSync(this.config.postGlob, { cwd: process.env.BLOG_PATH })
-    return resourcesToMap(await this.parseMarkdownFiles(files))
+    return await this.parseMarkdownFiles(files)
   }
 
-  getAllStaticResource(): Promise<Map<string, StaticResource>> {
+  getAllStaticResource(): Promise<StaticResource[]> {
     const files = globSync(this.config.resourceGlob, { cwd: process.env.BLOG_PATH })
-
     return Promise.resolve(
-      resourcesToMap(
-        files.map(v =>
-          new StaticResource(path.resolve(process.env.BLOG_PATH, v), this.resolveStaticResourceWebPath(v)))
-      )
+      files.map(v =>
+        new StaticResource(path.resolve(process.env.BLOG_PATH, v), this.resolveStaticResourceWebPath(v)))
     )
   }
 
@@ -164,7 +176,7 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
         title: metadata.title,
         date: metadata.date ? new Date(metadata.date).valueOf() : undefined,
         source,
-        id: source,
+        id: source.join('-'),
         slug: '',
         toc: generateShallowToc(content, utilMarkdownGenerateCaster),
         content: highlight(content),
@@ -173,5 +185,29 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
       }))
     }
     return r
+  }
+
+  async getPostByWebUrl(url: string[]): Promise<Post | undefined> {
+    if (!this.postCache) {
+      const r = await this.getAllPost()
+      const resourceCache = new Map<string, Post>()
+      for (let p of r) {
+        resourceCache.set(this.buildCacheKey(p.source), p)
+      }
+      this.postCache = resourceCache
+    }
+    return this.postCache.get(this.buildCacheKey(url))
+  }
+
+  async getStaticResourceByWebUrl(url: string[]): Promise<StaticResource | undefined> {
+    if (!this.resourceCache) {
+      const r = await this.getAllStaticResource()
+      const resourceCache = new Map<string, StaticResource>()
+      for (let staticResource of r) {
+        resourceCache.set(this.buildCacheKey(staticResource.accessPath), staticResource)
+      }
+      this.resourceCache = resourceCache
+    }
+    return this.resourceCache.get(this.buildCacheKey(url))
   }
 }

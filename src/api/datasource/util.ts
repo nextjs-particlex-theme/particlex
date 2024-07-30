@@ -102,7 +102,10 @@ export const purifyCategoryData = (category: Category): Category => {
  */
 export const markdownToHtml = (markdownContent: string): string => {
   const sd = new showdown.Converter({
-    prefixHeaderId: '_heading'
+    prefixHeaderId: '_heading',
+    strikethrough: true,
+    tables: true,
+    tasklists: true
   })
   return sd.makeHtml(markdownContent)
 }
@@ -152,16 +155,4 @@ export const highlight = (html: string): React.ReactNode => {
       }
     }
   })
-}
-
-/**
- * 将 post 数组转换为 Map.
- */
-export const resourcesToMap = <T extends Resource> (resources: T[]): Map<string, T> => {
-  const r = new Map<string, T>()
-
-  for (let res of resources) {
-    r.set(res.getAccessPath(), res)
-  }
-  return r
 }

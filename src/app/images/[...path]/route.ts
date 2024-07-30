@@ -21,14 +21,7 @@ type StaticParams = { path: string[] }[]
 
 export async function generateStaticParams(): Promise<StaticParams> {
   const resource = await datasource.getAllStaticResource()
-
-  const r: StaticParams = []
-  resource.forEach(v => {
-    r.push({
-      // 删除 image 开头
-      path: v.getAccessPath().split('/').splice(1),
-    })
-  })
+  const r: StaticParams = resource.map(v => ({ path: v.accessPath }))
 
   if (r.length > 0) {
     return r
@@ -49,8 +42,7 @@ interface ResourceRouteParam {
 }
 
 export async function GET(_: unknown, { params }: ResourceRouteParam) {
-  const resource = await datasource.getAllStaticResource()
-  const res = resource.get(params.path.join('/'))
+  const res = await datasource.getStaticResourceByWebUrl(params.path)
 
   if (!res) {
     return new Response('If you see this page, it means you don\'t have any files in your source/images folder.' +

@@ -41,7 +41,7 @@ export type Config = {
 
 export interface Resource {
   /**
-   * 获取访问路径，不会以 '/' 开头
+   * 获取访问路径，以 '/' 开头
    */
   getAccessPath: () => string
 }
@@ -70,7 +70,7 @@ type PostConstructor = {
   date?: number
   content: ReactNode
   slug: string
-  source: string
+  source: string[]
   categories: Category[]
   tags: Tag[]
   toc: TocItem[]
@@ -86,18 +86,18 @@ export class StaticResource implements Resource {
 
   /**
    * 相对<b>静态资源根目录</b>的访问路径.
-   * 例如资源在 url 中以 `/images/foo/bar.png` 访问，则这里的值为 `foo/bar.png`
+   * 例如资源在 url 中以 `/images/foo/bar.png` 访问，则这里的值为 `[foo, bar.png]`
    * @private
    */
-  accessPath: string
+  accessPath: string[]
 
-  constructor(filepath: string, accessPath: string) {
+  constructor(filepath: string, accessPath: string[]) {
     this.filepath = filepath
     this.accessPath = accessPath
   }
 
   getAccessPath() {
-    return this.accessPath
+    return '/' + this.accessPath.join('/')
   }
 
 }
@@ -109,6 +109,9 @@ export type ClientSafePost = {
   id: string | number
   title: string
   date?: number
+  /**
+   * 访问路径
+   */
   source: string
   categories: Category[]
   tags: Tag[]
@@ -136,7 +139,7 @@ export class Post implements Resource {
   /**
    * 相对于博客访问路径. 例如博客文件：`_posts/2024/02/xxx.md` 会被转换成 `/2024/02/xxx`
    */
-  public source: string
+  public source: string[]
   /**
    * categories
    */
@@ -175,7 +178,7 @@ export class Post implements Resource {
   }
 
   getAccessPath() {
-    return this.source
+    return '/' + this.source.join('/')
   }
 
   /**
@@ -187,7 +190,7 @@ export class Post implements Resource {
       date: this.date,
       categories: deepCopy(this.categories),
       tags: deepCopy(this.tags),
-      source: this.source,
+      source: this.getAccessPath(),
       id: this.id,
       formattedTime: this.formattedTime
     }
@@ -217,7 +220,7 @@ export interface BlogDataSource {
    *   <li>v: 静态资源</li>
    * </ul>
    */
-  getAllPost(): Promise<Map<string, Post>>
+  getAllPost(): Promise<Post[]>
   /**
    * 获取所有静态资源.
    * @return {} 静态资源
@@ -226,6 +229,17 @@ export interface BlogDataSource {
    *   <li>v: 静态资源</li>
    * </ul>
    */
-  getAllStaticResource(): Promise<Map<string, StaticResource>>
+  getAllStaticResource(): Promise<StaticResource[]>
+  /**
+   * 根据访问路径获取Post
+   * @param url url
+   */
+  getPostByWebUrl(url: string[]): Promise<Post | undefined>
+
+  /**
+   * 根据访问路径获取静态资源
+   * @param url url, 不需要 image 前缀
+   */
+  getStaticResourceByWebUrl(url: string[]): Promise<StaticResource | undefined>
 }
 

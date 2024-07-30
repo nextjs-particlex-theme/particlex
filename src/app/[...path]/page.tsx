@@ -9,13 +9,7 @@ import Link from 'next/link'
 
 export async function generateStaticParams(): Promise<Param[]> {
   const posts = await datasource.getAllPost()
-  const r: Param[] = []
-
-  posts.forEach(v => {
-    r.push({
-      path: v.getAccessPath().split('/')
-    })
-  })
+  const r: Param[] = posts.map(v => ({ path: v.source }))
 
   if (r.length > 0) {
     return r
@@ -28,8 +22,7 @@ export async function generateStaticParams(): Promise<Param[]> {
 }
 
 export async function generateMetadata({ params }: {params: Param}): Promise<Metadata> {
-  const config = await datasource.getAllPost()
-  const post = config.get(params.path.join('/'))
+  const post = await datasource.getPostByWebUrl(params.path)
 
   if (!post) {
     return {
@@ -46,7 +39,8 @@ interface Param {
 }
 
 const PostPage: React.FC<{params: Param}> = async ({ params }) => {
-  const post = (await datasource.getAllPost()).get(params.path.join('/'))
+  const post = await datasource.getPostByWebUrl(params.path)
+
   if (!post) {
     return (
       <div>
