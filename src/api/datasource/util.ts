@@ -105,7 +105,8 @@ export const markdownToHtml = (markdownContent: string): string => {
     prefixHeaderId: '_heading',
     strikethrough: true,
     tables: true,
-    tasklists: true
+    tasklists: true,
+    disableForced4SpacesIndentedSublists: true
   })
   return sd.makeHtml(markdownContent)
 }

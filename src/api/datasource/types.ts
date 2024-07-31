@@ -107,7 +107,7 @@ export class StaticResource implements Resource {
  */
 export type ClientSafePost = {
   id: string | number
-  title: string
+  title?: string
   date?: number
   /**
    * 访问路径
@@ -123,7 +123,7 @@ export class Post implements Resource {
   /**
    * 标题
    */
-  public title: string
+  public title?: string
   /**
    * 创建时间
    */

@@ -43,7 +43,7 @@ type AbstractBlogDatasourceConfig = {
 }
 
 type PostContent = {
-  metadata?: any
+  metadata: any
   content: string
 }
 
@@ -119,7 +119,7 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
     )
   }
 
-  private parseHexoPostContent(postPath: string): Promise<PostContent> {
+  private parsePostContent(postPath: string): Promise<PostContent> {
     return new Promise((resolve) => {
       const rl = readline.createInterface({
         input: fs.createReadStream(postPath),
@@ -133,12 +133,9 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
 
       rl.on('line', (line) => {
         if (metadataCollectStatus < 2) {
+          metadataStrArr.push(line)
           if (line.startsWith('---')) {
             metadataCollectStatus++
-          } else {
-            if (metadataCollectStatus === 1) {
-              metadataStrArr.push(line)
-            }
           }
         } else {
           content.push(line)
@@ -146,13 +143,18 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
       })
 
       rl.on('close', () => {
-        const metadata = yaml.parse(metadataStrArr.join('\n'))
-        if (!metadata) {
-          console.log()
+        let metadata: any
+        let html: string
+        if (metadataCollectStatus < 2) {
+          metadata = {}
+          html = markdownToHtml(metadataStrArr.join('\n'))
+        } else {
+          metadata = yaml.parse(metadataStrArr.slice(1, metadataStrArr.length - 1).join('\n'))
+          html = markdownToHtml(content.join('\n'))
         }
         resolve({
-          metadata,
-          content: markdownToHtml(content.join('\n'))
+          metadata: metadata ?? {},
+          content: html
         })
       })
     })
@@ -166,12 +168,9 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
 
     for (let i = Math.max(0, begin); i < len; i++) {
       const file = files[i]
-      const { metadata, content } = await this.parseHexoPostContent(path.resolve(process.env.BLOG_PATH, file))
+      const { metadata, content } = await this.parsePostContent(path.resolve(process.env.BLOG_PATH, file))
       let source = this.resolvePostWebPath(file)
 
-      if (!metadata) {
-        continue
-      }
       r.push(new Post({
         title: metadata.title,
         date: metadata.date ? new Date(metadata.date).valueOf() : undefined,
