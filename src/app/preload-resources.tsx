@@ -1,6 +1,13 @@
 'use client'
 import { useEffect, useRef } from 'react'
 
+function importStaticCss(url: string) {
+  const link = document.createElement('link')
+  link.rel = 'stylesheet'
+  link.href = (process.env.NEXT_PUBLIC_CND_PUBLIC_PATH_BASE_URL ?? '') + url
+  document.head.appendChild(link)
+}
+
 export function PreloadResources() {
   const loaded = useRef(false)
 
@@ -9,10 +16,8 @@ export function PreloadResources() {
       return
     }
     loaded.current = true
-    const link = document.createElement('link')
-    link.rel = 'stylesheet'
-    link.href = (process.env.NEXT_PUBLIC_CND_PUBLIC_PATH_BASE_URL ?? '') + '/fonts/fonts.min.css'
-    document.head.appendChild(link)
+    importStaticCss('/fonts/fonts.min.css')
+    importStaticCss('/css/github.min.css')
   }, [])
 
   return null

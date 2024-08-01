@@ -4,7 +4,14 @@
  */
 import fs from "node:fs"
 
-if (process.env.NEXT_PUBLIC_CND_PUBLIC_PATH_BASE_URL && fs.statSync('out/fonts').isDirectory()) {
-  fs.rmSync('out/fonts', { recursive: true, force: true })
+function rmDir(target) {
+  if (fs.statSync(target).isDirectory()) {
+    fs.rmSync(target, { recursive: true, force: true })
+  }
+}
+
+if (process.env.NEXT_PUBLIC_CND_PUBLIC_PATH_BASE_URL) {
+  rmDir('out/fonts')
+  rmDir('out/css')
 }
 
