@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "NODE_OPTIONS='--trace-deprecation' next dev",
-    "build": "next build",
-    "check-and-build": "eslint ./src --fix && next build",
+    "build": "next build && node hook/CleanUpPlugin.mjs",
+    "check-and-build": "eslint ./src --fix && npm run build",
     "start": "next start",
     "lint": "tsc --noEmit && eslint ./src --fix",
     "test": "jest",
