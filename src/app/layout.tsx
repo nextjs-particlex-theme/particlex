@@ -5,10 +5,7 @@ import datasource from '@/api/datasource'
 import React from 'react'
 import SvgSymbols from '@/app/svg-symbols'
 import Footer from '@/components/Footer'
-if (!process.env.NEXT_PUBLIC_CND_PUBLIC_PATH_BASE_URL) {
-  // @ts-ignore
-  import('./fonts.min.css')
-}
+
 
 export async function generateMetadata(): Promise<Metadata> {
   const config = await datasource.getConfig()

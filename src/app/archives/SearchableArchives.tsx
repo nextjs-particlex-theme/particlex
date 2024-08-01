@@ -30,7 +30,7 @@ const SearchableArchives: React.FC<SearchableArchivesProps> = props => {
   const lastSearchTimeout = useRef<ReturnType<typeof setTimeout>>()
 
   useEffect(() => {
-    loverCaseTitles.current = props.posts.map(v => v.title.toLowerCase())
+    loverCaseTitles.current = props.posts.filter(v => !!v.title).map(v => v.title!.toLowerCase())
   }, [props.posts])
 
   const onInput: React.FormEventHandler<HTMLInputElement> = (e) => {

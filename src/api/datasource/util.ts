@@ -1,4 +1,4 @@
-import type { Category, Resource, Tag, TocItem } from '@/api/datasource/types'
+import type { Category, Tag, TocItem } from '@/api/datasource/types'
 import { JSDOM } from 'jsdom'
 import showdown from 'showdown'
 import reactParse, { Element, Text } from 'html-react-parser'

@@ -9,6 +9,7 @@ const withBundleAnalyzer = analyzer({
 const nextConfig = {
   output: 'export',
   images: { unoptimized: true },
+  cleanDistDir: true,
   webpack(config) {
     config.module.rules.push(
       {
