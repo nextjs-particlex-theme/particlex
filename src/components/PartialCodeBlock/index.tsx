@@ -1,5 +1,5 @@
 'use client'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import style from './post-content.module.scss'
 import { Icons } from '@/app/svg-symbols'
 
@@ -17,6 +17,15 @@ interface RichContentProps extends PartialCodeBlockProps {
 const _RichContent: React.FC<RichContentProps> = props => {
   const codeContainer = useRef<HTMLDivElement>(null)
 
+  useEffect(() => {
+    if (!codeContainer.current) {
+      return
+    }
+    if (codeContainer.current.clientHeight >= window.innerHeight / 2) {
+      props.onRequirePartialHide()
+    }
+  }, [props])
+  
   return (
     <div className={style.codeContent} ref={codeContainer} style={props.wrapLine ? { textWrap: 'wrap' } : undefined} dangerouslySetInnerHTML={{ __html: props.content }}/>
   )
