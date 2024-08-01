@@ -4,8 +4,7 @@
  */
 import fs from "node:fs"
 
-if (!process.env.NEXT_PUBLIC_CND_PUBLIC_PATH_BASE_URL || !fs.statSync('out').isDirectory()) {
-  return
+if (process.env.NEXT_PUBLIC_CND_PUBLIC_PATH_BASE_URL && fs.statSync('out').isDirectory()) {
+  fs.rmSync('out', { recursive: true, force: true })
 }
 
-fs.rmSync('out', { recursive: true, force: true })
