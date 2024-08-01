@@ -19,9 +19,12 @@
     max-width: 300px;
     padding: 0 4px;
 
+
     & > * {
         box-sizing: border-box;
         padding: 3px 0;
+        transition: color .5s;
+        position: relative;
     }
 
     .title-1 {
@@ -63,10 +66,20 @@
     }
 
     .active-title {
-        &.title-2,&.title-3,&.title-4,&.title-5,&.title-6 {
-            border-color: var(--color-primary);
-            border-left-width: 4px;
-            transform: translateX(-1px);
+        &.title-2::before,
+        &.title-3::before,
+        &.title-4::before,
+        &.title-5::before,
+        &.title-6::before {
+            display: block;
+            content: "";
+            width: 4px;
+            top: 0;
+            height: 100%;
+            background-color: var(--color-primary);
+            position: absolute;
+            left: -3px;
+            border-radius: 10px;
         }
     }
 
