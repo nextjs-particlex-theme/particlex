@@ -5,12 +5,23 @@ import path from "node:path"
 
 
 function rmDir(target) {
-  if (fs.statSync(target).isDirectory()) {
+  if (fs.existsSync(target) && fs.statSync(target).isDirectory()) {
     fs.rmSync(target, { recursive: true, force: true })
   }
 }
 
+function environmentCheck() {
+  if (!process.env.BLOG_PATH) {
+    throw new Error('environment variable `BLOG_PATH` must be provided! It is your hexo blog root directory.')
+  }
+  let temp
+  if ((temp = process.env.NEXT_PUBLIC_CND_PUBLIC_PATH_BASE_URL) && temp.endsWith("/")) {
+    process.env.NEXT_PUBLIC_CND_PUBLIC_PATH_BASE_URL = temp.substring(0, temp.length - 1)
+  }
+}
+
 env().then(() => {
+  environmentCheck()
   child_process.execSync('next build', {
     stdio: 'inherit',
   })

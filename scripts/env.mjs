@@ -38,7 +38,7 @@ function parseProperties(filepath) {
  */
 async function env() {
   for (let envFile of envFiles) {
-    if (!fs.statSync(envFile).isFile()) {
+    if (fs.existsSync(envFile) && fs.statSync(envFile).isFile()) {
       return
     }
     const content = await parseProperties(envFile)
