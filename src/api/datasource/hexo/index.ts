@@ -49,7 +49,8 @@ class HexoDatasource extends AbstractMarkdownBlogDataSource {
       homePage: parsed.authorHome ?? '#',
       indexPageSize: theme.indexPageSize ?? 5,
       background: theme.background ?? [],
-      avatar: theme.avatar ?? ''
+      avatar: theme.avatar ?? '',
+      favicon: theme.favicon
     })
   }
 }

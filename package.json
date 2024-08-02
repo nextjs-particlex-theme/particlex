@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "NODE_OPTIONS='--trace-deprecation' next dev",
-    "build": "next build && node hook/CleanExtraOutput.mjs",
+    "build": "node scripts/build.mjs",
     "check-and-build": "eslint ./src --fix && npm run build",
     "start": "next start",
     "lint": "tsc --noEmit && eslint ./src --fix",
