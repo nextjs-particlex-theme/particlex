@@ -24,7 +24,7 @@
   right: 0;
   display: flex;
   > * {
-    margin-right: 1.5rem;
+    margin-right: 1.8rem;
   }
   > * {
     cursor: pointer;
@@ -50,7 +50,42 @@
   align-items: end;
   justify-content: center;
   > a {
+    cursor: pointer;
     margin-bottom: 0.75rem;
     color: var(--color-primary);
   }
+}
+.copyContainer {
+  z-index: 1000;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  & > svg {
+    z-index: 1200;
+  }
+  .copySuccessIcon {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    position: absolute;
+    transition: all 0.5s;
+    z-index: 1100;
+    bottom: -5px;
+  }
+}
+
+.copyAniBegin {
+  opacity: 0;
+  transform: translateY(0);
+}
+.copyAniShow {
+  transform: translateY(100%);
+  opacity: 1;
+}
+.copyAniEnd {
+  opacity: 0;
+  transform: translateY(200%);
 }
