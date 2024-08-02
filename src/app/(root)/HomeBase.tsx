@@ -21,7 +21,7 @@ const HomeBase: React.FC<RootLayoutProps> = async props => {
   return (
     <div>
       <Header title={title} autoTransparentOnTop/>
-      <div>
+      <div id="fade-in">
         <RootImageHeader images={background} title={title} description={description} subtitle={subtitle}/>
         <div className="flex flex-col items-center">
           <div>

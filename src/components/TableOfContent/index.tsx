@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import type { TocItem } from '@/api/datasource/types'
 import Link from 'next/link'
+import { createPortal } from 'react-dom'
 import('./toc.scss')
 
 
@@ -136,22 +137,25 @@ const TableOfContent:React.FC<TableOfContentProps> = props => {
     return null
   }
 
-  return (
-    <div className="toc-out-container" style={{ width: containerWidth }}>
-      <div className="toc-container">
-        <div className="text-xl">目录</div>
-        {
-          expandedTocItems.map((v, index) => (
-            <Link key={v.anchor}
-              onClick={() => onTocItemClick(index)}
-              href={v.anchor}
-              className={`title-${v.level} ${activeIndex === index ? 'active-title' : ''}`}>
-              {v.title}
-            </Link>
-          ))
-        }
+  return createPortal(
+    (
+      <div className="toc-out-container" style={{ width: containerWidth }}>
+        <div className="toc-container">
+          <div className="text-xl">目录</div>
+          {
+            expandedTocItems.map((v, index) => (
+              <Link key={v.anchor}
+                onClick={() => onTocItemClick(index)}
+                href={v.anchor}
+                className={`title-${v.level} ${activeIndex === index ? 'active-title' : ''}`}>
+                {v.title}
+              </Link>
+            ))
+          }
+        </div>
       </div>
-    </div>
+    ),
+    document.body
   )
 }
 

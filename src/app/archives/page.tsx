@@ -10,7 +10,7 @@ export default async function ArchivesPage() {
   return (
     <div>
       <Header title={config.title}/>
-      <div className="p-12 pt-40 w-[56rem] m-auto">
+      <div id="fade-in" className="p-12 pt-40 w-[56rem] m-auto">
         <SearchableArchives posts={homePosts.map(v => v.toClientSafePost())}/>
       </div>
     </div>
