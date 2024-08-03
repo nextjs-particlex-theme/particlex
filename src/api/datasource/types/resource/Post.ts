@@ -1,59 +1,6 @@
 import type { ReactNode } from 'react'
 import { deepCopy } from '@/lib/ObjectUtils'
-
-export type Tag = {
-
-}
-
-export type Category = {
-  name: string
-  path: string
-}
-
-
-export type Config = {
-  title: string
-  subtitle?: string
-  description?: string
-  author: string
-  /**
-   * 首页页码大小
-   */
-  indexPageSize: number
-  /**
-   * 背景图片
-   */
-  background: string[]
-  /**
-   * 头像
-   */
-  avatar?: string
-  /**
-   * 主页
-   */
-  homePage: string
-  /**
-   * 图标链接
-   */
-  favicon?: string
-}
-
-
-export interface Resource {
-  /**
-   * 获取访问路径，以 '/' 开头
-   */
-  getAccessPath: () => string
-}
-
-export type TocItem = {
-  title: string
-  /**
-   * 锚点，以 # 开头
-   */
-  anchor: string
-  child: TocItem[]
-}
+import type { Category, Resource, Tag, TocItem } from '@/api/datasource/types/definitions'
 
 /**
  * 构造器参数. 注意: <b>任何对象，都不应该直接使用数据源提供的对象，以免代入多余属性</b>
@@ -74,32 +21,29 @@ type PostConstructor = {
   categories: Category[]
   tags: Tag[]
   toc: TocItem[]
+  seo: SEO
 }
 
-export class StaticResource implements Resource {
-
+/**
+ * SEO 配置.
+ */
+type SEO = {
   /**
-   * 文件路径
-   * @private
+   * 关键词. 看心情给吧... 不给默认使用 tags 的内容.<p>
+   * [关键词堆砌](https://developers.google.cn/search/docs/essentials/spam-policies?hl=zh-cn#keyword-stuffing)<p>
+   * [Google 不会将关键字元标记用于网页排名](https://developers.google.cn/search/blog/2009/09/google-does-not-use-keywords-meta-tag?hl=zh-cn)
    */
-  filepath: string
-
+  keywords: string[]
   /**
-   * 相对<b>静态资源根目录</b>的访问路径.
-   * 例如资源在 url 中以 `/images/foo/bar.png` 访问，则这里的值为 `[foo, bar.png]`
-   * @private
+   * 覆盖网页标题.<p>
+   * [影响标题链接的最佳实践](https://developers.google.cn/search/docs/appearance/title-link?hl=zh-cn#page-titles)
    */
-  accessPath: string[]
-
-  constructor(filepath: string, accessPath: string[]) {
-    this.filepath = filepath
-    this.accessPath = accessPath
-  }
-
-  getAccessPath() {
-    return '/' + this.accessPath.join('/')
-  }
-
+  htmlTitleOverride: string
+  /**
+   * 页面描述.<p>
+   * [使用高质量的描述](https://developers.google.cn/search/docs/appearance/snippet?hl=zh-cn#use-quality-descriptions)
+   */
+  description?: string
 }
 
 /**
@@ -118,7 +62,7 @@ export type ClientSafePost = {
   formattedTime: string
 }
 
-export class Post implements Resource {
+export default class Post implements Resource {
   public id: string | number
   /**
    * 标题
@@ -153,6 +97,10 @@ export class Post implements Resource {
    */
   public toc: TocItem[]
 
+  /**
+   * seo
+   */
+  public seo: SEO
 
 
   constructor(data: PostConstructor) {
@@ -165,7 +113,9 @@ export class Post implements Resource {
     this.categories = data.categories
     this.tags = data.tags
     this.toc = data.toc
+    this.seo = data.seo
   }
+
 
   get formattedTime(): string {
     if (!this.date) {
@@ -199,49 +149,3 @@ export class Post implements Resource {
   }
 
 }
-
-export interface BlogDataSource {
-  /**
-   * 获取配置
-   */
-  getConfig(): Promise<Config>
-  /**
-   * 分页获取用于首页展示的博客文章.
-   * @param page 从0开始的页码
-   * @param size 每页大小
-   */
-  pageHomePosts(page?: number, size?: number): Promise<Post[]>
-  /**
-   * {@link BlogDataSource#pageHomePosts} 的总博客文章数量
-   */
-  pagePostsSize(): Promise<number>
-  /**
-   * 获取所有文章，包括首页的文章
-   * <ul>
-   *   <li>k: 访问路径</li>
-   *   <li>v: 静态资源</li>
-   * </ul>
-   */
-  getAllPost(): Promise<Post[]>
-  /**
-   * 获取所有静态资源.
-   * @return {} 静态资源
-   * <ul>
-   *   <li>k: 访问路径, see: {@link StaticResource#accessPath}</li>
-   *   <li>v: 静态资源</li>
-   * </ul>
-   */
-  getAllStaticResource(): Promise<StaticResource[]>
-  /**
-   * 根据访问路径获取Post
-   * @param url url
-   */
-  getPostByWebUrl(url: string[]): Promise<Post | undefined>
-
-  /**
-   * 根据访问路径获取静态资源
-   * @param url url, 不需要 image 前缀
-   */
-  getStaticResourceByWebUrl(url: string[]): Promise<StaticResource | undefined>
-}
-

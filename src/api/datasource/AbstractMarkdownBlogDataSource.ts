@@ -1,5 +1,3 @@
-import type { BlogDataSource, Config } from '@/api/datasource/types'
-import { Post, StaticResource } from '@/api/datasource/types'
 import path from 'node:path'
 import {
   generateShallowToc,
@@ -11,6 +9,10 @@ import readline from 'node:readline'
 import fs from 'node:fs'
 import yaml from 'yaml'
 import { globSync } from 'glob'
+import type { DataSourceConfig } from '@/api/datasource/types/definitions'
+import { StaticResource } from '@/api/datasource/types/resource/StaticResource'
+import Post from '@/api/datasource/types/resource/Post'
+import type { BlogDataSource } from '@/api/datasource/types/BlogDataSource'
 
 type AbstractBlogDataSourceCons = {
   /**
@@ -79,7 +81,7 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
   /**
    * 获取配置
    */
-  abstract getConfig(): Promise<Config>
+  abstract getConfig(): Promise<DataSourceConfig>
 
   /**
    * 获取博客的 web 访问路径.
@@ -181,6 +183,7 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
         content: highlight(content),
         tags: [],
         categories: [],
+        seo: metadata.seo
       }))
     }
     return r

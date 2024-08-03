@@ -1,6 +1,6 @@
 import { expect, test } from '@jest/globals'
 import { generateShallowToc } from '@/api/datasource/util'
-import type { TocItem } from '@/api/datasource/types'
+import type { TocItem } from '@/api/datasource/types/definitions'
 
 /**
  * 正确标题内容，生成正确信息

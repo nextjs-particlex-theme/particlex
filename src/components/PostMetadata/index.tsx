@@ -1,7 +1,8 @@
 import React from 'react'
-import type { ClientSafePost, Post } from '@/api/datasource/types'
 import { Icons } from '@/app/svg-symbols'
 import Link from 'next/link'
+import type { ClientSafePost } from '@/api/datasource/types/resource/Post'
+import type Post from '@/api/datasource/types/resource/Post'
 
 interface PostMetadataProps {
   post: Readonly<Post | ClientSafePost>

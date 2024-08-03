@@ -1,9 +1,9 @@
 'use client'
 import React, { useEffect, useRef } from 'react'
-import type { ClientSafePost } from '@/api/datasource/types'
 import styles from './archive.module.scss'
 import Link from 'next/link'
 import PostMetadata from '@/components/PostMetadata'
+import type { ClientSafePost } from '@/api/datasource/types/resource/Post'
 
 
 const ArchiveItem: React.FC<{post: ClientSafePost}> = ({ post }) => {

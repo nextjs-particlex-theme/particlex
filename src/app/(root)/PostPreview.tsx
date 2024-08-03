@@ -1,9 +1,9 @@
-import type { Post } from '@/api/datasource/types'
 import React from 'react'
 import Link from 'next/link'
 import styles from './root-style.module.scss'
 import postStyle from '@/components/post.module.scss'
 import PostMetadata from '@/components/PostMetadata'
+import type Post from '@/api/datasource/types/resource/Post'
 
 interface PostPreviewProps {
   post: Post

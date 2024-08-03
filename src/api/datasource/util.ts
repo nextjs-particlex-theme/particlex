@@ -1,11 +1,8 @@
-import type { Category, Tag, TocItem } from '@/api/datasource/types'
 import { JSDOM } from 'jsdom'
 import showdown from 'showdown'
-import reactParse, { Element, Text } from 'html-react-parser'
-import PartialCodeBlock from '@/components/PartialCodeBlock'
-import hljs from 'highlight.js'
 import type React from 'react'
 import processPostContent from '@/api/datasource/html-content-process'
+import type { Category, Tag, TocItem } from '@/api/datasource/types/definitions'
 
 const LEVEL_MAPPING: Record<string, number> = {
   H1: 0,

@@ -1,5 +1,5 @@
-import type { BlogDataSource } from '@/api/datasource/types'
 import hexo from './hexo/index'
+import type { BlogDataSource } from '@/api/datasource/types/BlogDataSource'
 
 let datasource: BlogDataSource
 

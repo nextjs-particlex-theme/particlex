@@ -1,8 +1,8 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react'
-import type { TocItem } from '@/api/datasource/types'
 import Link from 'next/link'
 import { createPortal } from 'react-dom'
+import type { TocItem } from '@/api/datasource/types/definitions'
 import('./toc.scss')
 
 

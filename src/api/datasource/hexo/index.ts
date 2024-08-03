@@ -1,8 +1,8 @@
-import type { Config } from '@/api/datasource/types'
 import * as fs from 'node:fs'
 import path from 'node:path'
 import yaml from 'yaml'
 import AbstractMarkdownBlogDataSource from '@/api/datasource/AbstractMarkdownBlogDataSource'
+import type { DataSourceConfig } from '@/api/datasource/types/definitions'
 
 
 class HexoDatasource extends AbstractMarkdownBlogDataSource {
@@ -32,7 +32,7 @@ class HexoDatasource extends AbstractMarkdownBlogDataSource {
     return sp.slice(1)
   }
 
-  getConfig(): Promise<Config> {
+  getConfig(): Promise<DataSourceConfig> {
     let configFile
     if (!fs.existsSync((configFile = path.resolve(process.env.BLOG_PATH, '_config.yml'))) && !fs.existsSync((configFile = path.resolve(process.env.BLOG_PATH, '_config.yaml')))) {
       throw new Error('Could not find config file from both _config.yml and _config.yaml')
