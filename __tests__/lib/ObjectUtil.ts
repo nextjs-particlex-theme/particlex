@@ -1,5 +1,5 @@
 import { expect, test } from '@jest/globals'
-import { deepCopy } from '@/lib/ObjectUtils'
+import { arraySpliceKeepOriginal, deepCopy } from '@/lib/ObjectUtils'
 
 
 test('deepCopy_normalData_copySuccess', () => {
@@ -30,3 +30,30 @@ test('deepCopy_normalData_copySuccess', () => {
   expect(deepCopy(o)).toStrictEqual(o)
 })
 
+test('arraySpliceKeepOriginal_normalData_deleteSuccess', () => {
+  const arr = [1, 2, 3, 4, 5]
+  const cpArr = [...arr]
+
+  const spliced = arraySpliceKeepOriginal(arr, 1, 1)
+  expect(spliced).toStrictEqual([1, 3, 4, 5])
+  expect(arr).toStrictEqual(cpArr)
+  expect(spliced === arr).toBeFalsy()
+})
+
+test('arraySpliceKeepOriginal_extremeParameter_deleteSuccess', () => {
+  expect(
+    arraySpliceKeepOriginal([1, 2, 3, 4, 5], 0, 99999)
+  ).toStrictEqual([])
+
+  expect(
+    arraySpliceKeepOriginal([1, 2, 3, 4, 5], 4, 99999)
+  ).toStrictEqual([1, 2, 3, 4])
+
+  expect(
+    arraySpliceKeepOriginal([1, 2, 3, 4, 5], -999, 99999)
+  ).toStrictEqual([])
+
+  expect(
+    arraySpliceKeepOriginal([1, 2, 3, 4, 5], 999, 99999)
+  ).toStrictEqual([1, 2, 3, 4])
+})

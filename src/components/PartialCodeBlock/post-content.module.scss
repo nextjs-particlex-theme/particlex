@@ -3,7 +3,7 @@
   font-size: 13px;
   line-height: 2;
   overflow: auto;
-  padding: 50px 30px 20px
+  padding: 0 30px;
 }
 
 .languageTag {
@@ -24,9 +24,7 @@
   right: 0;
   display: flex;
   > * {
-    margin-right: 1.8rem;
-  }
-  > * {
+    margin-right: 1.2rem;
     cursor: pointer;
   }
 }
@@ -64,28 +62,36 @@
   & > svg {
     z-index: 1200;
   }
-  .copySuccessIcon {
-    background-color: var(--color-primary);
-    color: var(--color-white);
-    padding: 0.25rem 0.5rem;
-    border-radius: 1rem;
-    font-size: 0.875rem;
-    position: absolute;
-    transition: all 0.5s;
-    z-index: 1100;
-    bottom: -5px;
+}
+
+.copySuccessIcon {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  position: absolute;
+  transition: all 0.5s;
+  z-index: 1100;
+  bottom: -5px;
+  animation-duration: .8s;
+  animation-fill-mode: both;
+  animation-name: copyFadeInAndOut;
+  animation-timing-function: linear;
+}
+
+@keyframes copyFadeInAndOut {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-100%);
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-200%);
   }
 }
 
-.copyAniBegin {
-  opacity: 0;
-  transform: translateY(0);
-}
-.copyAniShow {
-  transform: translateY(100%);
-  opacity: 1;
-}
-.copyAniEnd {
-  opacity: 0;
-  transform: translateY(200%);
-}
