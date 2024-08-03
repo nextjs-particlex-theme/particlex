@@ -7,7 +7,8 @@
     "build": "node scripts/build.mjs",
     "check-and-build": "eslint ./src --fix && npm run build",
     "start": "next start",
-    "lint": "tsc --noEmit && eslint ./src --fix",
+    "lint": "eslint ./src --fix",
+    "tsc": "tsc --noEmit",
     "test": "jest",
     "analyze": "cross-env ANALYZE=true npm run build"
   },

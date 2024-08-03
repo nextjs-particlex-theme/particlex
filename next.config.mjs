@@ -10,6 +10,9 @@ const nextConfig = {
   output: 'export',
   images: { unoptimized: true },
   cleanDistDir: true,
+  eslint: {
+    ignoreDuringBuilds: true
+  },
   webpack(config) {
     config.module.rules.push(
       {
