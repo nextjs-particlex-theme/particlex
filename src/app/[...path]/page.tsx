@@ -54,7 +54,7 @@ const PostPage: React.FC<{params: Param}> = async ({ params }) => {
   return (
     <div>
       <Header title={meta.title}/>
-      <div id="fade-in" className="w-[56rem] rounded-3xl pt-40 pb-40 p-12 box-border overflow-hidden relative m-auto">
+      <div id="container" className="fade-in w-[56rem] rounded-3xl pt-40 pb-40 p-12 box-border overflow-hidden relative m-auto">
         <div className="text-3xl font-bold">
           {post.title}
         </div>

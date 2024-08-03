@@ -66,7 +66,7 @@ const HeaderClient:React.FC<HeaderClientProps> = props => {
   }, [props.autoTransparentOnTop])
 
   return (
-    <div className={`font-bold text-sm pl-16 text-zinc-600 flex-row flex ${styles.header} ${headerClass}`} style={headerVisible ? undefined : { height: 0 }}>
+    <div id="header" className={`font-bold text-sm pl-16 text-zinc-600 flex-row flex ${styles.header} ${headerClass}`} style={headerVisible ? undefined : { height: 0 }}>
       <Link href="/" className="pl-10">
         { props.title }
       </Link>

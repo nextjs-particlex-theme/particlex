@@ -4,7 +4,8 @@ import showdown from 'showdown'
 import reactParse, { Element, Text } from 'html-react-parser'
 import PartialCodeBlock from '@/components/PartialCodeBlock'
 import hljs from 'highlight.js'
-import React from 'react'
+import type React from 'react'
+import processPostContent from '@/api/datasource/html-content-process'
 
 const LEVEL_MAPPING: Record<string, number> = {
   H1: 0,
@@ -112,48 +113,10 @@ export const markdownToHtml = (markdownContent: string): string => {
 }
 
 /**
- * 直接让 highlight.js 自动高冷渲染太慢了，必须主动指定语言，这里为了防止一些简写或者某些特定的语言，设置一些回退选项
- */
-const LANGUAGE_MAPPING_FALLBACK: Record<string, string | undefined> = {
-  vue: 'html',
-  js: 'javascript',
-  ts: 'typescript',
-  sh: 'bash'
-}
-
-/**
  * 高亮一段可能包含代码块的代码.
  * @param html 可能html内容
+ * @deprecated
  */
 export const highlight = (html: string): React.ReactNode => {
-  return reactParse(html, {
-    replace: (domNode) => {
-      if (domNode instanceof Element && domNode.tagName === 'pre' && domNode.children.length === 1) {
-        const ele = domNode.children[0]
-        if (ele instanceof Element) {
-          const text = ele.childNodes[0]
-          if (text instanceof Text) {
-            const classes = ele.attribs['class']
-            let lang: string[]
-            if (classes) {
-              lang = classes.split(' ')
-              if (lang.length === 0) {
-                lang = ['plaintext']
-              } else {
-                const fb = LANGUAGE_MAPPING_FALLBACK[lang[0]]
-                if (fb) {
-                  lang.push(fb)
-                }
-              }
-            } else {
-              lang = ['plaintext']
-            }
-
-            const lighted = hljs.highlightAuto(text.data, lang).value
-            return React.createElement(PartialCodeBlock, { content: lighted, lang: lang[0] })
-          }
-        }
-      }
-    }
-  })
+  return processPostContent(html)
 }

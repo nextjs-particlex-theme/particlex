@@ -153,6 +153,8 @@ export class Post implements Resource {
    */
   public toc: TocItem[]
 
+
+
   constructor(data: PostConstructor) {
     this.id = data.id
     this.title = data.title
