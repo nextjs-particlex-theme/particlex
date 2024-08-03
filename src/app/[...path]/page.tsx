@@ -55,9 +55,9 @@ const PostPage: React.FC<{params: Param}> = async ({ params }) => {
     <div>
       <Header title={meta.title}/>
       <div id="container" className="fade-in w-[56rem] rounded-3xl pt-40 pb-40 p-12 box-border overflow-hidden relative m-auto">
-        <div className="text-3xl font-bold">
+        <h1 className="text-3xl font-bold">
           {post.title}
-        </div>
+        </h1>
         <PostMetadata post={post} className="mt-4 mb-12"/>
         <div className={`${postStyle.postContainer} link-styled-container`} id={MAIN_CONTENT_ID}>
           { post.content }

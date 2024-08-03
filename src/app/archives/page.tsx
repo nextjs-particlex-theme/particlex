@@ -3,7 +3,6 @@ import datasource from '@/api/datasource'
 import Header from '@/components/Header'
 import SearchableArchives from '@/app/archives/SearchableArchives'
 import type { Metadata } from 'next'
-import { generateSeoMetadata } from '@/lib/seo'
 
 
 export async function generateMetadata(): Promise<Metadata> {

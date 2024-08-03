@@ -100,11 +100,12 @@ export const purifyCategoryData = (category: Category): Category => {
  */
 export const markdownToHtml = (markdownContent: string): string => {
   const sd = new showdown.Converter({
-    prefixHeaderId: '_heading',
     strikethrough: true,
     tables: true,
     tasklists: true,
-    disableForced4SpacesIndentedSublists: true
+    disableForced4SpacesIndentedSublists: true,
+    // rawPrefixHeaderId: true,
+    rawHeaderId: true
   })
   return sd.makeHtml(markdownContent)
 }

@@ -43,6 +43,10 @@ function dealWithImage(domNode: Element) {
   }
 }
 
+function downgradeHeading(domNode: Element) {
+  domNode.tagName = 'h' + (Number.parseInt(domNode.tagName[1], 10) + 1)
+}
+
 /**
  * 直接让 highlight.js 自动高冷渲染太慢了，必须主动指定语言，这里为了防止一些简写或者某些特定的语言，设置一些回退选项
  */
@@ -58,6 +62,7 @@ const LANGUAGE_MAPPING_FALLBACK: Record<string, string | undefined> = {
  * 处理 html 博客内容
  */
 export default function processPostContent(html: string): React.ReactNode {
+  const shouldDowngradeHeading = html.includes('<h1')
   return reactParse(html, {
     replace: (domNode) => {
       if (!(domNode instanceof Element)) {
@@ -68,6 +73,16 @@ export default function processPostContent(html: string): React.ReactNode {
         return dealWithPreTag(domNode)
       case 'img':
         return dealWithImage(domNode)
+      case 'h1':
+      case 'h2':
+      case 'h3':
+      case 'h4':
+      case 'h5':
+      case 'h6':
+        if (shouldDowngradeHeading) {
+          return downgradeHeading(domNode)
+        }
+        return
       default:
         return
       }
