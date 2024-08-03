@@ -17,6 +17,7 @@ const config: Config = {
         white: '#fff',
         primary: 'var(--color-primary)',
         subtext: 'var(--color-text-sub)',
+        background: 'var(--background-color)'
       }
     }
   },

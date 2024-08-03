@@ -51,9 +51,6 @@ const RootImageHeader:React.FC<RootImageHeaderProps> = props => {
     }, 100)
   }
 
-  if (!image) {
-    return null
-  }
   return (
     <div style={{ backgroundImage: image, marginBottom: `-${offset}px` }} className={styles.imageContainer}>
       <div className={styles.loopContainer} onClick={navToPosts}>
