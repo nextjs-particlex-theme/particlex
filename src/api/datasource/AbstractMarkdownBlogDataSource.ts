@@ -11,6 +11,7 @@ import yaml from 'yaml'
 import { globSync } from 'glob'
 import type { DataSourceConfig } from '@/api/datasource/types/definitions'
 import { StaticResource } from '@/api/datasource/types/resource/StaticResource'
+import type { SEO } from '@/api/datasource/types/resource/Post'
 import Post from '@/api/datasource/types/resource/Post'
 import type { BlogDataSource } from '@/api/datasource/types/BlogDataSource'
 
@@ -48,6 +49,8 @@ type PostContent = {
   metadata: any
   content: string
 }
+
+type PostConstructor = ConstructorParameters<typeof Post>[0]
 
 export default abstract class AbstractMarkdownBlogDataSource implements BlogDataSource {
 
@@ -162,7 +165,13 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
     })
   }
 
-
+  /**
+   * 解析 markdown 文件，返回解析后的内容
+   * @param files 需要解析的文件
+   * @param begin 从哪里开始
+   * @param take 解析几个
+   * @protected
+   */
   protected async parseMarkdownFiles(files: string[], begin = 0, take?: number): Promise<Post[]> {
     const r: Post[] = []
 
@@ -173,7 +182,7 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
       const { metadata, content } = await this.parsePostContent(path.resolve(process.env.BLOG_PATH, file))
       let source = this.resolvePostWebPath(file)
 
-      r.push(new Post({
+      const postData: PostConstructor = {
         title: metadata.title,
         date: metadata.date ? new Date(metadata.date).valueOf() : undefined,
         source,
@@ -183,12 +192,33 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
         content: highlight(content),
         tags: [],
         categories: [],
-        seo: metadata.seo
-      }))
+        // will init later before return.
+        seo: (null as any)
+      }
+      postData.seo = this.parseSeoConfig(postData, metadata.seo)
+
+      r.push(new Post(postData))
     }
     return r
   }
 
+  /**
+   * 解析 SEO 配置
+   * @param data 已有的构造器参数
+   * @param seo seo 配置
+   * @protected
+   */
+  protected parseSeoConfig(data: Omit<PostConstructor, 'seo'>, seo?: Record<string, undefined | string>): SEO {
+    const fakeType = (seo ?? {}) as Partial<SEO>
+
+    return {
+      title: fakeType.title ?? data.title,
+      description: fakeType.description,
+      // TODO auto generate tags.
+      keywords: fakeType.keywords ?? []
+    }
+  }
+  
   async getPostByWebUrl(url: string[]): Promise<Post | undefined> {
     if (!this.postCache) {
       const r = await this.getAllPost()

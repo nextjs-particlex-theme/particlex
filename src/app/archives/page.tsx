@@ -2,6 +2,17 @@ import React from 'react'
 import datasource from '@/api/datasource'
 import Header from '@/components/Header'
 import SearchableArchives from '@/app/archives/SearchableArchives'
+import type { Metadata } from 'next'
+import { generateSeoMetadata } from '@/lib/seo'
+
+
+export async function generateMetadata(): Promise<Metadata> {
+  const config = await datasource.getConfig()
+  return {
+    title: `文章列表 | ${config.title}`,
+    description: 'Archives for all blog posts',
+  }
+}
 
 export default async function ArchivesPage() {
   const homePosts = await datasource.pageHomePosts(0, 999)

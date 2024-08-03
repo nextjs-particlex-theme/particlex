@@ -6,6 +6,8 @@ import postStyle from '@/components/post.module.scss'
 import PostMetadata from '@/components/PostMetadata'
 import TableOfContent, { MAIN_CONTENT_ID } from '@/components/TableOfContent'
 import Link from 'next/link'
+import { generateSeoMetadata } from '@/lib/seo'
+
 
 export async function generateStaticParams(): Promise<Param[]> {
   const posts = await datasource.getAllPost()
@@ -29,9 +31,7 @@ export async function generateMetadata({ params }: {params: Param}): Promise<Met
       title: 'Fallback Page'
     }
   }
-  return {
-    title: post.title
-  }
+  return generateSeoMetadata(post)
 }
 
 interface Param {

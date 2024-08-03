@@ -27,7 +27,7 @@ type PostConstructor = {
 /**
  * SEO 配置.
  */
-type SEO = {
+export type SEO = {
   /**
    * 关键词. 看心情给吧... 不给默认使用 tags 的内容.<p>
    * [关键词堆砌](https://developers.google.cn/search/docs/essentials/spam-policies?hl=zh-cn#keyword-stuffing)<p>
@@ -38,7 +38,7 @@ type SEO = {
    * 覆盖网页标题.<p>
    * [影响标题链接的最佳实践](https://developers.google.cn/search/docs/appearance/title-link?hl=zh-cn#page-titles)
    */
-  htmlTitleOverride: string
+  title: string
   /**
    * 页面描述.<p>
    * [使用高质量的描述](https://developers.google.cn/search/docs/appearance/snippet?hl=zh-cn#use-quality-descriptions)
