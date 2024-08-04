@@ -63,7 +63,7 @@ a:hover {
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(-20px) scale(1.1);
+        transform: scaleX(1.1) translateY(-80px);
     }
 
     to {
@@ -74,7 +74,7 @@ a:hover {
 
 /*添加动画*/
 .fade-in {
-    animation-duration: .8s;
+    animation-duration: .6s;
     animation-fill-mode: both;
     animation-name: fadeIn;
 }
