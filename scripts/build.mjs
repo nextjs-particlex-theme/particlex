@@ -30,7 +30,7 @@ env().then(() => {
     rmDir('out/css')
   }
   const favicon = path.resolve(process.env.BLOG_PATH, 'source', 'favicon.ico')
-  if (fs.statSync(favicon).isFile()) {
+  if (fs.existsSync(favicon) && fs.statSync(favicon).isFile()) {
     fs.cpSync(favicon, 'out/favicon.ico', { force: true })
   }
 })
