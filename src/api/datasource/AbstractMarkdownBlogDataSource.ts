@@ -2,20 +2,18 @@ import path from 'node:path'
 import {
   generateShallowToc,
   highlight,
-  markdownToHtml,
+  markdownToHtml, replacePrefixIndent,
   utilMarkdownGenerateCaster
 } from '@/api/datasource/util'
 import readline from 'node:readline'
 import fs from 'node:fs'
-import yaml from 'yaml'
+import yaml, { YAMLParseError } from 'yaml'
 import { globSync } from 'glob'
 import type { Category, DataSourceConfig, Tag } from '@/api/datasource/types/definitions'
 import { StaticResource } from '@/api/datasource/types/resource/StaticResource'
 import type { SEO } from '@/api/datasource/types/resource/Post'
 import Post from '@/api/datasource/types/resource/Post'
 import type { BlogDataSource } from '@/api/datasource/types/BlogDataSource'
-import type { CacheProvider } from '@/lib/CacheProvider'
-import { CacheProviderImpl } from '@/lib/CacheProvider'
 import cached from '@/lib/cached'
 
 type AbstractBlogDataSourceCons = {
@@ -59,11 +57,6 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
 
   protected readonly config: AbstractBlogDatasourceConfig
 
-  private cacheProvider: CacheProvider = new CacheProviderImpl()
-
-  // private postCache: Map<string, Post> | undefined
-
-  // private resourceCache: Map<string, StaticResource> | undefined
 
   protected constructor(config: AbstractBlogDataSourceCons) {
     this.config = {
@@ -150,7 +143,7 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
   }
 
   private parsePostContent(postPath: string): Promise<PostContent> {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       const rl = readline.createInterface({
         input: fs.createReadStream(postPath),
       })
@@ -179,7 +172,26 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
           metadata = {}
           html = markdownToHtml(metadataStrArr.join('\n'))
         } else {
-          metadata = yaml.parse(metadataStrArr.slice(1, metadataStrArr.length - 1).join('\n'))
+          try {
+            metadata = yaml.parse(metadataStrArr.slice(1, metadataStrArr.length - 1).join('\n'))
+          } catch (e) {
+            if (e instanceof YAMLParseError && e.code === 'TAB_AS_INDENT') {
+              const str = metadataStrArr.map(replacePrefixIndent).slice(1, metadataStrArr.length - 1).join('\n')
+              try {
+                metadata = yaml.parse(str)
+              } catch (e) {
+                if (e instanceof YAMLParseError && e.code === 'TAB_AS_INDENT') {
+                  reject(new Error(`Failed to parse markdown file ${postPath}, 
+                  neither modify environment variable \`YAML_INDENT_SPACE_COUNT\` or remove \`\\t\` in your yaml config.`, { cause: e }))
+                  return
+                }
+              }
+            } else {
+              // man! what else can I do?
+              reject(e)
+              return
+            }
+          }
           html = markdownToHtml(content.join('\n'))
         }
         resolve({

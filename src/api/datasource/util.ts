@@ -98,3 +98,28 @@ export const markdownToHtml = (markdownContent: string): string => {
 export const highlight = (html: string): React.ReactNode => {
   return processPostContent(html)
 }
+
+const YAML_INDEX_SPACES_FILL: string = (new Array(Number.parseInt(process.env.YAML_INDENT_SPACE_COUNT, 10))).map(() => ' ').join('')
+
+/**
+ * 将 `\t` 替换为 `两个空格`.<p>
+ * 用于处理 yaml 中使用了 `\t` 作为缩进的问题
+ * @param str
+ */
+export const replacePrefixIndent = (str: string): string => {
+  let i = 0
+  while (i < str.length && str.charAt(i) === '\t') {
+    i++
+  }
+  if (i === str.length) {
+    return ''
+  }
+  if (i === 0) {
+    return str
+  }
+  const spaces: string[] = []
+  for (let j = 0; j < i; j++) {
+    spaces.push(YAML_INDEX_SPACES_FILL)
+  }
+  return spaces.join('') + str.substring(i)
+}

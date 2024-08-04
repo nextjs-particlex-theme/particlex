@@ -12,5 +12,10 @@ declare namespace NodeJS {
      * 开启数据源缓存.
      */
     readonly DATASOURCE_CACHE_ENABLE: 'true' | 'false' | undefined
+    /**
+     * yaml 缩进占几个空格，用于快速修复博客中使用 `\t` 进行缩进的问题. <p>
+     * 默认为 2.
+     */
+    readonly YAML_INDENT_SPACE_COUNT: string
   }
 }
