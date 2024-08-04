@@ -9,11 +9,14 @@ import readline from 'node:readline'
 import fs from 'node:fs'
 import yaml from 'yaml'
 import { globSync } from 'glob'
-import type { DataSourceConfig } from '@/api/datasource/types/definitions'
+import type { Category, DataSourceConfig, Tag } from '@/api/datasource/types/definitions'
 import { StaticResource } from '@/api/datasource/types/resource/StaticResource'
 import type { SEO } from '@/api/datasource/types/resource/Post'
 import Post from '@/api/datasource/types/resource/Post'
 import type { BlogDataSource } from '@/api/datasource/types/BlogDataSource'
+import type { CacheProvider } from '@/lib/CacheProvider'
+import { CacheProviderImpl } from '@/lib/CacheProvider'
+import cached from '@/lib/cached'
 
 type AbstractBlogDataSourceCons = {
   /**
@@ -56,30 +59,25 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
 
   protected readonly config: AbstractBlogDatasourceConfig
 
-  private postCache: Map<string, Post> | undefined
-  
-  private resourceCache: Map<string, StaticResource> | undefined
-  
+  private cacheProvider: CacheProvider = new CacheProviderImpl()
+
+  // private postCache: Map<string, Post> | undefined
+
+  // private resourceCache: Map<string, StaticResource> | undefined
+
   protected constructor(config: AbstractBlogDataSourceCons) {
     this.config = {
       homePostGlob: `${config.homePostDirectory}/**/*.md`,
       postGlob: `${config.postDirectory}/**/*.md`,
       resourceGlob: `${config.resourceDirectory}/**/*`
     }
-    this.getAllPost().then(r => {
-      const postCache = new Map<string, Post>()
-      for (let post of r) {
-        postCache.set(this.buildCacheKey(post.source), post)
-      }
-      this.postCache = postCache
-    })
+  }
 
-  }
-  
+
   protected buildCacheKey(path: string[]): string {
-    return path.join('-')
+    return path.join('/')
   }
-  
+
 
   /**
    * 获取配置
@@ -98,6 +96,30 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
    */
   abstract resolveStaticResourceWebPath(path: string): string[]
 
+  @cached()
+  async getTagMapping(): Promise<Map<Tag, Post>> {
+    const posts = await this.getAllPost()
+    const r = new Map<Category, Post>()
+    for (let post of posts) {
+      for (let tag of post.tags) {
+        r.set(tag, post)
+      }
+    }
+    return r
+  }
+
+  @cached()
+  async getCategoriesMapping(): Promise<Map<Category, Post>> {
+    const posts = await this.getAllPost()
+    const r = new Map<Category, Post>()
+    for (let post of posts) {
+      for (let category of post.categories) {
+        r.set(category, post)
+      }
+    }
+    return r
+  }
+
   async pageHomePosts(page: number = 0, size: number = 5): Promise<Post[]> {
     const files = globSync(this.config.homePostGlob, { cwd: process.env.BLOG_PATH })
     return (await this.parseMarkdownFiles(files, page * size, size)).sort((a, b) => {
@@ -107,15 +129,18 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
     })
   }
 
+  @cached()
   pagePostsSize(): Promise<number> {
     return Promise.resolve(globSync(this.config.homePostGlob, { cwd: process.env.BLOG_PATH }).length)
   }
 
+  @cached()
   async getAllPost(): Promise<Post[]> {
     const files = globSync(this.config.postGlob, { cwd: process.env.BLOG_PATH })
     return await this.parseMarkdownFiles(files)
   }
 
+  @cached()
   getAllStaticResource(): Promise<StaticResource[]> {
     const files = globSync(this.config.resourceGlob, { cwd: process.env.BLOG_PATH })
     return Promise.resolve(
@@ -187,17 +212,42 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
         date: metadata.date ? new Date(metadata.date).valueOf() : undefined,
         source,
         id: source.join('-'),
-        slug: '',
         toc: generateShallowToc(content, utilMarkdownGenerateCaster),
         content: highlight(content),
-        tags: [],
-        categories: [],
+        tags: this.parseTagAndCategories(metadata.tags),
+        categories: this.parseTagAndCategories(metadata.categories),
         // will init later before return.
         seo: (null as any)
       }
       postData.seo = this.parseSeoConfig(postData, metadata.seo)
 
       r.push(new Post(postData))
+    }
+    return r
+  }
+
+  private parseTagAndCategories(val?: any): string[] {
+    if (!val) {
+      return []
+    }
+    if (Array.isArray(val)) {
+      return val
+    }
+    if (typeof val === 'string') {
+      return [val]
+    }
+    // 兼容历史遗留写法. 这个写法是之前 hexo particlex 主题特有的
+    //  categories:
+    //    data:
+    //      - { name: "Hello", path: "/hello/" }
+    if (!val.data || !Array.isArray(val.data)) {
+      return []
+    }
+    const r: string[] = []
+    for (let datum of val.data) {
+      if (typeof datum.name === 'string') {
+        r.push(datum.name)
+      }
     }
     return r
   }
@@ -218,28 +268,32 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
       keywords: fakeType.keywords ?? []
     }
   }
+
+  @cached()
+  private async postMap(): Promise<Map<string, Post>> {
+    const r = await this.getAllPost()
+    const result = new Map<string, Post>()
+    for (let p of r) {
+      result.set(this.buildCacheKey(p.source), p)
+    }
+    return result
+  }
   
   async getPostByWebUrl(url: string[]): Promise<Post | undefined> {
-    if (!this.postCache) {
-      const r = await this.getAllPost()
-      const resourceCache = new Map<string, Post>()
-      for (let p of r) {
-        resourceCache.set(this.buildCacheKey(p.source), p)
-      }
-      this.postCache = resourceCache
+    return (await this.postMap()).get(this.buildCacheKey(url))
+  }
+
+  @cached()
+  private async staticResourceMap(): Promise<Map<string, StaticResource>> {
+    const r = await this.getAllStaticResource()
+    const resourceCache = new Map<string, StaticResource>()
+    for (let staticResource of r) {
+      resourceCache.set(this.buildCacheKey(staticResource.accessPath), staticResource)
     }
-    return this.postCache.get(this.buildCacheKey(url))
+    return resourceCache
   }
 
   async getStaticResourceByWebUrl(url: string[]): Promise<StaticResource | undefined> {
-    if (!this.resourceCache) {
-      const r = await this.getAllStaticResource()
-      const resourceCache = new Map<string, StaticResource>()
-      for (let staticResource of r) {
-        resourceCache.set(this.buildCacheKey(staticResource.accessPath), staticResource)
-      }
-      this.resourceCache = resourceCache
-    }
-    return this.resourceCache.get(this.buildCacheKey(url))
+    return (await this.staticResourceMap()).get(this.buildCacheKey(url))
   }
 }

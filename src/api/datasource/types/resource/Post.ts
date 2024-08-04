@@ -5,18 +5,12 @@ import type { Category, Resource, Tag, TocItem } from '@/api/datasource/types/de
 /**
  * 构造器参数. 注意: <b>任何对象，都不应该直接使用数据源提供的对象，以免代入多余属性</b>
  * <p>
- * 考虑使用下面的方法来过滤数据源对象多余的属性：
- * <ul>
- *   <li>{@link purifyCategoryData}</li>
- *   <li>{@link purifyTagData}</li>
- * </ul>
  */
 type PostConstructor = {
   id: string | number
   title: string
   date?: number
   content: ReactNode
-  slug: string
   source: string[]
   categories: Category[]
   tags: Tag[]
@@ -77,10 +71,6 @@ export default class Post implements Resource {
    */
   public content: ReactNode
   /**
-   * 不带后缀的文件名
-   */
-  public slug: string
-  /**
    * 相对于博客访问路径. 例如博客文件：`_posts/2024/02/xxx.md` 会被转换成 `/2024/02/xxx`
    */
   public source: string[]
@@ -108,7 +98,6 @@ export default class Post implements Resource {
     this.title = data.title
     this.date = data.date
     this.content = data.content
-    this.slug = data.slug
     this.source = data.source
     this.categories = data.categories
     this.tags = data.tags

@@ -2,7 +2,7 @@ import { JSDOM } from 'jsdom'
 import showdown from 'showdown'
 import type React from 'react'
 import processPostContent from '@/api/datasource/html-content-process'
-import type { Category, Tag, TocItem } from '@/api/datasource/types/definitions'
+import type { TocItem } from '@/api/datasource/types/definitions'
 
 const LEVEL_MAPPING: Record<string, number> = {
   H1: 0,
@@ -73,26 +73,6 @@ export function generateShallowToc(html?: string, caster?: TitleCaster): TocItem
     // FIXME 如何处理? 父节点不存在，例如 h1 里面 套了个 h3.
   })
   return parentStack[0].child
-}
-
-/**
- * 取出 tag 需要的属性
- */
-export function purifyTagData(tag: Tag): Tag {
-  // TODO.
-  return {
-    ...tag
-  }
-}
-
-/**
- * 取出 category 需要的属性
- */
-export const purifyCategoryData = (category: Category): Category => {
-  return {
-    name: category.name,
-    path: category.path
-  }
 }
 
 /**

@@ -53,3 +53,15 @@ export const arraySpliceKeepOriginal = <T> (arr: Readonly<T[]>, start: number, d
   }
   return result
 }
+
+/**
+ * 判断是否为 promise
+ */
+export const isPromise = (val: unknown): val is Promise<unknown> => {
+  return (
+    val !== null &&
+    typeof val === 'object' &&
+    typeof (val as Promise<unknown>).then === 'function' &&
+    typeof (val as Promise<unknown>).catch === 'function'
+  )
+}

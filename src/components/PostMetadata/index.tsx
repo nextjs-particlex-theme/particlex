@@ -24,7 +24,7 @@ const PostMetadata: React.FC<PostMetadataProps> = ({ hideDate, post, className }
                 <use xlinkHref={Icons.BOOKMARK}/>
               </svg>
               {
-                post.categories.map(v => (<Link href={v.path} key={v.name}>{v.name}</Link>))
+                post.categories.map(v => (<Link href="/categories" key={v}>{v}</Link>))
               }
             </div>
           )

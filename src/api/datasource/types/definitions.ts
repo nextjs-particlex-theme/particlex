@@ -15,14 +15,9 @@ export type TocItem = {
   child: TocItem[]
 }
 
-export type Tag = {
+export type Tag = string
 
-}
-
-export type Category = {
-  name: string
-  path: string
-}
+export type Category = string
 
 
 export type DataSourceConfig = {
