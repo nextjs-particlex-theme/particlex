@@ -30,7 +30,8 @@
     .title-1 {
         position: sticky;
         top: -1px;
-        background: var(--background-color);
+        background-color: var(--background-color);
+        z-index: 10;
     }
 
     @mixin subTitleBase($level: 0) {
@@ -38,6 +39,7 @@
         border-color: rgb(148 163 184);
         border-left-width: 2px;
         padding-left: 10px * $level;
+        z-index: 10 - $level;
     }
 
     .title-2 {
