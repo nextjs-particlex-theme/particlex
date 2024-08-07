@@ -187,7 +187,6 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
                 }
               }
             } else {
-              // man! what else can I do?
               reject(e)
               return
             }

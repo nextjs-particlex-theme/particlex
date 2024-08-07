@@ -1,0 +1,83 @@
+$subPrimaryColor: #66afef80;
+$primaryColor: #66afef;
+$baseContainerWidth: 36rem;
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: $baseContainerWidth;
+  height: $baseContainerWidth;
+}
+.loadingOutCircle {
+  position: absolute;
+  width: $baseContainerWidth + 1;
+  height: $baseContainerWidth + 1;
+  border-radius: 100%;
+  border: 0.5rem solid $subPrimaryColor;
+  border-left-color: $primaryColor;
+  animation-duration: 2s;
+  animation-name: loading-circle;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.loadingTitle {
+  animation-duration: 2s;
+  animation-name: loading-title;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes loading-title {
+  0% {
+    color: $primaryColor;
+  }
+
+  50% {
+    color: $subPrimaryColor;
+  }
+
+  100% {
+    color: $primaryColor;
+  }
+
+}
+
+@keyframes loading-circle {
+
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+
+}
+
+.loadingText {
+  margin-bottom: 0.5rem;
+  &::after {
+    animation-duration: 2s;
+    content: '';
+    animation-name: loading-text;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+}
+
+
+@keyframes loading-text {
+  0% {
+    content: '.';
+  }
+
+  50% {
+    content: '..';
+  }
+
+  100% {
+    content: '...';
+  }
+}
