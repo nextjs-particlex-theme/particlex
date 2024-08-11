@@ -48,11 +48,11 @@ export interface BlogDataSource {
   /**
    * 获取标签下对应的所有 Post
    */
-  getTagMapping(): Promise<Readonly<Map<Tag, Post>>>
+  getTagMapping(): Promise<Map<Tag, Readonly<Post[]>>>
 
   /**
    * 获取某个分类下对应的所有 Post
    */
-  getCategoriesMapping(): Promise<Readonly<Map<Category, Post>>>
+  getCategoriesMapping(): Promise<Map<Category, Readonly<Post[]>>>
 }
 

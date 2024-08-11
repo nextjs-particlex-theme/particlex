@@ -16,6 +16,7 @@ type PostConstructor = {
   tags: Tag[]
   toc: TocItem[]
   seo: SEO
+  wordCount: number
 }
 
 /**
@@ -54,6 +55,7 @@ export type ClientSafePost = {
   categories: Category[]
   tags: Tag[]
   formattedTime: string
+  wordCount: number
 }
 
 export default class Post implements Resource {
@@ -92,6 +94,11 @@ export default class Post implements Resource {
    */
   public seo: SEO
 
+  /**
+   * 文章字数
+   */
+  public wordCount: number
+
 
   constructor(data: PostConstructor) {
     this.id = data.id
@@ -103,6 +110,7 @@ export default class Post implements Resource {
     this.tags = data.tags
     this.toc = data.toc
     this.seo = data.seo
+    this.wordCount = data.wordCount
   }
 
 
@@ -133,7 +141,8 @@ export default class Post implements Resource {
       tags: deepCopy(this.tags),
       source: this.getAccessPath(),
       id: this.id,
-      formattedTime: this.formattedTime
+      formattedTime: this.formattedTime,
+      wordCount: this.wordCount
     }
   }
 

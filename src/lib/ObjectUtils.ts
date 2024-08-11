@@ -65,3 +65,26 @@ export const isPromise = (val: unknown): val is Promise<unknown> => {
     typeof (val as Promise<unknown>).catch === 'function'
   )
 }
+
+
+type MapAble<K, V> = {
+  map: <R> (callbackFn: (value: V, key: K) => R) => R[]
+}
+
+/**
+ * 对 {@link Map} 实现 {@link Array#map} 方法.
+ * <p>
+ * 之所以需要在外面额外调用一下 {@link MapAble#map} 是为了提供语法检查，防止漏传 key.
+ * @param map map
+ */
+export const toMapAble = <K, V> (map: Readonly<Map<K, V>>): MapAble<K, V> => {
+  return {
+    map<R>(callbackFn: (value: V, key: K) => R): R[] {
+      const result: R[] = []
+      map.forEach((value, key) => {
+        result.push(callbackFn(value, key))
+      })
+      return result
+    }
+  }
+}

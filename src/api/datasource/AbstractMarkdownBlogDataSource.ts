@@ -90,24 +90,34 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
   abstract resolveStaticResourceWebPath(path: string): string[]
 
   @cached()
-  async getTagMapping(): Promise<Map<Tag, Post>> {
+  async getTagMapping(): Promise<Map<Tag, Post[]>> {
     const posts = await this.getAllPost()
-    const r = new Map<Category, Post>()
+    const r = new Map<Tag, Post[]>()
     for (let post of posts) {
       for (let tag of post.tags) {
-        r.set(tag, post)
+        let o = r.get(tag)
+        if (!o) {
+          o = []
+          r.set(tag, o)
+        }
+        o.push(post)
       }
     }
     return r
   }
 
   @cached()
-  async getCategoriesMapping(): Promise<Map<Category, Post>> {
+  async getCategoriesMapping(): Promise<Map<Category, Post[]>> {
     const posts = await this.getAllPost()
-    const r = new Map<Category, Post>()
+    const r = new Map<Category, Post[]>()
     for (let post of posts) {
       for (let category of post.categories) {
-        r.set(category, post)
+        let o = r.get(category)
+        if (!o) {
+          o = []
+          r.set(category, o)
+        }
+        o.push(post)
       }
     }
     return r
@@ -227,6 +237,7 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
         content: highlight(content),
         tags: this.parseTagAndCategories(metadata.tags),
         categories: this.parseTagAndCategories(metadata.categories),
+        wordCount: content.length,
         // will init later before return.
         seo: (null as any)
       }

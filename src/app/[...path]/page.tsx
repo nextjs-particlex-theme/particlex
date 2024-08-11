@@ -50,10 +50,9 @@ const PostPage: React.FC<{params: Param}> = async ({ params }) => {
       </div>
     )
   }
-  const meta = await datasource.getConfig()
   return (
     <div>
-      <Header title={meta.title}/>
+      <Header/>
       <div id="container" className="fade-in w-[56rem] rounded-3xl pt-40 pb-40 p-12 box-border overflow-hidden relative m-auto">
         <h1 className="text-3xl font-bold">
           {post.title}

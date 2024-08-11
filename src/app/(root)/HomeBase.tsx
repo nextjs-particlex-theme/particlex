@@ -13,14 +13,14 @@ interface RootLayoutProps {
 }
 
 const HomeBase: React.FC<RootLayoutProps> = async props => {
-  const { title,background, indexPageSize,description, subtitle } = await datasource.getConfig()
+  const { title, background, indexPageSize,description, subtitle } = await datasource.getConfig()
   const posts = await datasource.pageHomePosts(props.currentPage, indexPageSize)
   const total = await datasource.pagePostsSize()
   const p = Math.ceil(total / indexPageSize)
 
   return (
     <div>
-      <Header title={title} autoTransparentOnTop/>
+      <Header autoTransparentOnTop/>
       <div id="container" className="fade-in">
         <RootImageHeader images={background} title={title} description={description} subtitle={subtitle}/>
         <div className="flex flex-col items-center">

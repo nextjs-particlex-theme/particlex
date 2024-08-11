@@ -7,14 +7,11 @@ interface HeaderProps {
    * 当滑动到顶部时，自动透明. 默认 false
    */
   autoTransparentOnTop?: boolean
-  /**
-   * 博客标题
-   */
-  title: string
 }
 
 
 const Header: React.FC<HeaderProps> = async (props) => {
+  const meta = await datasource.getConfig()
   let aboutPageUrl: string
   if ((await datasource.getPostByWebUrl(['about']))) {
     aboutPageUrl = '/about'
@@ -24,7 +21,7 @@ const Header: React.FC<HeaderProps> = async (props) => {
     aboutPageUrl = ''
   }
   return (
-    <HeaderClient {...props} aboutPageUrl={aboutPageUrl} showAboutPage={!!aboutPageUrl} />
+    <HeaderClient title={meta.title} autoTransparentOnTop={props.autoTransparentOnTop} aboutPageUrl={aboutPageUrl} showAboutPage={!!aboutPageUrl} />
   )
 }
 
