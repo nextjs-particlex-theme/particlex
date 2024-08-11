@@ -15,11 +15,21 @@ interface PostMetadataProps {
  */
 const PostMetadata: React.FC<PostMetadataProps> = ({ hideDate, post, className }) => {
   return (
-    <div className={`flex [&>div]:mr-6 text-subtext ${className}`}>
+    <div className={`flex text-subtext [&>div]:m-2  ${className}`}>
+      {
+        hideDate || !post.formattedTime ?
+          null :
+          <div className="flex">
+            <svg width={16} height={16}>
+              <use xlinkHref={Icons.CALENDAR}/>
+            </svg>
+            <span className="ml-2">{post.formattedTime}</span>
+          </div>
+      }
       {
         post.categories.length > 0 ?
           (
-            <div className="[&>span]:ml-2 flex">
+            <div className="flex items-center">
               <svg width={16} height={16}>
                 <use xlinkHref={Icons.BOOKMARK}/>
               </svg>
@@ -30,14 +40,19 @@ const PostMetadata: React.FC<PostMetadataProps> = ({ hideDate, post, className }
           )
           : null
       }
-      { hideDate || !post.formattedTime ?
-        null :
-        <div className="flex">
-          <svg width={16} height={16}>
-            <use xlinkHref={Icons.CALENDAR}/>
-          </svg>
-          <span className="ml-2">{post.formattedTime}</span>
-        </div>
+      {
+        post.tags.length > 0 ?
+          (
+            <div className="flex items-center">
+              <svg width={16} height={16}>
+                <use xlinkHref={Icons.TAG}/>
+              </svg>
+              {
+                post.tags.map(v => (<Link href="/tags" key={v}>{v}</Link>))
+              }
+            </div>
+          )
+          : null
       }
     </div>
   )
