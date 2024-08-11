@@ -5,6 +5,7 @@ import type { Metadata } from 'next'
 import { Icons } from '@/app/svg-symbols'
 import { toMapAble } from '@/lib/ObjectUtils'
 import CategoryItem from '@/components/CategoryItem'
+import CommentComponentInject from '@/components/CommentComponentInject'
 
 
 
@@ -44,6 +45,7 @@ const Categories: React.FC = async () => {
             ))
           }
         </div>
+        <CommentComponentInject/>
       </div>
     </>
   )

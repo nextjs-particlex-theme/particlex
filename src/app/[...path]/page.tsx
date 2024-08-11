@@ -7,6 +7,7 @@ import PostMetadata from '@/components/PostMetadata'
 import TableOfContent, { MAIN_CONTENT_ID } from '@/components/TableOfContent'
 import Link from 'next/link'
 import { generateSeoMetadata } from '@/lib/seo'
+import CommentComponentInject from '@/components/CommentComponentInject'
 
 
 export async function generateStaticParams(): Promise<Param[]> {
@@ -62,6 +63,7 @@ const PostPage: React.FC<{params: Param}> = async ({ params }) => {
           { post.content }
         </div>
         <TableOfContent tocItems={post.toc}/>
+        <CommentComponentInject/>
       </div>
     </div>
   )

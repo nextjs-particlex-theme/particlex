@@ -3,6 +3,7 @@ import datasource from '@/api/datasource'
 import Header from '@/components/Header'
 import SearchableArchives from '@/app/archives/SearchableArchives'
 import type { Metadata } from 'next'
+import CommentComponentInject from '@/components/CommentComponentInject'
 
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -21,6 +22,7 @@ export default async function ArchivesPage() {
       <Header />
       <div id="container" className="fade-in p-12 pt-40 w-[56rem] m-auto">
         <SearchableArchives posts={homePosts.map(v => v.toClientSafePost())}/>
+        <CommentComponentInject/>
       </div>
     </div>
   )
