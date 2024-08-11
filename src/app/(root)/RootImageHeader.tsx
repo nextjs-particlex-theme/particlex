@@ -59,7 +59,7 @@ const RootImageHeader:React.FC<RootImageHeaderProps> = props => {
         <div className={styles.loop}/>
         <div className={styles.loop}/>
         <div className={styles.titleContainer}>
-          <span className="text-5xl">{ props.title }</span>
+          <span className="text-5xl text-nowrap">{ props.title }</span>
           <span className="text-2xl pt-4">{ props.subtitle }</span>
           <span className="text-base pt-4">{ props.description }</span>
         </div>
