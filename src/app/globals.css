@@ -20,7 +20,7 @@
 body {
     background: var(--background-color);
     color: #1e3e3f;
-    font: 500 14px Lexend, "Noto Sans SC", sans-serif;
+    font: 500 0.9375rem Lexend, "Noto Sans SC", sans-serif;
     overflow-x: hidden;
     width: 100%;
 }

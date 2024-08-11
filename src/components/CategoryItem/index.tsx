@@ -24,9 +24,9 @@ const CategoryItem:React.FC<CategoryItemProps> = props => {
   return (
     <div className="mt-5">
       <div >
-        <div className="text-xl mb-2 text-primary">
+        <h2 className="text-xl mb-2 text-primary" id={props.name}>
           {props.name}
-        </div>
+        </h2>
         <div>
           共 { props.resources.length } 篇
         </div>

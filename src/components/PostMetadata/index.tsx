@@ -3,6 +3,7 @@ import { Icons } from '@/app/svg-symbols'
 import Link from 'next/link'
 import type { ClientSafePost } from '@/api/datasource/types/resource/Post'
 import type Post from '@/api/datasource/types/resource/Post'
+import { concatClassName } from '@/lib/DomUtils'
 
 interface PostMetadataProps {
   post: Readonly<Post | ClientSafePost>
@@ -15,7 +16,7 @@ interface PostMetadataProps {
  */
 const PostMetadata: React.FC<PostMetadataProps> = ({ hideDate, post, className }) => {
   return (
-    <div className={`flex text-subtext [&>div]:m-2  ${className}`}>
+    <div className={concatClassName('flex text-subtext [&>div:nth-child(n+2)]:ml-2', className)}>
       {
         hideDate || !post.formattedTime ?
           null :
@@ -33,9 +34,11 @@ const PostMetadata: React.FC<PostMetadataProps> = ({ hideDate, post, className }
               <svg width={16} height={16}>
                 <use xlinkHref={Icons.BOOKMARK}/>
               </svg>
-              {
-                post.categories.map(v => (<Link href="/categories" key={v}>{v}</Link>))
-              }
+              <div className="[&>a]:ml-2">
+                {
+                  post.categories.map(v => (<Link href={`/categories#${v}`} key={v}>{v}</Link>))
+                }
+              </div>
             </div>
           )
           : null
@@ -47,9 +50,11 @@ const PostMetadata: React.FC<PostMetadataProps> = ({ hideDate, post, className }
               <svg width={16} height={16}>
                 <use xlinkHref={Icons.TAG}/>
               </svg>
-              {
-                post.tags.map(v => (<Link href="/tags" key={v}>{v}</Link>))
-              }
+              <div className="[&>a]:ml-2">
+                {
+                  post.tags.map(v => (<Link href={`/tags#${v}`} key={v}>{v}</Link>))
+                }
+              </div>
             </div>
           )
           : null
