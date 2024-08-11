@@ -113,7 +113,22 @@ const replacePrefixIndent = (str: string): string => {
   return spaces.join('') + str.substring(i)
 }
 
+const REPLACE_REGX = /^\t+/g
 
+/**
+ * 创建一个错误，指出哪里使用了 TAB
+ */
+function indicateWhereContainsTab(yamlLines: string[], filePath: string): Error {
+  let msg: string[] = [`Failed to parse YAML in the markdown file '${filePath}'. The lines below start with a TAB (TABs are replaced by a '→'):`]
+  for (let i = 0; i < yamlLines.length; i++) {
+    const line = yamlLines[i]
+    if (line.startsWith('\t')) {
+      msg.push(`\tLine ${i + 1}, content: ${line.replaceAll(REPLACE_REGX, '→')}`)
+    }
+  }
+  msg.push('\nYou can either replace them with spaces or modify the environment variable \'YAML_INDENT_SPACE_COUNT\' to fix it automatically.')
+  return new Error(msg.join('\n'))
+}
 
 /**
  * markdown 转 html
@@ -165,19 +180,17 @@ export const parseMarkdownFile = (filepath: string): Promise<PostContent> => {
         metadata = {}
         html = markdownToHtml(metadataStrArr.join('\n'))
       } else {
+        const original = metadataStrArr.slice(1, metadataStrArr.length - 1)
         try {
-          metadata = yaml.parse(metadataStrArr.slice(1, metadataStrArr.length - 1).join('\n'))
+          metadata = yaml.parse(original.join('\n'))
         } catch (e) {
           if (e instanceof YAMLParseError && e.code === 'TAB_AS_INDENT') {
             const str = metadataStrArr.map(replacePrefixIndent).slice(1, metadataStrArr.length - 1).join('\n')
             try {
               metadata = yaml.parse(str)
             } catch (e) {
-              if (e instanceof YAMLParseError && e.code === 'TAB_AS_INDENT') {
-                reject(new Error(`Failed to parse markdown file ${filepath}, 
-                  neither modify environment variable \`YAML_INDENT_SPACE_COUNT\` or remove \`\\t\` in your yaml config.`, { cause: e }))
-                return
-              }
+              reject(indicateWhereContainsTab(original, filepath))
+              return
             }
           } else {
             reject(e)
