@@ -1,12 +1,13 @@
 import { expect, test } from '@jest/globals'
-import { generateShallowToc } from '@/api/datasource/util'
 import type { TocItem } from '@/api/datasource/types/definitions'
+import { __test_generateShallowToc } from '@/api/datasource/markdown-parser'
+
 
 /**
  * 正确标题内容，生成正确信息
  */
 test('generateShallowToc_rightContent_generateSuccess', () => {
-  const r = generateShallowToc(`
+  const r = __test_generateShallowToc?.(`
       <h1>111</h1>
       <div>eee</div>
       <p>222</p>
@@ -59,7 +60,7 @@ test('generateShallowToc_rightContent_generateSuccess', () => {
  * 混乱的标题，忽略错误的标题
  */
 test('generateShallowToc_disOrderedContent_ignoreBadHeading', () => {
-  const content = generateShallowToc(`
+  const content = __test_generateShallowToc?.(`
       <h2>222</h2>  
       <h1>111</h1>
       <h3>333</h3>
@@ -80,7 +81,7 @@ test('generateShallowToc_disOrderedContent_ignoreBadHeading', () => {
  * 没有任何标题，返回空数组
  */
 test('generateShallowToc_noHeading_returnEmptyArray', () => {
-  const content = generateShallowToc('<div><span>hello</span></div>')
+  const content = __test_generateShallowToc?.('<div><span>hello</span></div>')
   expect(content).toStrictEqual([])
 })
 
@@ -88,7 +89,7 @@ test('generateShallowToc_noHeading_returnEmptyArray', () => {
  * 使用内嵌标题，忽略内嵌的标题
  */
 test('generateShallowToc_nestedHeading_ignoreNestedHeading', () => {
-  const content = generateShallowToc(`
+  const content = __test_generateShallowToc?.(`
     <h1>111</h1>
     <div>
         <h2>n222</h2>

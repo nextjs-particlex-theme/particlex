@@ -1,13 +1,4 @@
 import path from 'node:path'
-import {
-  generateShallowToc,
-  highlight,
-  markdownToHtml, replacePrefixIndent,
-  utilMarkdownGenerateCaster
-} from '@/api/datasource/util'
-import readline from 'node:readline'
-import fs from 'node:fs'
-import yaml, { YAMLParseError } from 'yaml'
 import { globSync } from 'glob'
 import type { Category, DataSourceConfig, Tag } from '@/api/datasource/types/definitions'
 import { StaticResource } from '@/api/datasource/types/resource/StaticResource'
@@ -15,6 +6,9 @@ import type { SEO } from '@/api/datasource/types/resource/Post'
 import Post from '@/api/datasource/types/resource/Post'
 import type { BlogDataSource } from '@/api/datasource/types/BlogDataSource'
 import cached from '@/lib/cached'
+import processPostContent from '@/api/datasource/html-content-process'
+import type { PostContent } from '@/api/datasource/markdown-parser'
+import { parseMarkdownFile } from '@/api/datasource/markdown-parser'
 
 type AbstractBlogDataSourceCons = {
   /**
@@ -44,11 +38,6 @@ type AbstractBlogDatasourceConfig = {
    * 资源目录
    */
   resourceGlob: string
-}
-
-type PostContent = {
-  metadata: any
-  content: string
 }
 
 type PostConstructor = ConstructorParameters<typeof Post>[0]
@@ -152,65 +141,6 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
     )
   }
 
-  private parsePostContent(postPath: string): Promise<PostContent> {
-    return new Promise((resolve, reject) => {
-      const rl = readline.createInterface({
-        input: fs.createReadStream(postPath),
-      })
-      const metadataStrArr: string[] = []
-      // 0: expect start.
-      // 1: expect end.
-      // 2: collected.
-      let metadataCollectStatus = 0
-      const content: string[] = []
-
-      rl.on('line', (line) => {
-        if (metadataCollectStatus < 2) {
-          metadataStrArr.push(line)
-          if (line.startsWith('---')) {
-            metadataCollectStatus++
-          }
-        } else {
-          content.push(line)
-        }
-      })
-
-      rl.on('close', () => {
-        let metadata: any
-        let html: string
-        if (metadataCollectStatus < 2) {
-          metadata = {}
-          html = markdownToHtml(metadataStrArr.join('\n'))
-        } else {
-          try {
-            metadata = yaml.parse(metadataStrArr.slice(1, metadataStrArr.length - 1).join('\n'))
-          } catch (e) {
-            if (e instanceof YAMLParseError && e.code === 'TAB_AS_INDENT') {
-              const str = metadataStrArr.map(replacePrefixIndent).slice(1, metadataStrArr.length - 1).join('\n')
-              try {
-                metadata = yaml.parse(str)
-              } catch (e) {
-                if (e instanceof YAMLParseError && e.code === 'TAB_AS_INDENT') {
-                  reject(new Error(`Failed to parse markdown file ${postPath}, 
-                  neither modify environment variable \`YAML_INDENT_SPACE_COUNT\` or remove \`\\t\` in your yaml config.`, { cause: e }))
-                  return
-                }
-              }
-            } else {
-              reject(e)
-              return
-            }
-          }
-          html = markdownToHtml(content.join('\n'))
-        }
-        resolve({
-          metadata: metadata ?? {},
-          content: html
-        })
-      })
-    })
-  }
-
   /**
    * 解析 markdown 文件，返回解析后的内容
    * @param files 需要解析的文件
@@ -225,16 +155,16 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
 
     for (let i = Math.max(0, begin); i < len; i++) {
       const file = files[i]
-      const { metadata, content } = await this.parsePostContent(path.resolve(process.env.BLOG_PATH, file))
+      const { metadata, content, toc } = await parseMarkdownFile(path.resolve(process.env.BLOG_PATH, file))
       let source = this.resolvePostWebPath(file)
 
       const postData: PostConstructor = {
-        title: metadata.title,
+        title: metadata.title ?? 'Untitled',
         date: metadata.date ? new Date(metadata.date).valueOf() : undefined,
         source,
         id: source.join('-'),
-        toc: generateShallowToc(content, utilMarkdownGenerateCaster),
-        content: highlight(content),
+        toc,
+        content: processPostContent(content),
         tags: this.parseTagAndCategories(metadata.tags),
         categories: this.parseTagAndCategories(metadata.categories),
         wordCount: content.length,
@@ -280,7 +210,7 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
    * @param seo seo 配置
    * @protected
    */
-  protected parseSeoConfig(data: Omit<PostConstructor, 'seo'>, seo?: Record<string, undefined | string>): SEO {
+  protected parseSeoConfig(data: Omit<PostConstructor, 'seo'>, seo: PostContent['metadata']['seo']): SEO {
     const fakeType = (seo ?? {}) as Partial<SEO>
 
     return {
