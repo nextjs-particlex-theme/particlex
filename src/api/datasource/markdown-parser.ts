@@ -5,6 +5,9 @@ import showdown from 'showdown'
 import type { TocItem } from '@/api/datasource/types/definitions'
 import { JSDOM } from 'jsdom'
 
+
+showdown.setFlavor('github')
+
 export type PostContent = {
   metadata: {
     title?: string
@@ -144,7 +147,6 @@ const markdownToHtml = (markdownContent: string): string => {
   })
   return sd.makeHtml(markdownContent)
 }
-
 
 /**
  * 解析 markdown 文件
