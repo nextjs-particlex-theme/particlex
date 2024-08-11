@@ -6,7 +6,16 @@ export const generateSeoMetadata = async (post: Post): Promise<Metadata> => {
   const config = await datasource.getConfig()
   const { seo } = post
 
-  const title = seo.title.includes('|') ? seo.title : `${seo.title} | ${config.title}`
+  let title: string
+  if (seo.title) {
+    if (seo.title.includes('|')) {
+      title = seo.title
+    } else {
+      title = `${seo.title} | ${config.title}`
+    }
+  } else {
+    title = `${post.title} | ${config.title}`
+  }
 
   return {
     title,

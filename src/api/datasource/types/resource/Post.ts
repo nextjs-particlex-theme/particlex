@@ -33,7 +33,7 @@ export type SEO = {
    * 覆盖网页标题.<p>
    * [影响标题链接的最佳实践](https://developers.google.cn/search/docs/appearance/title-link?hl=zh-cn#page-titles)
    */
-  title: string
+  title?: string
   /**
    * 页面描述.<p>
    * [使用高质量的描述](https://developers.google.cn/search/docs/appearance/snippet?hl=zh-cn#use-quality-descriptions)
