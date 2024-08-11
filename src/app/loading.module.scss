@@ -15,9 +15,7 @@ $baseContainerWidth: 36rem;
   width: $baseContainerWidth + 1;
   height: $baseContainerWidth + 1;
   border-radius: 100%;
-  border: 0.5rem solid $subPrimaryColor;
-  border-left-color: $primaryColor;
-  animation-duration: 2s;
+  animation-duration: 3s;
   animation-name: loading-circle;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
@@ -47,11 +45,23 @@ $baseContainerWidth: 36rem;
 
 @keyframes loading-circle {
 
-  0% {
-    transform: rotate(0);
+  @mixin begin{
+    opacity: .4;
+    box-shadow: 0 1px 2px rgba(0, 147, 223, 0.4), 0 1px 1px rgba(0, 147, 223, 0.1) inset;
   }
+
+  0% {
+    @include begin
+  }
+
+  50% {
+    opacity: 1;
+    border: 1px solid rgba(59, 235, 235, 0.7);
+    box-shadow: 0 1px 30px $primaryColor, 0 1px 20px $primaryColor inset;
+  }
+
   100% {
-    transform: rotate(360deg);
+    @include begin
   }
 
 }
