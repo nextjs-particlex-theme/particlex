@@ -5,9 +5,9 @@
 @layer base {
     :root {
         --color-white: #fff;
-        --color-text-sub: #5c6b72;
-        --color-text-sub2: rgb(156 163 175);
-        --color-text: #1e3e3f;
+        --color-text-sub: #000000E0;
+        --color-text-sub2: #000000A6;
+        --color-text: #000000E0;
         --color-primary: #66afef;
         --color-error: #ef4444;
         --border-color: #D9D9D9FF;

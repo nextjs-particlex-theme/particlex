@@ -1,14 +1,15 @@
 .postContainer {
   //font-size: 0.9375rem;
   font-size: 1rem;
+  color: var(--color-text-sub-2);
   h1 {
     font-size: 30px !important
   }
 
   h1,h2,h3,h4,h5,h6 {
-    color: #1e3e3f;
+    color: var(--color-text);
     font-weight: 700;
-    margin: 15px 0
+    margin: 15px 0;
   }
 
   h2 {
