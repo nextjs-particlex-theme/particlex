@@ -29,7 +29,7 @@ export default function RootLayout({
   resource: React.ReactNode
 }>) {
   return (
-    <html lang="zh">
+    <html lang="zh" className="text-[14px] md:text-[16px]">
       <PreloadResources/>
       <body>
         <SvgSymbols/>

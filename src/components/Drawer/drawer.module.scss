@@ -1,0 +1,24 @@
+.default {
+  width: 100%;
+
+}
+.open {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+}
+.close {
+
+}
+
+
+.drawerContainer {
+  width: 200vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  background-color: #00000040;
+  z-index: var(--z-index-mask);
+  transform: translateX(-100vw);
+  opacity: 0;
+  transition: all .3s;
+}

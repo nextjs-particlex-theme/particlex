@@ -7,7 +7,7 @@ import { concatClassName } from '@/lib/DomUtils'
 const Footer:React.FC =  async () => {
   const config = await datasource.getConfig()
   return (
-    <div id="footer" className={concatClassName('link-styled-container', styles.footerContainer, 'w-[56rem]')}>
+    <div id="footer" className={concatClassName('link-styled-container', styles.footerContainer, 'md:w-[56rem]')}>
       <div className="mt-2">
         <span>{config.title}</span>
         <span>&nbsp;</span>

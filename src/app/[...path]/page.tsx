@@ -8,6 +8,7 @@ import TableOfContent, { MAIN_CONTENT_ID } from '@/components/TableOfContent'
 import Link from 'next/link'
 import { generateSeoMetadata } from '@/lib/seo'
 import CommentComponentInject from '@/components/CommentComponentInject'
+import PostContainer from '@/components/PostContainer'
 
 
 export async function generateStaticParams(): Promise<Param[]> {
@@ -54,7 +55,7 @@ const PostPage: React.FC<{params: Param}> = async ({ params }) => {
   return (
     <div>
       <Header/>
-      <div id="container" className="fade-in w-[56rem] rounded-3xl pt-40 pb-40 p-12 box-border overflow-hidden relative m-auto">
+      <PostContainer id="container" className="fade-in">
         <h1 className="text-3xl font-bold">
           {post.title}
         </h1>
@@ -64,7 +65,7 @@ const PostPage: React.FC<{params: Param}> = async ({ params }) => {
         </div>
         <TableOfContent tocItems={post.toc}/>
         <CommentComponentInject/>
-      </div>
+      </PostContainer>
     </div>
   )
 }

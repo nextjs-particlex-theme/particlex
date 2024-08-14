@@ -1,6 +1,6 @@
-import HeaderClient from '@/components/Header/HeaderClient'
 import React from 'react'
 import datasource from '@/api/datasource'
+import HeaderClientAdapter from '@/components/Header/HeaderClientAdapter'
 
 interface HeaderProps {
   /**
@@ -21,7 +21,10 @@ const Header: React.FC<HeaderProps> = async (props) => {
     aboutPageUrl = ''
   }
   return (
-    <HeaderClient title={meta.title} autoTransparentOnTop={props.autoTransparentOnTop} aboutPageUrl={aboutPageUrl} showAboutPage={!!aboutPageUrl} />
+    <HeaderClientAdapter title={meta.title} 
+      autoTransparentOnTop={props.autoTransparentOnTop} 
+      aboutPageUrl={aboutPageUrl} 
+      showAboutPage={!!aboutPageUrl} />
   )
 }
 

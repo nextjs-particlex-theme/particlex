@@ -24,6 +24,7 @@ type HeadingElement = {
 /**
  * 目录组件.
  * 使用时必须将为文章容器元素添加id： {@link MAIN_CONTENT_ID}
+ * TODO 适配移动端.
  */
 const TableOfContent:React.FC<TableOfContentProps> = props => {
   const topics = useRef<HeadingElement[]>([])
@@ -139,19 +140,21 @@ const TableOfContent:React.FC<TableOfContentProps> = props => {
 
   return createPortal(
     (
-      <div className="toc-out-container" style={{ width: containerWidth }}>
-        <div className="toc-container">
-          <div className="text-xl">目录</div>
-          {
-            expandedTocItems.map((v, index) => (
-              <Link key={v.anchor}
-                onClick={() => onTocItemClick(index)}
-                href={v.anchor}
-                className={`title-${v.level} ${activeIndex === index ? 'active-title' : ''}`}>
-                {v.title}
-              </Link>
-            ))
-          }
+      <div className="hidden md:block">
+        <div className="toc-out-container" style={{ width: containerWidth }}>
+          <div className="toc-container">
+            <div className="text-xl">目录</div>
+            {
+              expandedTocItems.map((v, index) => (
+                <Link key={v.anchor}
+                  onClick={() => onTocItemClick(index)}
+                  href={v.anchor}
+                  className={`title-${v.level} ${activeIndex === index ? 'active-title' : ''}`}>
+                  {v.title}
+                </Link>
+              ))
+            }
+          </div>
         </div>
       </div>
     ),

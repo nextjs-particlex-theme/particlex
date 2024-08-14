@@ -21,10 +21,10 @@ const HomeBase: React.FC<RootLayoutProps> = async props => {
   return (
     <div>
       <Header autoTransparentOnTop/>
-      <div id="container" className="fade-in">
+      <div id="container" className="fade-in overflow-x-hidden md:overflow-x-auto">
         <RootImageHeader images={background} title={title} description={description} subtitle={subtitle}/>
-        <div className="flex flex-col items-center">
-          <div>
+        <div className="flex flex-col items-center p-3 w-full">
+          <div className="w-full">
             {
               posts.map(val => (<PostPreview post={val} key={val.id}/>))
             }
