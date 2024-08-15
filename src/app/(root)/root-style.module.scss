@@ -50,25 +50,16 @@ $postContainerMargin: 32px;
   .loop {
     z-index: 10;
   }
-  @media (max-width: 900px) {
-    .loop {
-      display: none;
-      height: 350px;
-      position: absolute;
-      width: 350px;
-    }
-  }
-  @media (min-width: 900px) {
-    $containerWith: 500px;
-    .loop {
-      display: inline-block;
-      height: $containerWith;
-      position: absolute;
-      width: $containerWith;
-    }
-    width: $containerWith;
+
+  $containerWith: px2Rem(500px);
+  .loop {
+    display: inline-block;
     height: $containerWith;
+    position: absolute;
+    width: $containerWith;
   }
+  width: $containerWith;
+  height: $containerWith;
   .titleContainer {
     z-index: 20;
     display: flex;

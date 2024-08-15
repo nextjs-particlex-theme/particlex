@@ -1,0 +1,8 @@
+// This file is a global scss module, you don't need to manually import.
+
+/**
+ * px 转 rem
+ */
+@function px2Rem($px){
+  @return $px / 16px * 1rem;
+}

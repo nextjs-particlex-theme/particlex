@@ -13,6 +13,9 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true
   },
+  sassOptions: {
+    prependData: `@import '@/lib/global.scss';`
+  },
   webpack(config) {
     config.module.rules.push(
       {
