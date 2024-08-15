@@ -10,7 +10,7 @@ interface PostContainerProps extends React.HTMLProps<HTMLDivElement> {
  */
 const PostContainer:React.FC<React.PropsWithChildren<PostContainerProps>> = props => {
   return (
-    <div {...props} className={concatClassName('w-full md:w-[56rem] pt-40 pb-40 p-3 md:p-12 box-border overflow-hidden relative m-auto', props.className)}>
+    <div {...props} className={concatClassName('w-full md:w-[56rem] py-20 px-3 md:px-12 box-border overflow-hidden relative m-auto', props.className)}>
       {props.children}
     </div>
   )

@@ -47,7 +47,7 @@ $baseContainerWidth: 36rem;
 
   @mixin begin{
     opacity: .4;
-    box-shadow: 0 1px 2px rgba(0, 147, 223, 0.4), 0 1px 1px rgba(0, 147, 223, 0.1) inset;
+    box-shadow: 0 px2Rem(1px) px2Rem(2px) rgba(0, 147, 223, 0.4), 0 px2Rem(1px) px2Rem(1px) rgba(0, 147, 223, 0.1) inset;
   }
 
   0% {
@@ -56,8 +56,8 @@ $baseContainerWidth: 36rem;
 
   50% {
     opacity: 1;
-    border: 1px solid rgba(59, 235, 235, 0.7);
-    box-shadow: 0 1px 30px $primaryColor, 0 1px 20px $primaryColor inset;
+    border: px2Rem(1px) solid rgba(59, 235, 235, 0.7);
+    box-shadow: 0 px2Rem(1px) px2Rem(30px) $primaryColor, 0 px2Rem(1px) px2Rem(20px) $primaryColor inset;
   }
 
   100% {

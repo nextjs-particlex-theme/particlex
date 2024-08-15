@@ -1,20 +1,20 @@
 .codeContent {
   background: none;
-  font-size: 13px;
+  font-size: px2Rem(13px);
   line-height: 2;
   overflow: auto;
-  padding: 0 30px;
+  padding: 0 px2Rem(30px);
 }
 
 .languageTag {
   background: linear-gradient(90deg,#ed6ea0 0,#ec8c69);
-  border-radius: 0 0 10px 10px;
-  box-shadow: 1px 1px .75rem rgba(237,110,161,.302);
+  border-radius: 0 0 px2Rem(10px) px2Rem(10px);
+  box-shadow: px2Rem(1px) px2Rem(1px) .75rem rgba(237,110,161,.302);
   color: #fff;
-  font-size: 12px;
+  font-size: px2Rem(12px);
   font-weight: 700;
-  left: 30px;
-  padding: 10px 15px;
+  left: px2Rem(30px);
+  padding: px2Rem(10px) px2Rem(15px);
   position: absolute;
   top: 0
 }
@@ -40,7 +40,7 @@
 .partialCover {
   background: linear-gradient(hsla(0,0%,100%,0),#fff);
   width: 100%;
-  height: 200px;
+  height: px2Rem(200px);
   position: absolute;
   bottom: 0;
   left: 0;
@@ -73,7 +73,7 @@
   position: absolute;
   transition: all 0.5s;
   z-index: 1100;
-  bottom: -5px;
+  bottom: px2Rem(-5px);
   animation-duration: .8s;
   animation-fill-mode: both;
   animation-name: copyFadeInAndOut;

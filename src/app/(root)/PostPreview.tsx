@@ -14,7 +14,7 @@ const PostPreview:React.FC<PostPreviewProps> = props => {
   const { post } = props
   return (
     <PostContainer
-      className="bg-white rounded-3xl shadow-lg max-h-[1024px] overflow-hidden mt-[2rem]">
+      className="bg-white rounded-3xl shadow-lg max-h-[64rem] overflow-hidden mt-[2rem]">
       <div className="flex flex-col items-center mb-8">
         <div className="p-8 link-styled-container">
           <Link href={post.getAccessPath()} className="text-2xl font-bold">{post.title}</Link>

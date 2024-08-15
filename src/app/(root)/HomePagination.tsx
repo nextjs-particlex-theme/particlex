@@ -28,7 +28,7 @@ const HomePagination: React.FC<HomePaginationProps> = props => {
   const showTailDots = items[items.length - 1] !== props.totalPage
   
   return (
-    <div>
+    <div className="mt-10">
       {
         showHeadDots ? (
           <>
