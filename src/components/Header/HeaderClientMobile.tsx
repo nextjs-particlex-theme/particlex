@@ -6,12 +6,9 @@ import styles from './header.module.scss'
 import { Icons } from '@/app/svg-symbols'
 import Drawer from '@/components/Drawer'
 import Image from 'next/image'
+import { HeaderStatus } from '@/components/Header/header-types'
 
 interface HeaderClientMobileProps {
-  /**
-   * 透明
-   */
-  transparent?: boolean
   /**
    * 博客标题
    */
@@ -25,13 +22,9 @@ interface HeaderClientMobileProps {
    */
   aboutPageUrl: string
   /**
-   * 头部的样式
+   * 头部状态
    */
-  headerClass: string
-  /**
-   * 头部是否可见
-   */
-  headerVisible: boolean
+  status: HeaderStatus
 }
 
 
@@ -60,12 +53,19 @@ const HeaderClientMobile: React.FC<HeaderClientMobileProps> = props => {
   const onClose = () => {
     setDrawerOpen(false)
   }
+
+  let headerClass: string | undefined
+  if (props.status === HeaderStatus.VISIBLE) {
+    headerClass = styles.headerNormalVisible
+  } else if (props.status === HeaderStatus.VISIBLE_TRANSPARENT) {
+    headerClass = styles.headerTransparentVisible
+  }
   
   return (
     <>
       <div
-        className={concatClassName('md:hidden fixed w-screen flex items-center justify-between', styles.headerMobile, props.headerClass)}
-        style={props.headerVisible ? undefined : { height: 0 }}>
+        className={concatClassName('md:hidden fixed w-screen flex items-center justify-between', styles.headerMobile, headerClass)}
+        style={props.status !== HeaderStatus.HIDDEN ? undefined : { height: 0 }}>
         <svg xmlns="http://www.w3.org/2000/svg" onClick={onMenuClick}
           width={18} height={18}
           viewBox="0 0 448 512">

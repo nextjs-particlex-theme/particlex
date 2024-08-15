@@ -3,12 +3,9 @@ import Link from 'next/link'
 import styles from './header.module.scss'
 import { Icons } from '@/app/svg-symbols'
 import { concatClassName } from '@/lib/DomUtils'
+import { HeaderStatus } from '@/components/Header/header-types'
 
 interface HeaderClientProps {
-  /**
-   * 当滑动到顶部时，自动透明. 默认 false
-   */
-  autoTransparentOnTop?: boolean
   /**
    * 博客标题
    */
@@ -22,22 +19,27 @@ interface HeaderClientProps {
    */
   aboutPageUrl: string
   /**
-   * 头部的样式
+   * 头部状态
    */
-  headerClass: string
-  /**
-   * 头部是否可见
-   */
-  headerVisible: boolean
+  status: HeaderStatus
 }
 
 /**
  * 头部组件
  */
 const HeaderClient:React.FC<HeaderClientProps> = props => {
+
+  let headerClass: string | undefined
+  if (props.status === HeaderStatus.VISIBLE) {
+    headerClass = styles.headerNormalVisible
+  } else if (props.status === HeaderStatus.VISIBLE_TRANSPARENT) {
+    headerClass = styles.headerTransparentVisible
+  }
+  
   return (
     <div className="hidden md:block">
-      <div className={concatClassName('font-bold text-sm pl-16 text-zinc-600 flex-row flex', styles.header, props.headerClass)} style={props.headerVisible ? undefined : { height: 0 }}>
+      <div className={concatClassName('font-bold text-sm pl-16 text-zinc-600 flex-row flex', styles.header, headerClass)} 
+        style={props.status !== HeaderStatus.HIDDEN ? undefined : { height: 0 }}>
         <Link href="/" className="pl-10">
           { props.title }
         </Link>

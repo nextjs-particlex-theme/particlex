@@ -1,9 +1,9 @@
 'use client'
 import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
-import styles from '@/components/Header/header.module.scss'
 import HeaderClient from '@/components/Header/HeaderClient'
 import HeaderClientMobile from '@/components/Header/HeaderClientMobile'
+import { HeaderStatus } from '@/components/Header/header-types'
 
 interface HeaderClientAdapterProps {
   /**
@@ -24,15 +24,17 @@ interface HeaderClientAdapterProps {
   aboutPageUrl: string
 }
 
+
 /**
  * 头部适配器. 用于尽量减少重复代码
  * @param props
  * @constructor
  */
 const HeaderClientAdapter:React.FC<HeaderClientAdapterProps> = props => {
-  const [headerClass, setHeaderClass] = useState(styles.headerNormalVisible)
+  // const [headerClass, setHeaderClass] = useState(styles.headerNormalVisible)
   const lastScrollTop = useRef(0)
-  const [headerVisible, setHeaderVisible] = useState(true)
+  // const [headerVisible, setHeaderVisible] = useState(true)
+  const [headerStatus, setHeaderStatus] = useState(HeaderStatus.VISIBLE)
 
   useEffect(() => {
     const wheelListener = () => {
@@ -45,13 +47,12 @@ const HeaderClientAdapter:React.FC<HeaderClientAdapterProps> = props => {
       lastScrollTop.current = document.documentElement.scrollTop
       if (isUp) {
         if (document.documentElement.scrollTop <= window.innerHeight && props.autoTransparentOnTop) {
-          setHeaderClass(styles.headerTransparentVisible)
+          setHeaderStatus(HeaderStatus.VISIBLE_TRANSPARENT)
         } else {
-          setHeaderClass(styles.headerNormalVisible)
+          setHeaderStatus(HeaderStatus.VISIBLE)
         }
-        setHeaderVisible(true)
       } else {
-        setHeaderVisible(false)
+        setHeaderStatus(HeaderStatus.HIDDEN)
       }
     }
     addEventListener('scroll', wheelListener)
@@ -62,16 +63,20 @@ const HeaderClientAdapter:React.FC<HeaderClientAdapterProps> = props => {
 
   useEffect(() => {
     if (props.autoTransparentOnTop) {
-      setHeaderClass(document.documentElement.scrollTop <= window.innerHeight ? styles.headerTransparentVisible : styles.headerVisible)
+      if (document.documentElement.scrollTop <= window.innerHeight) {
+        setHeaderStatus(HeaderStatus.VISIBLE_TRANSPARENT)
+      } else {
+        setHeaderStatus(HeaderStatus.VISIBLE)
+      }
     } else {
-      setHeaderClass(styles.headerNormalVisible)
+      setHeaderStatus(HeaderStatus.VISIBLE)
     }
   }, [props.autoTransparentOnTop])
   
   return (
     <div id="header">
-      <HeaderClient {...props} headerClass={headerClass} headerVisible={headerVisible}/>
-      <HeaderClientMobile {...props} headerClass={headerClass} headerVisible={headerVisible}/>
+      <HeaderClient {...props} status={headerStatus}/>
+      <HeaderClientMobile {...props} status={headerStatus}/>
     </div>
   )
 }
