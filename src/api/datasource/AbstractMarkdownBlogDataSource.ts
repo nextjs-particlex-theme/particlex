@@ -12,13 +12,13 @@ import { parseMarkdownFile } from '@/api/datasource/markdown-parser'
 
 type AbstractBlogDataSourceCons = {
   /**
-   * 首页文章目录.
+   * 首页文章目录，被搜索的文章<b>不会</b>被构建页面。
    */
   homePostDirectory: string
   /**
-   * 所有文章的共同根目录
+   * 在哪里目录中搜索文章，被搜索到的文章会被构建页面
    */
-  postDirectory: string
+  postDirectory: string[]
   /**
    * 资源目录
    */
@@ -33,7 +33,7 @@ type AbstractBlogDatasourceConfig = {
   /**
    * 所有文章的共同根目录
    */
-  postGlob: string
+  postGlob: string[]
   /**
    * 资源目录
    */
@@ -50,7 +50,7 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
   protected constructor(config: AbstractBlogDataSourceCons) {
     this.config = {
       homePostGlob: `${config.homePostDirectory}/**/*.md`,
-      postGlob: `${config.postDirectory}/**/*.md`,
+      postGlob: config.postDirectory.map(v => `${v}/**/*.md`),
       resourceGlob: `${config.resourceDirectory}/**/*`
     }
   }
