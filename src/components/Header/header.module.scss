@@ -20,11 +20,11 @@
 }
 
 .headerTransparentVisible {
+  @apply text-white;
   background-color: #00000020;
-  color: var(--color-white);
   height: 3.3rem;
 }
 .headerNormalVisible {
-  background-color: #92cafa;
+  @apply bg-primary;
   height: 3.3rem;
 }

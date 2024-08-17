@@ -65,8 +65,8 @@
 }
 
 .copySuccessIcon {
+  @apply text-white;
   background-color: var(--color-primary);
-  color: var(--color-white);
   padding: 0.25rem 0.5rem;
   border-radius: 1rem;
   font-size: 0.875rem;

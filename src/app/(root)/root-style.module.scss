@@ -14,28 +14,28 @@ $postContainerMargin: px2Rem(32px);
 
 .loop:nth-child(1) {
   animation: loop1 10s linear infinite;
-  background: #fff;
+  background: var(--color-white);
   border-radius: 38% 62% 63% 37%/41% 44% 56% 59%;
   opacity: 0.3;
   transform: rotate(30deg);
 }
 .loop:nth-child(2) {
   animation: loop2 15s linear infinite;
-  background: #fff;
+  background: var(--color-white);
   border-radius: 38% 62% 63% 37%/41% 44% 56% 59%;
   opacity: 0.45;
   transform: rotate(60deg);
 }
 .loop:nth-child(3) {
   animation: loop3 10s linear infinite;
-  background: #fff;
+  background: var(--color-white);
   border-radius: 38% 62% 63% 37%/41% 44% 56% 59%;
   opacity: 0.3;
   transform: rotate(90deg);
 }
 .loop:nth-child(4) {
   animation: loop4 15s linear infinite;
-  background: #fff;
+  background: var(--color-white);
   border-radius: 38% 62% 63% 37%/41% 44% 56% 59%;
   opacity: 0.45;
   transform: rotate(120deg);
@@ -102,16 +102,17 @@ $postContainerMargin: px2Rem(32px);
   }
 }
 
+.readAll {
+
+}
+
 .postCover {
-  position: absolute;
-  bottom: 0;
-  z-index: 50;
-  width: 100%;
+  @apply absolute bottom-0 w-full left-0;
+  z-index: 60;
   height: px2Rem(450px);
-  left: 0;
-  background: linear-gradient(hsla(0,0%,100%,0),#fff);
+  background: linear-gradient(hsla(0,0%,100%,0), var(--color-card));
   a {
-    background: linear-gradient(120deg,#9abbf7,#ffbbf4);
+    background: linear-gradient(120deg, var(--color-primary), var(--color-pink));
     border: 0;
     border-radius: px2Rem(20px) 0;
     bottom: px2Rem(-5px);
@@ -147,7 +148,7 @@ $postContainerMargin: px2Rem(32px);
   border-radius: px2Rem(5px);
   &:hover {
     background-color: var(--color-primary);
-    color: var(--color-white);
+    @apply text-white;
   }
 }
 

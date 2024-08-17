@@ -1,7 +1,7 @@
 .postContainer {
   //font-size: 0.9375rem;
   font-size: 1rem;
-  color: var(--color-text-sub-2);
+  color: var(--color-text-sub);
   h1 {
     font-size: px2Rem(30px) !important
   }
@@ -56,7 +56,7 @@
   }
 
   pre {
-    border: px2Rem(1px) solid #ebeef5;
+    border: px2Rem(1px) solid var(--border-color-code-block);
     border-radius: px2Rem(15px);
     box-shadow: 0 px2Rem(2px) px2Rem(12px) 0 rgba(0,0,0,.102);
     margin: px2Rem(25px) 0;

@@ -4,23 +4,50 @@
 
 @layer base {
     :root {
+        /* Default white theme */
         --color-white: #fff;
+        --color-card: #fff;
         --color-text-sub: #000000E0;
         --color-text-sub2: #000000A6;
         --color-text: #000000E0;
         --color-primary: #66afef;
         --color-error: #ef4444;
-        --border-color: #D9D9D9FF;
+        --border-color: #D9D9D9;
+        --border-color-code-block: #ebeef5;
+        --background-color: #f6f8fa;
+        --scroll-bar-color: #e6efff;
+        --color-pink: #ffbbf4;
+        /* Default white theme end */
         --z-index-mask: 100010;
         --z-index-top: 100000;
         --z-index-common: 10000;
-        --background-color: #f6f8fa;
+        /*  hljs  */
+        --hljs-text-color: #24292e;
+        --hljs-string-color: #032f62;
     }
+}
+
+.dark {
+    --color-primary: #995010;
+    --color-card: #1e293b;
+    --background-color: rgb(15 23 42);
+    --color-white: #000;
+    --color-text-sub: #FFFFFFD9;
+    --color-text-sub2: #FFFFFFA6;
+    --color-text: #FFFFFFD9;
+    --scroll-bar-color: #191000;
+    --border-color: #262626;
+    --border-color-code-block: #14110a;
+    --color-pink: #00440B;
+    /*  hljs  */
+    --hljs-text-color: #dbd6d1;
+    --hljs-string-color: #fcd09d;
+
 }
 
 body {
     background: var(--background-color);
-    color: #1e3e3f;
+    color: var(--color-text);
     font: 500 0.9375rem Lexend, "Noto Sans SC", sans-serif;
     overflow-x: hidden;
     width: 100%;
@@ -39,8 +66,12 @@ a:hover {
     width: 12px;
 }
 
+::-webkit-scrollbar-corner {
+    background: var(--scroll-bar-color);
+}
+
 ::-webkit-scrollbar-thumb {
-    background: #8ab5ff linear-gradient(
+    background: var(--color-primary) linear-gradient(
             45deg,
             #fff6 25%,
             transparent 25%,
@@ -50,15 +81,15 @@ a:hover {
             transparent 75%,
             transparent
     );
-    border: 3px solid #e6efff;
+    border: 3px solid var(--scroll-bar-color);
     border-radius: 100px;
 }
 ::-webkit-scrollbar-track {
-    background: #e6efff;
+    background: var(--scroll-bar-color);
     border-radius: 100px;
 }
 ::selection {
-    background-color: #3392ff2a;
+    background-color: var(--scroll-bar-color);
     color: unset;
 }
 

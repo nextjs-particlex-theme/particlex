@@ -20,7 +20,7 @@ const _PartialCodeBlock: React.FC<PartialCodeBlockProps> = props => {
   
 
   const onCopyUp = () => {
-    if (navigator.clipboard) {
+    if (navigator && navigator.clipboard) {
       navigator.clipboard.writeText(props.content).catch(e => {
         alert(e.message)
       })
@@ -47,13 +47,12 @@ const _PartialCodeBlock: React.FC<PartialCodeBlockProps> = props => {
     setExpandActive(!expandActive)
   }
 
-  const useFallbackCopy = !(navigator && navigator.clipboard)
 
   return (
     <pre>
       <div className="z-50 relative pt-12 pb-5">
         <div className={style.codeContent} 
-          ref={useFallbackCopy ? codeContainer : undefined}
+          ref={codeContainer}
           style={{ textWrap: wrapLineActive ? 'wrap' : undefined, maxHeight: expandActive ? undefined : '50vh' }}
           dangerouslySetInnerHTML={{ __html: props.content }}/>
         <div className={style.languageTag}>{props.lang}</div>
