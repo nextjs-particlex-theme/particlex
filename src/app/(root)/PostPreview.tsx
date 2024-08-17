@@ -27,7 +27,7 @@ const PostPreview:React.FC<PostPreviewProps> = props => {
           阅读全文
         </Link>
       </div>
-      <div className={concatClassName(postStyle.postContainer, 'link-styled-container overflow-hidden max-h-[64rem]')}>
+      <div className={concatClassName(postStyle.postContainer, 'link-styled-container max-h-[64rem]')}>
         {post.content}
       </div>
     </PostContainer>
