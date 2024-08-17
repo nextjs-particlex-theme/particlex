@@ -5,6 +5,7 @@ import { toMapAble } from '@/lib/ObjectUtils'
 import CategoryItem from '@/components/CategoryItem'
 import datasource from '@/api/datasource'
 import type { Metadata } from 'next'
+import CommentComponentInject from "@/components/CommentComponentInject";
 
 export async function generateMetadata(): Promise<Metadata> {
   const config = await datasource.getConfig()
@@ -21,7 +22,7 @@ const TagsPage: React.FC = async () => {
   return (
     <>
       <Header />
-      <div id="container" className="pt-40 fade-in w-[56rem] m-auto">
+      <div id="container" className="py-40 px-4 fade-in w-full md:w-[56rem] m-auto">
         <div className="flex items-center">
           <svg width="2rem" height="2rem">
             <use xlinkHref={Icons.TAG}/>
@@ -42,6 +43,7 @@ const TagsPage: React.FC = async () => {
           }
         </div>
       </div>
+      <CommentComponentInject/>
     </>
   )
 }

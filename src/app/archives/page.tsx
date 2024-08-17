@@ -20,7 +20,7 @@ export default async function ArchivesPage() {
   return (
     <div>
       <Header />
-      <div id="container" className="fade-in p-12 pt-40 w-[56rem] m-auto">
+      <div id="container" className="fade-in p-12 pt-40 w-full md:w-[56rem] m-auto">
         <SearchableArchives posts={homePosts.map(v => v.toClientSafePost())}/>
         <CommentComponentInject/>
       </div>

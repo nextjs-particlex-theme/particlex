@@ -25,7 +25,7 @@ const Categories: React.FC = async () => {
   return (
     <>
       <Header />
-      <div id="container" className="pt-40 fade-in w-[56rem] m-auto">
+      <div id="container" className="pt-40 px-4 fade-in w-full md:w-[56rem] m-auto">
         <div className="flex items-center">
           <svg width="2rem" height="2rem">
             <use xlinkHref={Icons.BOOKMARK}/>
