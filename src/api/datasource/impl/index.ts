@@ -5,14 +5,17 @@ import AbstractMarkdownBlogDataSource from '@/api/datasource/AbstractMarkdownBlo
 import type { DataSourceConfig } from '@/api/datasource/types/definitions'
 
 
-class HexoDatasource extends AbstractMarkdownBlogDataSource {
+class MarkdownDatasource extends AbstractMarkdownBlogDataSource {
+
+  private readonly rootPathPrefixes: string[]
 
   constructor() {
     super({
-      homePostDirectory: 'source/_posts',
-      resourceDirectory: 'source/images',
-      postDirectory: 'source'
+      homePostDirectory: process.env.BLOG_HOME_POST_DIRECTORY,
+      resourceDirectory: process.env.BLOG_RESOURCE_DIRECTORY,
+      postDirectory: process.env.BLOG_POST_DIRECTORY
     })
+    this.rootPathPrefixes = path.normalize(process.env.BLOG_HOME_POST_DIRECTORY).split(path.sep)
   }
 
   resolvePostWebPath(filepath: string): string[] {
@@ -21,11 +24,11 @@ class HexoDatasource extends AbstractMarkdownBlogDataSource {
       const t = sp[sp.length - 1]
       sp[sp.length - 1] = t.substring(0, t.length - 3)
     }
-    if (sp[1] === '_posts') {
-      return sp.slice(2)
-    } else {
-      return sp.slice(1)
+    let head = 0
+    while (head < sp.length && sp[head] == this.rootPathPrefixes[head]) {
+      head++
     }
+    return sp.slice(head)
   }
   resolveStaticResourceWebPath(filepath: string): string[] {
     const sp = filepath.split(path.sep)
@@ -55,5 +58,5 @@ class HexoDatasource extends AbstractMarkdownBlogDataSource {
   }
 }
 
-const instance = new HexoDatasource()
+const instance = new MarkdownDatasource()
 export default instance

@@ -195,7 +195,7 @@ export const parseMarkdownFile = (filepath: string): Promise<PostContent> => {
               return
             }
           } else {
-            reject(e)
+            reject(new Error(`Parse yaml file '${filepath}' failed, content:\n${original.join('\n')}`, { cause: e }))
             return
           }
         }

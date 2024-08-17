@@ -68,9 +68,9 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
 
   /**
    * 获取博客的 web 访问路径.
-   * @param path 博客文件路径.
+   * @param relativePath 博客文件的相对路径，相对博客根路径.
    */
-  abstract resolvePostWebPath(path: string): string[]
+  abstract resolvePostWebPath(relativePath: string): string[]
 
   /**
    * 获取静态文件的 web 访问路径

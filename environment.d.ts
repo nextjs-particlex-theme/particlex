@@ -1,9 +1,21 @@
 declare namespace NodeJS {
   export interface ProcessEnv {
     /**
-     * 博客的路径, 建议使用绝对路径.
+     * 博客的根路径, 建议使用绝对路径.
      */
     readonly BLOG_PATH: string
+    /**
+     * 首页博客路径
+     */
+    readonly BLOG_HOME_POST_DIRECTORY: string
+    /**
+     * 博客资源目录
+     */
+    readonly BLOG_RESOURCE_DIRECTORY: string
+    /**
+     * 博客所有博客的文件
+     */
+    readonly BLOG_POST_DIRECTORY: string
     /**
      * CDN 中公共路径的 url
      */
