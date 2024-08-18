@@ -8,14 +8,14 @@ import { __test_generateShallowToc } from '@/api/datasource/markdown-parser'
  */
 test('generateShallowToc_rightContent_generateSuccess', () => {
   const r = __test_generateShallowToc?.(`
-      <h1>111</h1>
+      <h1 id="111">111</h1>
       <div>eee</div>
       <p>222</p>
-      <h2>222</h2>
-      <h3>333</h3>
-      <h1>444</h1>
-      <h2>555</h2>
-      <h2>666</h2>
+      <h2 id="222">222</h2>
+      <h3 id="333">333</h3>
+      <h1 id="444">444</h1>
+      <h2 id="555">555</h2>
+      <h2 id="666">666</h2>
       <span>7777</span>
   `)
   const expected: TocItem[] = [
@@ -61,11 +61,11 @@ test('generateShallowToc_rightContent_generateSuccess', () => {
  */
 test('generateShallowToc_disOrderedContent_ignoreBadHeading', () => {
   const content = __test_generateShallowToc?.(`
-      <h2>222</h2>  
-      <h1>111</h1>
-      <h3>333</h3>
-      <h4>444</h4>
-      <h6>555</h6>
+      <h2 id="222">222</h2>  
+      <h1 id="111">111</h1>
+      <h3 id="333">333</h3>
+      <h4 id="444">444</h4>
+      <h6 id="555">555</h6>
     `)
   const expected: TocItem[] = [
     {
@@ -90,16 +90,50 @@ test('generateShallowToc_noHeading_returnEmptyArray', () => {
  */
 test('generateShallowToc_nestedHeading_ignoreNestedHeading', () => {
   const content = __test_generateShallowToc?.(`
-    <h1>111</h1>
+    <h1 id="111">111</h1>
     <div>
-        <h2>n222</h2>
+        <h2 id="n222">n222</h2>
     </div>
-    <h3>333</h3>
+    <h3 id="333">333</h3>
   `)
   const expected: TocItem[] = [
     {
       title: '111',
       anchor: '#111',
+      child: []
+    }
+  ]
+  expect(content).toStrictEqual(expected)
+})
+
+
+/**
+ * 测试使用 h2 开头的标题
+ */
+test('generateShallowToc_startWithH2_generateSuccess', () => {
+  const content = __test_generateShallowToc?.(`
+    <h2 id="111">111</h2>
+    <div>
+        <h3 id="222">222</h3>
+    </div>
+    <h3 id="333">333</h3>
+    <h2 id="444">444</h2>
+  `, 2)
+  const expected: TocItem[] = [
+    {
+      title: '111',
+      anchor: '#111',
+      child: [
+        {
+          title: '333',
+          anchor: '#333',
+          child: []
+        }
+      ],
+    },
+    {
+      title: '444',
+      anchor: '#444',
       child: []
     }
   ]

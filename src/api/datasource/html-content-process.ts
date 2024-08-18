@@ -12,9 +12,6 @@ export default function processPostContent(html: string): React.ReactNode {
       if (!(domNode instanceof Element)) {
         return 
       }
-      if (domNode.tagName.includes('img')) {
-        console.log()
-      }
       return HtmlTagHandlerFactory.getInstance(domNode.tagName)?.doCast(domNode)
     }
   })

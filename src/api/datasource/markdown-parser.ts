@@ -38,7 +38,7 @@ const LEVEL_MAPPING: Record<string, number> = {
  * 根据 html 自动生成 Toc，要求必须平铺 h1 h2 等标签。
  * @see [/__tests__/api/util.test.ts](/__tests__/api/util.test.ts)
  */
-function generateShallowToc(html?: string): TocItem[] {
+function generateShallowToc(html?: string, headingStart = 1): TocItem[] {
   if (!html) {
     return []
   }
@@ -46,7 +46,11 @@ function generateShallowToc(html?: string): TocItem[] {
 
   const root = dom.window.document.body
 
-  let parentStack: TocItem[] = [{ title: 'FakeRoot', child: [], anchor: '#' }]
+  let parentStack: TocItem[] = []
+  for (let i = 0; i < headingStart; i++) {
+    parentStack.push({ title: 'FakeRoot', child: [], anchor: '#' })
+  }
+
   root.childNodes.forEach(v => {
     const currentLevel = LEVEL_MAPPING[v.nodeName]
     if (currentLevel === undefined) {
@@ -73,7 +77,7 @@ function generateShallowToc(html?: string): TocItem[] {
       parentStack[currentLevel + 1] = item
     }
   })
-  return parentStack[0].child
+  return parentStack[headingStart - 1].child
 }
 
 let __test_generateShallowToc0: typeof generateShallowToc | undefined
@@ -205,7 +209,7 @@ export const parseMarkdownFile = (filepath: string): Promise<PostContent> => {
       resolve({
         metadata: metadata ?? {},
         content: html,
-        toc: generateShallowToc(html)
+        toc: generateShallowToc(html, 2)
       })
     })
   })
