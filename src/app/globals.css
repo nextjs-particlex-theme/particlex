@@ -17,6 +17,7 @@
         --background-color: #f6f8fa;
         --scroll-bar-color: #e6efff;
         --color-pink: #ffbbf4;
+        --color-mask: #00000040;
         /* Default white theme end */
         --z-index-mask: 100010;
         --z-index-top: 100000;

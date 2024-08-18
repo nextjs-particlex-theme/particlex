@@ -143,6 +143,7 @@ const markdownToHtml = (markdownContent: string): string => {
     tasklists: true,
     disableForced4SpacesIndentedSublists: true,
     // rawPrefixHeaderId: true,
+    headerLevelStart: 2,
     rawHeaderId: true
   })
   return sd.makeHtml(markdownContent)

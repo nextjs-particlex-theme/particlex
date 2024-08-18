@@ -20,7 +20,8 @@ const config: Config = {
         subtext: 'var(--color-text-sub)',
         subtext2: 'var(--color-text-sub2)',
         background: 'var(--background-color)',
-        card: 'var(--color-card)'
+        card: 'var(--color-card)',
+        mask: 'var(--color-mask)',
       }
     }
   },
