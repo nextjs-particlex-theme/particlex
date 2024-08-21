@@ -7,6 +7,7 @@
   overflow: hidden;
   align-items: center;
   z-index: var(--z-index-top);
+  color: var(--color-text-sub2);
 }
 
 .headerMobile {
@@ -25,6 +26,6 @@
   height: 3.3rem;
 }
 .headerNormalVisible {
-  @apply bg-primary;
+  @apply bg-primary-sub;
   height: 3.3rem;
 }

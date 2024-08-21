@@ -17,6 +17,7 @@ const config: Config = {
       colors: {
         white: 'var(--color-white)',
         primary: 'var(--color-primary)',
+        'primary-sub': 'var(--color-primary-sub)',
         subtext: 'var(--color-text-sub)',
         subtext2: 'var(--color-text-sub2)',
         background: 'var(--background-color)',
