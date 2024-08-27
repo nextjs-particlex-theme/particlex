@@ -1,6 +1,7 @@
 import type HtmlTagHandler from '@/api/datasource/types/HtmlTagHandler'
 import imageHandler from '@/api/datasource/handlers/ImageHandler'
 import preHandler from '@/api/datasource/handlers/PreHandler'
+import githubBlockquoteHandler from '@/api/datasource/handlers/GithubBlockquoteHandler'
 
 
 const instanceHolder = new Map<string, HtmlTagHandler>()
@@ -22,6 +23,7 @@ const registerHandler = (caster: HtmlTagHandler) => {
 
 registerHandler(imageHandler)
 registerHandler(preHandler)
+registerHandler(githubBlockquoteHandler)
 
 /**
  * 包括一下，方便外面使用的时候好看.

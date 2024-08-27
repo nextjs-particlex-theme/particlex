@@ -108,9 +108,7 @@
     background: #d9e8ff6b;
     border-left: px2Rem(3px) solid var(--color-primary);
     border-radius: px2Rem(3px);
-    display: flex;
-    padding: 0 px2Rem(15px);
-    flex-direction: column;
+    @apply flex flex-col px-3.5 my-6;
   }
 
 }
