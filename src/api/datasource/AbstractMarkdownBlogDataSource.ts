@@ -155,7 +155,7 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
 
     for (let i = Math.max(0, begin); i < len; i++) {
       const file = files[i]
-      const { metadata, content, toc } = await parseMarkdownFile(path.resolve(process.env.BLOG_PATH, file))
+      const { metadata, content, toc } = parseMarkdownFile(path.resolve(process.env.BLOG_PATH, file))
       let source = this.resolvePostWebPath(file)
 
       const postData: PostConstructor = {

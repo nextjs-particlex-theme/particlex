@@ -1,9 +1,9 @@
-import readline from 'node:readline'
 import fs from 'node:fs'
 import yaml, { YAMLParseError } from 'yaml'
 import showdown from 'showdown'
 import type { TocItem } from '@/api/datasource/types/definitions'
 import { JSDOM } from 'jsdom'
+import * as os from 'node:os'
 
 
 showdown.setFlavor('github')
@@ -25,20 +25,23 @@ export type PostContent = {
 }
 
 const LEVEL_MAPPING: Record<string, number> = {
-  H1: 0,
-  H2: 1,
-  H3: 2,
-  H4: 3,
-  H5: 4,
-  H6: 5,
+  H1: 1,
+  H2: 2,
+  H3: 3,
+  H4: 4,
+  H5: 5,
+  H6: 6,
 }
 
+type WrappedTocItem = {
+  item: TocItem
+  actualLevel: number
+}
 
 /**
- * 根据 html 自动生成 Toc，要求必须平铺 h1 h2 等标签。
- * @see [/__tests__/api/util.test.ts](/__tests__/api/util.test.ts)
+ * 根据 html 自动生成 Toc. 当碰到不连贯的标题时，例如 h1 里面直接套 h3，此时 h3 会被直接认作子标题
  */
-function generateShallowToc(html?: string, headingStart = 1): TocItem[] {
+function generateShallowToc(html?: string): TocItem[] {
   if (!html) {
     return []
   }
@@ -46,10 +49,7 @@ function generateShallowToc(html?: string, headingStart = 1): TocItem[] {
 
   const root = dom.window.document.body
 
-  let parentStack: TocItem[] = []
-  for (let i = 0; i < headingStart; i++) {
-    parentStack.push({ title: 'FakeRoot', child: [], anchor: '#' })
-  }
+  let parentStack: WrappedTocItem[] = [{ item: { title: 'FakeRoot', child: [], anchor: '#' }, actualLevel: -1 }]
 
   root.childNodes.forEach(v => {
     const currentLevel = LEVEL_MAPPING[v.nodeName]
@@ -57,27 +57,30 @@ function generateShallowToc(html?: string, headingStart = 1): TocItem[] {
       return
     }
     const heading = v as HTMLHeadingElement
-    if (parentStack[currentLevel]) {
-      // 父节点存在
-      // 弹出多余节点
-      for (let i = currentLevel + 1; i < parentStack.length; i++) {
-        parentStack.pop()
-      }
-      let item: TocItem
-      const data = {
-        title: heading.innerHTML,
-        anchor: '#' + heading.getAttribute('id')
-      }
-      item = {
+    const data = {
+      title: heading.innerHTML,
+      anchor: '#' + heading.getAttribute('id')
+    }
+    const item: WrappedTocItem = {
+      item: {
         ...data,
         child: []
+      },
+      actualLevel: currentLevel,
+    }
+    for (let i = parentStack.length - 1; i >= 0; --i) {
+      const cur = parentStack[i]
+      if (cur.actualLevel < item.actualLevel) {
+        // remaining child
+        cur.item.child.push(item.item)
+        parentStack.push(item)
+        break
+      } else {
+        parentStack.pop()
       }
-
-      parentStack[currentLevel].child.push(item)
-      parentStack[currentLevel + 1] = item
     }
   })
-  return parentStack[headingStart - 1].child
+  return parentStack[0].item.child
 }
 
 let __test_generateShallowToc0: typeof generateShallowToc | undefined
@@ -146,71 +149,93 @@ const markdownToHtml = (markdownContent: string): string => {
     tables: true,
     tasklists: true,
     disableForced4SpacesIndentedSublists: true,
-    // rawPrefixHeaderId: true,
-    headerLevelStart: 2,
+    headerLevelStart: 1,
     rawHeaderId: true
   })
   return sd.makeHtml(markdownContent)
+}
+
+enum CollectStatus {
+  EXPECT_START,
+  EXPECT_END,
+  DONE
+}
+
+/**
+ * 解析 Markdown 文本内容
+ * @param content Markdown内容，提供一个以换行符分割的数组或者整个字符串，后者将会被转化为前者
+ * @param filepath 文件路径，当解析 markdown 错误时，将会带上文件路径以便于排查
+ */
+export const parseMarkdownContent = (content: string[] | string, filepath: string = '<Unknown>'): PostContent => {
+  const metadataStrArr: string[] = []
+  let metadataCollectStatus = CollectStatus.EXPECT_START
+  let contentArr: string[] = Array.isArray(content) ? content : content.split(os.EOL)
+
+  for (let line of contentArr) {
+    if (metadataCollectStatus == CollectStatus.DONE) {
+      break
+    }
+    switch (metadataCollectStatus) {
+    case CollectStatus.EXPECT_START: {
+      if (line.startsWith('---')) {
+        metadataCollectStatus = CollectStatus.EXPECT_END
+      }
+      break
+    }
+    case CollectStatus.EXPECT_END: {
+      if (line.startsWith('---')) {
+        metadataCollectStatus = CollectStatus.DONE
+        break
+      }
+      metadataStrArr.push(line)
+      break
+    }
+    // eslint-disable-next-line no-fallthrough
+    default: 
+      throw new Error('Unreachable branch!')
+    }
+  }
+  
+
+  if (metadataCollectStatus !== CollectStatus.DONE) {
+    // no metadata provided.
+    const html = markdownToHtml(Array.isArray(content) ? content.join(os.EOL) : content)
+    return {
+      content: html,
+      toc: generateShallowToc(html),
+      metadata: {}
+    }
+  }
+
+  let metadata: PostContent['metadata']
+  try {
+    metadata = yaml.parse(metadataStrArr.join('\n'))
+  } catch (e) {
+    if (e instanceof YAMLParseError && e.code === 'TAB_AS_INDENT') {
+      const str = metadataStrArr.map(replacePrefixIndent).join('\n')
+      try {
+        metadata = yaml.parse(str)
+      } catch (e) {
+        throw indicateWhereContainsTab(metadataStrArr, filepath)
+      }
+    } else {
+      throw new Error(`Parse yaml file '${filepath}' failed, content:\n${metadataStrArr.join(os.EOL)}`, { cause: e })
+    }
+  }
+  const html = markdownToHtml(contentArr.slice(metadataStrArr.length + 2).join(os.EOL))
+  return {
+    content: html,
+    metadata,
+    toc: generateShallowToc(html)
+  }
+  
 }
 
 /**
  * 解析 markdown 文件
  * @param filepath 文件路径
  */
-export const parseMarkdownFile = (filepath: string): Promise<PostContent> => {
-  return new Promise((resolve, reject) => {
-    const rl = readline.createInterface({
-      input: fs.createReadStream(filepath),
-    })
-    const metadataStrArr: string[] = []
-    // 0: expect start.
-    // 1: expect end.
-    // 2: collected.
-    let metadataCollectStatus = 0
-    const content: string[] = []
-
-    rl.on('line', (line) => {
-      if (metadataCollectStatus < 2) {
-        metadataStrArr.push(line)
-        if (line.startsWith('---')) {
-          metadataCollectStatus++
-        }
-      } else {
-        content.push(line)
-      }
-    })
-
-    rl.on('close', () => {
-      let metadata: any
-      let html: string
-      if (metadataCollectStatus < 2) {
-        metadata = {}
-        html = markdownToHtml(metadataStrArr.join('\n'))
-      } else {
-        const original = metadataStrArr.slice(1, metadataStrArr.length - 1)
-        try {
-          metadata = yaml.parse(original.join('\n'))
-        } catch (e) {
-          if (e instanceof YAMLParseError && e.code === 'TAB_AS_INDENT') {
-            const str = metadataStrArr.map(replacePrefixIndent).slice(1, metadataStrArr.length - 1).join('\n')
-            try {
-              metadata = yaml.parse(str)
-            } catch (e) {
-              reject(indicateWhereContainsTab(original, filepath))
-              return
-            }
-          } else {
-            reject(new Error(`Parse yaml file '${filepath}' failed, content:\n${original.join('\n')}`, { cause: e }))
-            return
-          }
-        }
-        html = markdownToHtml(content.join('\n'))
-      }
-      resolve({
-        metadata: metadata ?? {},
-        content: html,
-        toc: generateShallowToc(html, 2)
-      })
-    })
-  })
+export const parseMarkdownFile = (filepath: string): PostContent => {
+  const content = fs.readFileSync(filepath, { encoding: 'utf-8' })
+  return parseMarkdownContent(content, filepath)
 }
