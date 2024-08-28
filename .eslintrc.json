@@ -1,6 +1,7 @@
 {
   "extends": ["next/core-web-vitals", "eslint:recommended", "plugin:react/recommended"],
   "plugins": ["@typescript-eslint"],
+  "ignorePatterns": ["**/*.cjs"],
   "rules": {
     "quotes": ["error", "single"],
     "key-spacing": ["error", { "beforeColon": false }],
