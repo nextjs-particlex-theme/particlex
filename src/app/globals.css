@@ -5,7 +5,6 @@
 @layer base {
     :root {
         /* Default white theme */
-        --color-white: #fff;
         --color-card: #fff;
         --color-text-sub: #000000E0;
         --color-text-sub2: #000000A6;
@@ -24,26 +23,54 @@
         --z-index-top: 100000;
         --z-index-common: 10000;
         /*  hljs  */
+        --hljs-background-color: #fff;
         --hljs-text-color: #24292e;
         --hljs-string-color: #032f62;
+        --hljs-title-color: #6f42c1;
+        --hljs-attr-color: #005cc5;
+        --hljs-symbol-color: #e36209;
+        --hljs-comment-color: #6a737d;
+        --hljs-quote-color: #22863a;
+        --hljs-keyword-color: #d73a49;
+        --hljs-section-color: #005cc5;
+        --hljs-bullet-color: #735c0f;
+        --hljs-addition-color: #22863a;
+        --hljs-addition-bg-color: #f0fff4;
+        --hljs-deletion-color: #b31d28;
+        --hljs-deletion-bg-color: #ffeef0;
     }
 }
 
 .dark {
-    --color-primary: #995010;
     --color-card: #1e293b;
-    --background-color: rgb(15 23 42);
-    --color-white: #000;
     --color-text-sub: #FFFFFFD9;
     --color-text-sub2: #FFFFFFA6;
     --color-text: #FFFFFFD9;
+    /*--color-primary: #995010;*/
+    --color-primary-sub: #4ba4f1;
+    --color-error: #ff6161;
+    --background-color: rgb(15 23 42);
     --scroll-bar-color: #191000;
     --border-color: #262626;
     --border-color-code-block: #14110a;
     --color-pink: #00440B;
     /*  hljs  */
+    --hljs-background-color: #374151;
     --hljs-text-color: #dbd6d1;
     --hljs-string-color: #fcd09d;
+
+    --hljs-title-color: #90BD3E;
+    --hljs-attr-color: #FFA33A;
+    --hljs-symbol-color: #1C9DF6;
+    --hljs-comment-color: #958C82;
+    --hljs-quote-color: #DD79C5;
+    --hljs-keyword-color: #28C5B6;
+    --hljs-section-color: #FFA33A;
+    --hljs-bullet-color: #8CA3F0;
+    --hljs-addition-color: #DD79C5;
+    --hljs-addition-bg-color: #0F000B;
+    --hljs-deletion-color: #4CE2D7;
+    --hljs-deletion-bg-color: #00110F;
 
 }
 

@@ -5,12 +5,14 @@ import { Text } from 'html-react-parser'
 import type React from 'react'
 import type { DOMNode } from 'html-dom-parser'
 import { Icons } from '@/app/svg-symbols'
+import styles from './blockquote.module.scss'
+import { concatClassName } from '@/lib/DomUtils'
 
 type BlockquoteAvailableTypes = 'NOTE' | 'TIP' | 'IMPORTANT' | 'WARNING' | 'CAUTION'
 
 interface GithubHighlightCodeBlockProps {
   icon: string
-  color: string
+  colors: string
   tip: string
   width?: number
   height?: number
@@ -21,27 +23,27 @@ function initConstant(): Record<string, GithubHighlightCodeBlockProps | undefine
   map0 = {
     NOTE: {
       icon: Icons.INFO,
-      color: 'var(--color-primary)',
+      colors: styles.note,
       tip: 'Note'
     },
     CAUTION: {
       icon: Icons.INFO,
-      color: 'var(--color-error)',
+      colors: styles.caution,
       tip: 'Caution'
     },
     TIP: {
       icon: Icons.LIGHTBULB,
-      color: 'green',
+      colors: styles.tip,
       tip: 'Tip'
     },
     IMPORTANT: {
       icon: Icons.STAR,
-      color: 'purple',
+      colors: styles.important,
       tip: 'Important'
     },
     WARNING: {
       icon: Icons.WARNING,
-      color: '#995010',
+      colors: styles.warning,
       tip: 'Warning',
       width: 17,
       height: 17
@@ -54,16 +56,16 @@ const SUPPORTED_TYPE = initConstant()
 
 
 const GithubHighlightCodeBlock: React.FC<React.PropsWithChildren<GithubHighlightCodeBlockProps>> = ({
-  children, 
-  color,
+  children,
+  colors,
   icon,
   tip,
   height = 15,
   width = 15
 }) => {
   return (
-    <blockquote style={{ borderLeftColor: color }}>
-      <div className="flex items-center mt-4" style={{ color }}>
+    <blockquote className={concatClassName(styles.githubBlockquote, colors)}>
+      <div className="flex items-center mt-4">
         <svg width={width} height={height} >
           <use xlinkHref={icon}/>
         </svg>
@@ -82,7 +84,7 @@ const githubBlockquoteHandler: HtmlTagHandler = {
   supportedTag: 'blockquote',
   doCast(node: Element): ReturnType<Required<HTMLReactParserOptions>['replace']> {
     if (node.nodeType !== 1 || !node.childNodes || node.childNodes.length < 1 ) {
-      return 
+      return
     }
     const nested = node.childNodes[1] as Element
     if (nested.nodeType !== 1 || !nested.childNodes || nested.childNodes.length == 0) {
@@ -90,7 +92,7 @@ const githubBlockquoteHandler: HtmlTagHandler = {
     }
     const type = nested.childNodes[0]
     if (!(type instanceof Text)) {
-      return 
+      return
     }
     const result = TYPE_SEARCH_REGX.exec(type.nodeValue)
     if (!result || !result.groups || !result.groups.type) {
@@ -98,7 +100,7 @@ const githubBlockquoteHandler: HtmlTagHandler = {
     }
     const props = SUPPORTED_TYPE[result.groups.type]
     if (!props) {
-      return 
+      return
     }
     // remove the blockquote type marker and html tag `br`.
     nested.children = nested.children.slice(2)

@@ -1,0 +1,38 @@
+.githubBlockquote {
+  border-left-color: var(--ghbq-color) !important;
+  div:first-child{
+    color: var(--ghbq-color);
+  }
+}
+
+.note {
+  --ghbq-color: var(--color-primary);
+}
+
+.caution {
+  --ghbq-color: var(--color-error);
+}
+
+.tip {
+  --ghbq-color: green;
+}
+
+:global(.dark) .tip {
+  --ghbq-color: #22ba22;
+}
+
+.important {
+  --ghbq-color: purple;
+}
+
+:global(.dark) .important {
+  --ghbq-color: #ff59ff;
+}
+
+.warning {
+  --ghbq-color: #995010;
+}
+
+:global(.dark) .warning {
+  --ghbq-color: yellow;
+}

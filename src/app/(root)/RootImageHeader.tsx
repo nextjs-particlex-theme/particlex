@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react'
 import styles from './root-style.module.scss'
+import {concatClassName} from "@/lib/DomUtils";
 
 interface RootImageHeaderProps {
   images?: string[]
@@ -52,13 +53,14 @@ const RootImageHeader:React.FC<RootImageHeaderProps> = props => {
   }
 
   return (
-    <div style={{ backgroundImage: image, marginBottom: `-${offset}px` }} className={styles.imageContainer}>
+    <div style={{ backgroundImage: image, marginBottom: `-${offset}px` }} className="w-screen h-screen bg-center bg-cover flex items-center justify-center transition-all duration-200">
       <div className={styles.loopContainer} onClick={navToPosts}>
-        <div className={styles.loop}/>
-        <div className={styles.loop}/>
-        <div className={styles.loop}/>
-        <div className={styles.loop}/>
-        <div className={styles.titleContainer}>
+        {/*<div className={styles.loop}/>*/}
+        <div className={concatClassName('dark:bg-gray-700 bg-white opacity-30 rotate-[30deg]', styles.loop)}/>
+        <div className={concatClassName('dark:bg-gray-700 bg-white opacity-45 rotate-[60deg]', styles.loop)}/>
+        <div className={concatClassName('dark:bg-gray-700 bg-white opacity-30 rotate-90', styles.loop)}/>
+        <div className={concatClassName('dark:bg-gray-700 bg-white opacity-45 rotate-[120deg]', styles.loop)}/>
+        <div className="z-20 flex flex-col items-center font-bold">
           <span className="text-5xl text-nowrap">{ props.title }</span>
           <span className="text-2xl pt-4">{ props.subtitle }</span>
           <span className="text-base pt-4">{ props.description }</span>

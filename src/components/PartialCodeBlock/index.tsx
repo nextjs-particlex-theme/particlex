@@ -49,7 +49,7 @@ const _PartialCodeBlock: React.FC<PartialCodeBlockProps> = props => {
 
 
   return (
-    <pre>
+    <pre className="hljs">
       <div className="z-50 relative pt-12 pb-5">
         <div className={style.codeContent} 
           ref={codeContainer}

@@ -9,13 +9,17 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      zIndex: {
+        mask: '100000',
+        common: '10000',
+        top: '100000'
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       colors: {
-        white: 'var(--color-white)',
         primary: 'var(--color-primary)',
         'primary-sub': 'var(--color-primary-sub)',
         subtext: 'var(--color-text-sub)',
@@ -23,6 +27,7 @@ const config: Config = {
         background: 'var(--background-color)',
         card: 'var(--color-card)',
         mask: 'var(--color-mask)',
+        error: 'var(--color-error)'
       }
     }
   },

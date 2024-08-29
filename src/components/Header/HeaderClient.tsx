@@ -38,7 +38,7 @@ const HeaderClient:React.FC<HeaderClientProps> = props => {
   
   return (
     <div className="hidden md:block">
-      <div className={concatClassName('font-bold text-sm pl-16 text-subtext flex-row flex', styles.header, headerClass)}
+      <div className={concatClassName('font-bold text-sm pl-4 text-subtext flex-row flex transition-all duration-300 fixed w-full px-4 overflow-hidden items-center z-top', headerClass)}
         style={props.status !== HeaderStatus.HIDDEN ? undefined : { height: 0 }}>
         <Link href="/" className="pl-10">
           { props.title }
