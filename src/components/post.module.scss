@@ -3,33 +3,39 @@
   font-size: 1rem;
   color: var(--color-text-sub);
   h1 {
-    font-size: px2Rem(30px) !important
+    font-size: px2Rem(30px) !important;
+    margin: px2Rem(25px) 0;
+  }
+
+
+  h2 {
+    font-size: px2Rem(26px);
+    margin: px2Rem(22px) 0;
+  }
+
+  h3 {
+    font-size: px2Rem(22px);
+    margin: px2Rem(18px) 0;
+  }
+
+  h4 {
+    font-size: px2Rem(18px);
+    margin: px2Rem(18px) 0;
+  }
+
+  h5 {
+    font-size: px2Rem(16px);
+    margin: px2Rem(18px) 0;
+  }
+
+  h6 {
+    font-size: px2Rem(15px);
+    margin: px2Rem(18px) 0;
   }
 
   h1,h2,h3,h4,h5,h6 {
     color: var(--color-text);
     font-weight: 700;
-    margin: px2Rem(15px) 0;
-  }
-
-  h2 {
-    font-size: px2Rem(27px)
-  }
-
-  h3 {
-    font-size: px2Rem(24px)
-  }
-
-  h4 {
-    font-size: px2Rem(21px)
-  }
-
-  h5 {
-    font-size: px2Rem(18px)
-  }
-
-  h6 {
-    font-size: px2Rem(15px)
   }
 
   hr {
