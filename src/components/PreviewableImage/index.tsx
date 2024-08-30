@@ -1,7 +1,6 @@
 'use client'
 import React, { Fragment, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { concatClassName } from '@/lib/DomUtils'
 
 interface ImagePreviewProps {
   src: string
@@ -33,6 +32,7 @@ const FullScreenPreview: React.FC<FullScreenPreviewProps> = props => {
   return (
     <div className="transition-opacity duration-300 w-screen h-screen fixed top-0 left-0 bg-mask flex items-center justify-center"
       style={{ opacity }} onClick={onClose}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={props.src} alt={props.alt} className="scale-110"/>
     </div>
   )
@@ -54,6 +54,7 @@ const PreviewableImage: React.FC<ImagePreviewProps> = props => {
 
   return (
     <Fragment>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={props.src} alt={props.alt} loading="lazy" onClick={onImageClick}></img>
       {
         previewing ?

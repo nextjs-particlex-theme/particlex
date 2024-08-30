@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react'
 import styles from './root-style.module.scss'
-import {concatClassName} from "@/lib/DomUtils";
+import { concatClassName } from '@/lib/DomUtils'
 
 interface RootImageHeaderProps {
   images?: string[]
