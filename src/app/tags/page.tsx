@@ -5,7 +5,7 @@ import { toMapAble } from '@/lib/ObjectUtils'
 import CategoryItem from '@/components/CategoryItem'
 import datasource from '@/api/datasource'
 import type { Metadata } from 'next'
-import CommentComponentInject from "@/components/CommentComponentInject";
+import CommentComponentInject from '@/components/CommentComponentInject'
 
 export async function generateMetadata(): Promise<Metadata> {
   const config = await datasource.getConfig()
@@ -42,8 +42,8 @@ const TagsPage: React.FC = async () => {
             ))
           }
         </div>
+        <CommentComponentInject/>
       </div>
-      <CommentComponentInject/>
     </>
   )
 }
