@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useRef } from 'react'
+import { activeCurrentTheme } from '@/lib/useTheme'
 
 function importStaticCss(url: string) {
   const link = document.createElement('link')
@@ -19,11 +20,7 @@ export function PreloadResources() {
     importStaticCss('/fonts/fonts.min.css')
     importStaticCss('/css/github.min.css')
 
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
+    activeCurrentTheme()
   }, [])
 
   return null

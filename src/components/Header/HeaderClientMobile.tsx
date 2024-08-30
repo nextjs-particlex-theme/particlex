@@ -7,6 +7,7 @@ import { Icons } from '@/app/svg-symbols'
 import Drawer from '@/components/Drawer'
 import Image from 'next/image'
 import { HeaderStatus } from '@/components/Header/header-types'
+import ThemeToggleButton from '@/components/Header/ThemeToggleButton'
 
 interface HeaderClientMobileProps {
   /**
@@ -77,7 +78,7 @@ const HeaderClientMobile: React.FC<HeaderClientMobileProps> = props => {
           {props.title}
         </Link>
         <div>
-          {/* just a placeholder to keep title center.  */}
+          <ThemeToggleButton/>
         </div>
       </div>
       <Drawer open={drawerOpen} onClose={onClose}>
