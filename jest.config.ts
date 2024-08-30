@@ -167,9 +167,7 @@ const config: Config = {
   // ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-  // testPathIgnorePatterns: [
-  //   "\\\\node_modules\\\\"
-  // ],
+  testPathIgnorePatterns: ['\\.d\\.ts$'],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   // testRegex: [],
@@ -186,6 +184,7 @@ const config: Config = {
     '\\.md$': '<rootDir>/__tests__/plain-text-transformer.cjs',
   },
 
+  // transformIgnorePatterns: ['\\.d\\.ts$'],
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
   //   "\\\\node_modules\\\\",

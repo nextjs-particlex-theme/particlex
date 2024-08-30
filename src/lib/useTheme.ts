@@ -1,4 +1,3 @@
-'use client'
 import { useEffect, useState } from 'react'
 
 export const UseTheme = {
@@ -50,10 +49,6 @@ function guessCurrentTheme(): AvailableThemes {
     theme = 'SYSTEM'
   }
   return theme
-}
-
-export const isDarkMode = (): boolean => {
-  return localStorage.theme === 'dark'
 }
 
 type CurrentTheme = {

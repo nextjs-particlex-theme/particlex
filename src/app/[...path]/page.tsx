@@ -6,7 +6,6 @@ import postStyle from '@/components/post.module.scss'
 import PostMetadata from '@/components/PostMetadata'
 import TableOfContent, { MAIN_CONTENT_ID } from '@/components/TableOfContent'
 import Link from 'next/link'
-import { generateSeoMetadata } from '@/lib/seo'
 import CommentComponentInject from '@/components/CommentComponentInject'
 import PostContainer from '@/components/PostContainer'
 
@@ -33,7 +32,25 @@ export async function generateMetadata({ params }: {params: Param}): Promise<Met
       title: 'Fallback Page'
     }
   }
-  return generateSeoMetadata(post)
+  const config = await datasource.getConfig()
+  const { seo } = post
+
+  let title: string
+  if (seo.title) {
+    if (seo.title.includes('|')) {
+      title = seo.title
+    } else {
+      title = `${seo.title} | ${config.title}`
+    }
+  } else {
+    title = `${post.title} | ${config.title}`
+  }
+
+  return {
+    title,
+    description: seo.description,
+    keywords: seo.keywords
+  }
 }
 
 interface Param {

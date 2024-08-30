@@ -1,5 +1,5 @@
 import { expect, test } from '@jest/globals'
-import { arraySpliceKeepOriginal, deepCopy } from '@/lib/ObjectUtils'
+import {arraySpliceKeepOriginal, deepCopy, isPromise, toMapAble} from '@/lib/ObjectUtils'
 
 
 test('deepCopy_normalData_copySuccess', () => {
@@ -26,34 +26,47 @@ test('deepCopy_normalData_copySuccess', () => {
       }
     }
   }
-  
-  expect(deepCopy(o)).toStrictEqual(o)
+
+  const copied =deepCopy(o)
+  expect(copied).toStrictEqual(o)
+  expect(copied === o).toBeFalsy()
 })
 
-test('arraySpliceKeepOriginal_normalData_deleteSuccess', () => {
-  const arr = [1, 2, 3, 4, 5]
+function testArraySpliceKeepOriginal<T>(arr: T[], start: number, deleteCount?: number): T[] {
   const cpArr = [...arr]
 
-  const spliced = arraySpliceKeepOriginal(arr, 1, 1)
-  expect(spliced).toStrictEqual([1, 3, 4, 5])
+  const spliced = arraySpliceKeepOriginal(arr, start, deleteCount)
   expect(arr).toStrictEqual(cpArr)
   expect(spliced === arr).toBeFalsy()
+  return spliced
+}
+
+test('arraySpliceKeepOriginal_normalData_deleteSuccess', () => {
+  expect(testArraySpliceKeepOriginal([1, 2, 3, 4, 5], 1, 1)).toStrictEqual([1, 3, 4, 5])
+  expect(testArraySpliceKeepOriginal([1, 2, 3, 4, 5], 0, 99999)).toStrictEqual([])
+  expect(testArraySpliceKeepOriginal([1, 2, 3, 4, 5], 4, 99999)).toStrictEqual([1, 2, 3, 4])
+  expect(testArraySpliceKeepOriginal([1, 2, 3, 4, 5], -999, 99999)).toStrictEqual([])
+  expect(testArraySpliceKeepOriginal([1, 2, 3, 4, 5], -999, 99999)).toStrictEqual([])
+  expect(testArraySpliceKeepOriginal([1, 2, 3, 4, 5], 999, 99999)).toStrictEqual([1, 2, 3, 4])
+  expect(testArraySpliceKeepOriginal([1, 2, 3, 4, 5], -999, 1)).toStrictEqual([2, 3, 4, 5])
+  expect(testArraySpliceKeepOriginal([], 999, 99999)).toStrictEqual([])
 })
 
-test('arraySpliceKeepOriginal_extremeParameter_deleteSuccess', () => {
-  expect(
-    arraySpliceKeepOriginal([1, 2, 3, 4, 5], 0, 99999)
-  ).toStrictEqual([])
+test('isPromise_normalData', () => {
+  expect(isPromise({})).toBeFalsy()
+  expect(isPromise({ then: () => {} })).toBeFalsy()
+  // How to cope with this?
+  expect(isPromise({ then: () => {}, catch: () => {} })).toBeTruthy()
+  expect(new Promise(() => {})).toBeTruthy()
+})
 
-  expect(
-    arraySpliceKeepOriginal([1, 2, 3, 4, 5], 4, 99999)
-  ).toStrictEqual([1, 2, 3, 4])
+test('toMapAble_normalData', () => {
+  const map = new Map<string, number>()
 
-  expect(
-    arraySpliceKeepOriginal([1, 2, 3, 4, 5], -999, 99999)
-  ).toStrictEqual([])
+  map.set("1", 1);
+  map.set("2", 2);
+  map.set("3", 3);
+  const r = toMapAble(map).map((value) => value + 1)
 
-  expect(
-    arraySpliceKeepOriginal([1, 2, 3, 4, 5], 999, 99999)
-  ).toStrictEqual([1, 2, 3, 4])
+  expect(r).toStrictEqual([2, 3, 4])
 })
