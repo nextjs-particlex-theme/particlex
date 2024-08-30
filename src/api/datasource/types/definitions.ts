@@ -7,6 +7,9 @@ export interface Resource {
 
 
 export type TocItem = {
+  /**
+   * 标题，该值为 html 文本！
+   */
   title: string
   /**
    * 锚点，以 # 开头

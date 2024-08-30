@@ -149,8 +149,7 @@ const TableOfContent:React.FC<TableOfContentProps> = props => {
                 <Link key={v.anchor}
                   onClick={() => onTocItemClick(index)}
                   href={v.anchor}
-                  className={`title-${v.level} ${activeIndex === index ? 'active-title' : ''}`}>
-                  {v.title}
+                  className={`title-${v.level} ${activeIndex === index ? 'active-title' : ''}`} dangerouslySetInnerHTML={{ __html: v.title }}>
                 </Link>
               ))
             }
