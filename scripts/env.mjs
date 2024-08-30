@@ -1,7 +1,7 @@
 import fs from "node:fs"
 import readline from "node:readline"
 
-const envFiles = ['.env', '.env.local']
+const envFiles = ['.env.local', '.env']
 
 
 /**
@@ -43,7 +43,9 @@ async function env() {
     }
     const content = await parseProperties(envFile)
     Object.entries(content).forEach(([key, value]) => {
-      process.env[key] = value
+      if (!process.env[key]) {
+        process.env[key] = value
+      }
     })
   }
 }
