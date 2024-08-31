@@ -11,7 +11,6 @@ const THEME_VALUES = Object.keys(UseTheme) as AvailableThemes[]
 
 function toggleThemeClassname(theme: AvailableThemes) {
   const i = THEME_VALUES.findIndex(v => v === theme)
-  console.log(THEME_VALUES)
   if (i == -1) {
     return
   }

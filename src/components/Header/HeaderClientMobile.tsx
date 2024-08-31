@@ -32,7 +32,7 @@ interface HeaderClientMobileProps {
 const NavButton:React.FC<React.PropsWithChildren<{href: string}>> = props => {
   return (
     <Link href={props.href} className="box-border p-3 w-full">
-      <div className="bg-white w-full flex py-3 rounded-3xl px-6">
+      <div className="bg-card w-full flex py-3 rounded-3xl px-6">
         {props.children}
       </div>
     </Link>
