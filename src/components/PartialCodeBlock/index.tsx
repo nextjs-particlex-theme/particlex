@@ -20,15 +20,20 @@ const _PartialCodeBlock: React.FC<PartialCodeBlockProps> = props => {
   
 
   const onCopyUp = () => {
+    const ctr = codeContainer.current
+    if (!ctr) {
+      alert('复制失败! 这可能是一个 BUG，如果可以，请提交一个 ISSUE 以帮助我们解决.')
+      return
+    }
+
     if (navigator && navigator.clipboard) {
-      navigator.clipboard.writeText(props.content).catch(e => {
+      navigator.clipboard.writeText(ctr.innerText).catch(e => {
         alert(e.message)
       })
     } else {
-      const ctr = codeContainer.current
       const selection = window.getSelection()
-      if (!ctr || !selection) {
-        alert('复制失败! 这可能是一个 BUG，如果可以，请提交一个 ISSUE 以帮助我们解决.')
+      if (!selection) {
+        alert('复制失败! `window.getSelection` is undefined.')
         return
       }
       const newRange = document.createRange()
