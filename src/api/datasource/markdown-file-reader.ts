@@ -8,7 +8,7 @@ import * as os from 'node:os'
 
 showdown.setFlavor('github')
 
-export type PostContent = {
+export type Markdown = {
   metadata: {
     title?: string
     date?: string
@@ -21,7 +21,6 @@ export type PostContent = {
     }
   }
   content: string
-  toc: TocItem[]
 }
 
 const LEVEL_MAPPING: Record<string, number> = {
@@ -41,7 +40,7 @@ type WrappedTocItem = {
 /**
  * 根据 html 自动生成 Toc. 当碰到不连贯的标题时，例如 h1 里面直接套 h3，此时 h3 会被直接认作子标题
  */
-function generateShallowToc(html?: string): TocItem[] {
+export function generateShallowToc(html?: string): TocItem[] {
   if (!html) {
     return []
   }
@@ -143,7 +142,7 @@ function indicateWhereContainsTab(yamlLines: string[], filePath: string): Error 
 /**
  * markdown 转 html
  */
-const markdownToHtml = (markdownContent: string): string => {
+export const markdownToHtml = (markdownContent: string): string => {
   const sd = new showdown.Converter({
     strikethrough: true,
     tables: true,
@@ -166,7 +165,7 @@ enum CollectStatus {
  * @param content Markdown内容，提供一个以换行符分割的数组或者整个字符串，后者将会被转化为前者
  * @param filepath 文件路径，当解析 markdown 错误时，将会带上文件路径以便于排查
  */
-export const parseMarkdownContent = (content: string[] | string, filepath: string = '<Unknown>'): PostContent => {
+export const parseMarkdownContent = (content: string[] | string, filepath: string = '<Unknown>'): Markdown => {
   const metadataStrArr: string[] = []
   let metadataCollectStatus = CollectStatus.EXPECT_START
   let contentArr: string[] = Array.isArray(content) ? content : content.split(os.EOL)
@@ -198,16 +197,13 @@ export const parseMarkdownContent = (content: string[] | string, filepath: strin
   
 
   if (metadataCollectStatus !== CollectStatus.DONE) {
-    // no metadata provided.
-    const html = markdownToHtml(Array.isArray(content) ? content.join(os.EOL) : content)
     return {
-      content: html,
-      toc: generateShallowToc(html),
+      content: Array.isArray(content) ? content.join(os.EOL) : content,
       metadata: {}
     }
   }
 
-  let metadata: PostContent['metadata']
+  let metadata: Markdown['metadata']
   try {
     metadata = yaml.parse(metadataStrArr.join('\n'))
   } catch (e) {
@@ -222,11 +218,9 @@ export const parseMarkdownContent = (content: string[] | string, filepath: strin
       throw new Error(`Parse yaml file '${filepath}' failed, content:\n${metadataStrArr.join(os.EOL)}`, { cause: e })
     }
   }
-  const html = markdownToHtml(contentArr.slice(metadataStrArr.length + 2).join(os.EOL))
   return {
-    content: html,
+    content: contentArr.slice(metadataStrArr.length + 2).join(os.EOL),
     metadata,
-    toc: generateShallowToc(html)
   }
   
 }
@@ -235,7 +229,7 @@ export const parseMarkdownContent = (content: string[] | string, filepath: strin
  * 解析 markdown 文件
  * @param filepath 文件路径
  */
-export const parseMarkdownFile = (filepath: string): PostContent => {
+export const readMarkdownFile = (filepath: string): Markdown => {
   const content = fs.readFileSync(filepath, { encoding: 'utf-8' })
   return parseMarkdownContent(content, filepath)
 }

@@ -177,7 +177,7 @@ const config: Config = {
 
   // This option allows use of a custom test runner
   // testRunner: "jest-circus/runner",
-
+  extensionsToTreatAsEsm: ['.ts', '.tsx'],
   // A map from regular expressions to paths to transformers
   transform: {
     '\\.[jt]sx?$': 'babel-jest',

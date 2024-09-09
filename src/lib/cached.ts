@@ -20,6 +20,8 @@ export default function cached(cacheKeyBuilder?: (...args: unknown[]) => string)
         return result.then(r => {
           cache.set(cacheKey, r)
           return r
+        }).catch(e => {
+          return Promise.reject(e)
         })
       } else {
         cache.set(cacheKey, result)

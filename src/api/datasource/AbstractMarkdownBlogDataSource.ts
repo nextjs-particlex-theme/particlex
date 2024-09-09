@@ -1,14 +1,16 @@
 import path from 'node:path'
 import { globSync } from 'glob'
-import type { Category, DataSourceConfig, Tag } from '@/api/datasource/types/definitions'
+import type { Category, DataSourceConfig, Tag, TocItem } from '@/api/datasource/types/definitions'
 import { StaticResource } from '@/api/datasource/types/resource/StaticResource'
 import type { SEO } from '@/api/datasource/types/resource/Post'
 import Post from '@/api/datasource/types/resource/Post'
 import type { BlogDataSource } from '@/api/datasource/types/BlogDataSource'
 import cached from '@/lib/cached'
+import parseMarkdownContent from '@/api/markdown-parser/markdown-content-process'
+import type { Markdown } from '@/api/datasource/markdown-file-reader'
+import { markdownToHtml } from '@/api/datasource/markdown-file-reader'
+import { generateShallowToc, readMarkdownFile } from '@/api/datasource/markdown-file-reader'
 import processPostContent from '@/api/datasource/html-content-process'
-import type { PostContent } from '@/api/datasource/markdown-parser'
-import { parseMarkdownFile } from '@/api/datasource/markdown-parser'
 
 type AbstractBlogDataSourceCons = {
   /**
@@ -49,8 +51,8 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
 
   protected constructor(config: AbstractBlogDataSourceCons) {
     this.config = {
-      homePostGlob: `${config.homePostDirectory}/**/*.md`,
-      postGlob: config.postDirectory.map(v => `${v}/**/*.md`),
+      homePostGlob: `${config.homePostDirectory}/**/*.{md,mdx}`,
+      postGlob: config.postDirectory.map(v => `${v}/**/*.{md,mdx}`),
       resourceGlob: `${config.resourceDirectory}/**/*`
     }
   }
@@ -155,16 +157,33 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
 
     for (let i = Math.max(0, begin); i < len; i++) {
       const file = files[i]
-      const { metadata, content, toc } = parseMarkdownFile(path.resolve(process.env.BLOG_PATH, file))
+      const { metadata, content } = readMarkdownFile(path.resolve(process.env.BLOG_PATH, file))
+      
       let source = this.resolvePostWebPath(file)
+      let html
+      let toc: TocItem[]
+      if (file.endsWith('.mdx')) {
+        try {
+          html = await parseMarkdownContent(content)
+          // TODO generate TOC
+          toc = []
+        } catch (e) {
+          return Promise.reject(new Error('Failed to parse markdown file: ' + file + ', cause: \n' + (e as Error).message, { cause: e }))
+        }
+      } else {
+        // md
+        const htmlContent = markdownToHtml(content)
+        html = processPostContent(htmlContent)
+        toc = generateShallowToc(htmlContent)
+      }
 
       const postData: PostConstructor = {
         title: metadata.title ?? 'Untitled',
         date: metadata.date ? new Date(metadata.date).valueOf() : undefined,
         source,
         id: source.join('-'),
-        toc,
-        content: processPostContent(content),
+        toc: toc,
+        content: html,
         tags: this.parseTagAndCategories(metadata.tags),
         categories: this.parseTagAndCategories(metadata.categories),
         wordCount: content.length,
@@ -210,7 +229,7 @@ export default abstract class AbstractMarkdownBlogDataSource implements BlogData
    * @param seo seo 配置
    * @protected
    */
-  protected parseSeoConfig(data: Omit<PostConstructor, 'seo'>, seo: PostContent['metadata']['seo']): SEO {
+  protected parseSeoConfig(data: Omit<PostConstructor, 'seo'>, seo: Markdown['metadata']['seo']): SEO {
     const fakeType = (seo ?? {}) as Partial<SEO>
 
     return {
