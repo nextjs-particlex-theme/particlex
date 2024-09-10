@@ -1,12 +1,24 @@
-import fs from 'node:fs'
+import mdParser from '@/api/markdown-parser/impl/md/MdParser'
+import mdxParser from '@/api/markdown-parser/impl/mdx/MdxParser'
+import type { ParsedMarkdown } from '@/api/markdown-parser/types'
+import os from 'node:os'
 import yaml, { YAMLParseError } from 'yaml'
-import showdown from 'showdown'
-import type { TocItem } from '@/api/datasource/types/definitions'
-import { JSDOM } from 'jsdom'
-import * as os from 'node:os'
 
-
-showdown.setFlavor('github')
+/**
+ * 解析markdown文本内容
+ * @param markdown markdown 文本内容
+ * @param identifier 标识符，md或mdx
+ */
+const parseMarkdown = (markdown: string, identifier: string): Promise<ParsedMarkdown> => {
+  if (identifier.endsWith('.md')) {
+    return mdParser.parse(markdown)
+  } else if (identifier.endsWith('.mdx')) {
+    // TODO error handle.
+    return mdxParser.parse(markdown)
+  } else {
+    throw new Error('Unknown file.')
+  }
+}
 
 export type Markdown = {
   metadata: {
@@ -22,80 +34,6 @@ export type Markdown = {
   }
   content: string
 }
-
-const LEVEL_MAPPING: Record<string, number> = {
-  H1: 1,
-  H2: 2,
-  H3: 3,
-  H4: 4,
-  H5: 5,
-  H6: 6,
-}
-
-type WrappedTocItem = {
-  item: TocItem
-  actualLevel: number
-}
-
-/**
- * 根据 html 自动生成 Toc. 当碰到不连贯的标题时，例如 h1 里面直接套 h3，此时 h3 会被直接认作子标题
- */
-export function generateShallowToc(html?: string): TocItem[] {
-  if (!html) {
-    return []
-  }
-  const dom = new JSDOM(html, { contentType: 'text/html' })
-
-  const root = dom.window.document.body
-
-  let parentStack: WrappedTocItem[] = [{ item: { title: 'FakeRoot', child: [], anchor: '#' }, actualLevel: -1 }]
-
-  root.childNodes.forEach(v => {
-    const currentLevel = LEVEL_MAPPING[v.nodeName]
-    if (currentLevel === undefined) {
-      return
-    }
-    const heading = v as HTMLHeadingElement
-    const data = {
-      title: heading.innerHTML,
-      anchor: '#' + heading.getAttribute('id')
-    }
-    const item: WrappedTocItem = {
-      item: {
-        ...data,
-        child: []
-      },
-      actualLevel: currentLevel,
-    }
-    for (let i = parentStack.length - 1; i >= 0; --i) {
-      const cur = parentStack[i]
-      if (cur.actualLevel < item.actualLevel) {
-        // remaining child
-        cur.item.child.push(item.item)
-        parentStack.push(item)
-        break
-      } else {
-        parentStack.pop()
-      }
-    }
-  })
-  return parentStack[0].item.child
-}
-
-let __test_generateShallowToc0: typeof generateShallowToc | undefined
-if (process.env.NODE_ENV === 'test') {
-  __test_generateShallowToc0 = generateShallowToc
-} else {
-  __test_generateShallowToc0 = undefined
-}
-
-/**
- * Test only
- */
-export const __test_generateShallowToc = __test_generateShallowToc0
-
-
-
 
 const YAML_INDEX_SPACES_FILL: string = (new Array(Number.parseInt(process.env.YAML_INDENT_SPACE_COUNT, 10))).map(() => ' ').join('')
 
@@ -122,7 +60,16 @@ const replacePrefixIndent = (str: string): string => {
   return spaces.join('') + str.substring(i)
 }
 
+
+
+enum CollectStatus {
+  EXPECT_START,
+  EXPECT_END,
+  DONE
+}
+
 const REPLACE_REGX = /^\t+/g
+
 
 /**
  * 创建一个错误，指出哪里使用了 TAB
@@ -139,33 +86,13 @@ function indicateWhereContainsTab(yamlLines: string[], filePath: string): Error 
   return new Error(msg.join('\n'))
 }
 
-/**
- * markdown 转 html
- */
-export const markdownToHtml = (markdownContent: string): string => {
-  const sd = new showdown.Converter({
-    strikethrough: true,
-    tables: true,
-    tasklists: true,
-    disableForced4SpacesIndentedSublists: true,
-    headerLevelStart: 1,
-    rawHeaderId: true
-  })
-  return sd.makeHtml(markdownContent)
-}
-
-enum CollectStatus {
-  EXPECT_START,
-  EXPECT_END,
-  DONE
-}
 
 /**
  * 解析 Markdown 文本内容
  * @param content Markdown内容，提供一个以换行符分割的数组或者整个字符串，后者将会被转化为前者
  * @param filepath 文件路径，当解析 markdown 错误时，将会带上文件路径以便于排查
  */
-export const parseMarkdownContent = (content: string[] | string, filepath: string = '<Unknown>'): Markdown => {
+export const splitMarkdownContent = (content: string[] | string, filepath: string = '<Unknown>'): Markdown => {
   const metadataStrArr: string[] = []
   let metadataCollectStatus = CollectStatus.EXPECT_START
   let contentArr: string[] = Array.isArray(content) ? content : content.split(os.EOL)
@@ -190,11 +117,11 @@ export const parseMarkdownContent = (content: string[] | string, filepath: strin
       break
     }
     // eslint-disable-next-line no-fallthrough
-    default: 
+    default:
       throw new Error('Unreachable branch!')
     }
   }
-  
+
 
   if (metadataCollectStatus !== CollectStatus.DONE) {
     return {
@@ -222,14 +149,8 @@ export const parseMarkdownContent = (content: string[] | string, filepath: strin
     content: contentArr.slice(metadataStrArr.length + 2).join(os.EOL),
     metadata,
   }
-  
+
 }
 
-/**
- * 解析 markdown 文件
- * @param filepath 文件路径
- */
-export const readMarkdownFile = (filepath: string): Markdown => {
-  const content = fs.readFileSync(filepath, { encoding: 'utf-8' })
-  return parseMarkdownContent(content, filepath)
-}
+
+export default parseMarkdown

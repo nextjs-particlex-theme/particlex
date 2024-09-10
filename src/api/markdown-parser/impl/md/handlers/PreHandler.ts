@@ -1,4 +1,4 @@
-import type HtmlTagHandler from '@/api/datasource/types/HtmlTagHandler'
+import type HtmlTagHandler from '@/api/markdown-parser/impl/md/HtmlTagHandler'
 import type { HTMLReactParserOptions } from 'html-react-parser'
 import { Element, Text } from 'html-react-parser'
 import hljs from 'highlight.js'

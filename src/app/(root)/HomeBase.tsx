@@ -15,7 +15,7 @@ interface RootLayoutProps {
 const HomeBase: React.FC<RootLayoutProps> = async props => {
   const { title, background, indexPageSize,description, subtitle } = await datasource.getConfig()
   const posts = await datasource.pageHomePosts(props.currentPage, indexPageSize)
-  const total = await datasource.pagePostsSize()
+  const total = await datasource.homePostSize()
   const p = Math.ceil(total / indexPageSize)
 
   return (

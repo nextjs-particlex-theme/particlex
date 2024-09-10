@@ -1,4 +1,4 @@
-import type HtmlTagHandler from '@/api/datasource/types/HtmlTagHandler'
+import type HtmlTagHandler from '@/api/markdown-parser/impl/md/HtmlTagHandler'
 import type { Element, HTMLReactParserOptions } from 'html-react-parser'
 import { domToReact } from 'html-react-parser'
 import { Text } from 'html-react-parser'

@@ -1,4 +1,4 @@
-import type HtmlTagHandler from '@/api/datasource/types/HtmlTagHandler'
+import type HtmlTagHandler from '@/api/markdown-parser/impl/md/HtmlTagHandler'
 import type { Element, HTMLReactParserOptions } from 'html-react-parser'
 import React from 'react'
 import PreviewableImage from '@/components/PreviewableImage'

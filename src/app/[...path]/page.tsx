@@ -5,15 +5,16 @@ import type { Metadata } from 'next'
 import postStyle from '@/components/post.module.scss'
 import PostMetadata from '@/components/PostMetadata'
 import TableOfContent, { MAIN_CONTENT_ID } from '@/components/TableOfContent'
-import Link from 'next/link'
 import CommentComponentInject from '@/components/CommentComponentInject'
 import PostContainer from '@/components/PostContainer'
 
 
 export async function generateStaticParams(): Promise<Param[]> {
-  const posts = await datasource.getAllPost()
-  const r: Param[] = posts.map(v => ({ path: v.source }))
+  const posts = await datasource.getAllPagesUrl()
+  const r: Param[] = posts.map(v => ({ path: v.visitPath }))
 
+  console.log(r)
+  console.log('==')
   if (r.length > 0) {
     return r
   }
@@ -25,7 +26,7 @@ export async function generateStaticParams(): Promise<Param[]> {
 }
 
 export async function generateMetadata({ params }: {params: Param}): Promise<Metadata> {
-  const post = await datasource.getPostByWebUrl(params.path)
+  const post = await datasource.getPageByWebUrl(params.path)
 
   if (!post) {
     return {
@@ -58,14 +59,12 @@ interface Param {
 }
 
 const PostPage: React.FC<{params: Param}> = async ({ params }) => {
-  const post = await datasource.getPostByWebUrl(params.path)
+  const post = await datasource.getPageByWebUrl(params.path)
 
   if (!post) {
     return (
       <div>
-        If you see this page, it means you do not have any files in your source/images folder.
-        Because of the <Link href="https://github.com/vercel/next.js/issues/61213">limitation of next.js</Link>, we have to create a fallback page.
-        But if you have files in source/images and this page still generated, it maybe the bug of the theme.
+        Can not find any pages in the specified directory. If you do have it, please post an issue on GitHub to help resolve this problem.
       </div>
     )
   }

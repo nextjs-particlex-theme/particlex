@@ -1,7 +1,7 @@
-import type HtmlTagHandler from '@/api/datasource/types/HtmlTagHandler'
-import imageHandler from '@/api/datasource/handlers/ImageHandler'
-import preHandler from '@/api/datasource/handlers/PreHandler'
-import githubBlockquoteHandler from '@/api/datasource/handlers/GithubBlockquoteHandler'
+import type HtmlTagHandler from '@/api/markdown-parser/impl/md/HtmlTagHandler'
+import imageHandler from '@/api/markdown-parser/impl/md/handlers/ImageHandler'
+import preHandler from '@/api/markdown-parser/impl/md/handlers/PreHandler'
+import githubBlockquoteHandler from './handlers/GithubBlockquoteHandler/index'
 
 
 const instanceHolder = new Map<string, HtmlTagHandler>()

@@ -1,9 +1,10 @@
-
-import Pre from '@/api/markdown-parser/custom/Pre'
+import type { MarkdownParser, ParsedMarkdown } from '@/api/markdown-parser/types'
+import type { TocItem } from '@/api/datasource/types/definitions'
+import React from 'react'
 import { compile, run } from '@mdx-js/mdx'
 import * as runtime from 'react/jsx-runtime'
-import React from 'react'
-import * as os from 'node:os'
+import os from 'node:os'
+import Pre from '@/api/markdown-parser/impl/mdx/components/Pre'
 
 const components = {
   pre: Pre
@@ -75,4 +76,18 @@ async function parseMarkdownContent(content: string): Promise<React.ReactNode> {
   }
 }
 
-export default parseMarkdownContent
+
+const mdxParser: MarkdownParser = {
+  async parse(markdown: string): Promise<ParsedMarkdown> {
+    let node = await parseMarkdownContent(markdown)
+    // TODO generate TOC
+    let toc: TocItem[] = []
+
+    return {
+      toc,
+      page: node
+    }
+  }
+}
+
+export default mdxParser

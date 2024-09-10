@@ -8,7 +8,7 @@ type Params = {
 
 export async function generateStaticParams() {
   const config = await datasource.getConfig()
-  const size = Math.ceil(await datasource.pagePostsSize() / config.indexPageSize)
+  const size = Math.ceil(await datasource.homePostSize() / config.indexPageSize)
 
   const result: Params[] = []
   for (let i = 1; i <= size; i++) {
