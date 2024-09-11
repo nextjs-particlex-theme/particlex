@@ -4,10 +4,14 @@ import React from 'react'
 import { compile, run } from '@mdx-js/mdx'
 import * as runtime from 'react/jsx-runtime'
 import os from 'node:os'
-import Pre from '@/api/markdown-parser/impl/mdx/components/Pre'
+import MdxCodeBlock from '@/api/markdown-parser/impl/mdx/components/MdxCodeBlock'
+import MdxImage from '@/api/markdown-parser/impl/mdx/components/MdxImage'
+import MdxBlockQuote from '@/api/markdown-parser/impl/mdx/components/MdxBlockQuote'
 
 const components = {
-  pre: Pre
+  pre: MdxCodeBlock,
+  img: MdxImage,
+  blockquote: MdxBlockQuote
 }
 
 async function parseMarkdownContent0(content: string): Promise<React.ReactNode> {

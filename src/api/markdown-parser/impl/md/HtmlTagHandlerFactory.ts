@@ -1,7 +1,7 @@
 import type HtmlTagHandler from '@/api/markdown-parser/impl/md/HtmlTagHandler'
 import imageHandler from '@/api/markdown-parser/impl/md/handlers/ImageHandler'
 import preHandler from '@/api/markdown-parser/impl/md/handlers/PreHandler'
-import githubBlockquoteHandler from './handlers/GithubBlockquoteHandler/index'
+import blockQuoteHandler from '@/api/markdown-parser/impl/md/handlers/BlockQuoteHandler'
 
 
 const instanceHolder = new Map<string, HtmlTagHandler>()
@@ -23,7 +23,7 @@ const registerHandler = (caster: HtmlTagHandler) => {
 
 registerHandler(imageHandler)
 registerHandler(preHandler)
-registerHandler(githubBlockquoteHandler)
+registerHandler(blockQuoteHandler)
 
 /**
  * 包括一下，方便外面使用的时候好看.

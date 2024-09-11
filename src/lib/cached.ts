@@ -22,7 +22,6 @@ export default function cached(cacheKeyBuilder?: (...args: unknown[]) => string,
       const cacheKey = cacheKeyBuilder ? cacheKeyBuilder(args) : JSON.stringify(args)
       const cachedValue = cache.get(cacheKey)
       if (cachedValue) {
-        console.log(cachedValue.data)
         return cachedValue.isPromise ? Promise.resolve(cachedValue.data) : cachedValue.data
       }
 

@@ -88,3 +88,17 @@ export const toMapAble = <K, V> (map: Readonly<Map<K, V>>): MapAble<K, V> => {
     }
   }
 }
+
+/**
+ * 删除所有匹配的前缀
+ * @param src 源字符串
+ * @param prefix 前缀
+ * @return {string} 删除后的字符串
+ */
+export const strTrimStart = (src: string, prefix: string): string => {
+  let head = 0
+  while (src.startsWith(prefix, head)) {
+    head += prefix.length
+  }
+  return src.substring(head)
+}

@@ -13,8 +13,6 @@ export async function generateStaticParams(): Promise<Param[]> {
   const posts = await datasource.getAllPagesUrl()
   const r: Param[] = posts.map(v => ({ path: v.visitPath }))
 
-  console.log(r)
-  console.log('==')
   if (r.length > 0) {
     return r
   }
