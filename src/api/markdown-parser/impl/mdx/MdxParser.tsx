@@ -1,5 +1,4 @@
 import type { MarkdownParser, ParsedMarkdown } from '@/api/markdown-parser/types'
-import type { TocItem } from '@/api/datasource/types/definitions'
 import React from 'react'
 import { compile, run } from '@mdx-js/mdx'
 import * as runtime from 'react/jsx-runtime'
@@ -7,11 +6,18 @@ import os from 'node:os'
 import MdxCodeBlock from '@/api/markdown-parser/impl/mdx/components/MdxCodeBlock'
 import MdxImage from '@/api/markdown-parser/impl/mdx/components/MdxImage'
 import MdxBlockQuote from '@/api/markdown-parser/impl/mdx/components/MdxBlockQuote'
+import generateTocByMarkdown from '@/api/markdown-parser/common-toc-generator'
+import createCommonHeadingWithId from '@/api/markdown-parser/impl/mdx/components/CommonHeadingWithId'
 
 const components = {
   pre: MdxCodeBlock,
   img: MdxImage,
-  blockquote: MdxBlockQuote
+  blockquote: MdxBlockQuote,
+  h1: createCommonHeadingWithId('h1'),
+  h2: createCommonHeadingWithId('h2'),
+  h3: createCommonHeadingWithId('h3'),
+  h4: createCommonHeadingWithId('h4'),
+  h5: createCommonHeadingWithId('h5')
 }
 
 async function parseMarkdownContent0(content: string): Promise<React.ReactNode> {
@@ -84,11 +90,9 @@ async function parseMarkdownContent(content: string): Promise<React.ReactNode> {
 const mdxParser: MarkdownParser = {
   async parse(markdown: string): Promise<ParsedMarkdown> {
     let node = await parseMarkdownContent(markdown)
-    // TODO generate TOC
-    let toc: TocItem[] = []
 
     return {
-      toc,
+      toc: generateTocByMarkdown(markdown),
       page: node
     }
   }
