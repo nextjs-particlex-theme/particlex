@@ -1,5 +1,5 @@
 import { expect, test } from '@jest/globals'
-import markdown from './markdown.test.md'
+import markdown from '../markdown.test.md'
 import badHeadingMarkdown from './bad-heading.test.md'
 import generateTocByMarkdown from '@/api/markdown-parser/common-toc-generator'
 

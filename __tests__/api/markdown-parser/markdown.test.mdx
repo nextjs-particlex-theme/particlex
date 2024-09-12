@@ -1,0 +1,17 @@
+import {useState} from "react"
+export const data = ['a', 'b', 'c']
+
+export function Adder(val) {
+  const [value, setValue] = useState(0)
+  const onClick = () => {
+    setValue((v) => (v + 1))
+  }
+
+  return (
+    <span role="button" onClick={onClick}>{value}</span>
+  )
+}
+
+<div style={{ display: 'flex', justifyContent: 'space-around' }}>
+  <Adder/>
+</div>

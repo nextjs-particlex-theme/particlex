@@ -11,5 +11,8 @@
     "indent": ["error", 2],
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/consistent-type-imports": "error"
+  },
+  "env": {
+    "jest": true
   }
 }

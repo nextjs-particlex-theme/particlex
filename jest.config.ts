@@ -152,7 +152,7 @@ const config: Config = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  // testEnvironment: "jest-environment-node",
+  testEnvironment: 'jsdom',
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
@@ -181,7 +181,7 @@ const config: Config = {
   // A map from regular expressions to paths to transformers
   transform: {
     '\\.[jt]sx?$': 'babel-jest',
-    '\\.md$': '<rootDir>/__tests__/plain-text-transformer.cjs',
+    '\\.mdx?$': '<rootDir>/__tests__/plain-text-transformer.cjs',
   },
 
   // transformIgnorePatterns: ['\\.d\\.ts$'],

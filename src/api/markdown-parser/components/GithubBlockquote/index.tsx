@@ -5,7 +5,7 @@ import { concatClassName } from '@/lib/DomUtils'
 
 type BlockquoteAvailableTypes = 'NOTE' | 'TIP' | 'IMPORTANT' | 'WARNING' | 'CAUTION'
 
-interface GithubCodeBlockProps {
+export interface GithubCodeBlockProps {
   icon: string
   colors: string
   tip: string

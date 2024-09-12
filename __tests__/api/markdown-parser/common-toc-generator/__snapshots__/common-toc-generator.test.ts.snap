@@ -3,31 +3,31 @@
 exports[`Test bad heading generate 1`] = `
 [
   {
-    "anchor": "#L4",
+    "anchor": "#l4",
     "child": [],
     "title": "L4",
   },
   {
-    "anchor": "#L3",
+    "anchor": "#l3",
     "child": [],
     "title": "L3",
   },
   {
-    "anchor": "#L2",
+    "anchor": "#l2",
     "child": [],
     "title": "L2",
   },
   {
-    "anchor": "#L1",
+    "anchor": "#l1",
     "child": [
       {
-        "anchor": "#L2",
+        "anchor": "#l2",
         "child": [
           {
-            "anchor": "#L3",
+            "anchor": "#l3",
             "child": [
               {
-                "anchor": "#L4",
+                "anchor": "#l4",
                 "child": [],
                 "title": "L4",
               },
@@ -46,7 +46,7 @@ exports[`Test bad heading generate 1`] = `
 exports[`Test toc parse 1`] = `
 [
   {
-    "anchor": "#1-Markdown语法教程",
+    "anchor": "#1-markdown语法教程",
     "child": [
       {
         "anchor": "#1.1-标题",
@@ -105,12 +105,12 @@ exports[`Test toc parse 1`] = `
     "anchor": "#2-其他语法",
     "child": [
       {
-        "anchor": "#2.1-HTML",
+        "anchor": "#2.1-html",
         "child": [],
         "title": "2.1 HTML",
       },
       {
-        "anchor": "#Github-警告",
+        "anchor": "#github-警告",
         "child": [],
         "title": "Github 警告",
       },

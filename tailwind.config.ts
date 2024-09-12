@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss'
+import path from 'node:path'
 
-
+console.log(path.resolve(process.env.BLOG_PATH, process.env.BLOG_POST_DIRECTORY))
 const config: Config = {
   darkMode: 'selector',
   content: [
@@ -8,6 +9,7 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     './src/api/markdown-parser/components/**/*.{ts,tsx}',
+    `${path.resolve(process.env.BLOG_PATH, process.env.BLOG_POST_DIRECTORY)}/**/*.{js,ts,jsx,tsx,mdx}`
   ],
   theme: {
     extend: {
