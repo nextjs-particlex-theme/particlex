@@ -14,6 +14,10 @@ type CachedValue = {
 export default function cached(cacheKeyBuilder?: (...args: unknown[]) => string, maxSize: number = 1000) {
   return function(_: any, __: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value
+    if (process.env.NODE_ENV === 'development') {
+      // no cache in development.
+      return
+    }
     const cache = new LRUCache<string, CachedValue>({
       max: maxSize,
     })
