@@ -1,6 +1,10 @@
-import hexo from '@/api/datasource/impl/index'
-import type { BlogDataSource } from '@/api/datasource/types/BlogDataSource'
+import ServiceBeans from '@/api/svc/ServiceBeans'
 
-let datasource: BlogDataSource = hexo
 
+let datasource = ServiceBeans.blogService
+
+/**
+ * @deprecated
+ * @see {@link ServiceBeans#blogService}
+ */
 export default datasource

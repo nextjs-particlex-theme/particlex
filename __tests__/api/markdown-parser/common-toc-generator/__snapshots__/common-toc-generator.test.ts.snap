@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test bad heading generate 1`] = `
+[
+  {
+    "anchor": "#l4",
+    "child": [],
+    "title": "L4",
+  },
+  {
+    "anchor": "#l3",
+    "child": [],
+    "title": "L3",
+  },
+  {
+    "anchor": "#l2",
+    "child": [],
+    "title": "L2",
+  },
+  {
+    "anchor": "#l1",
+    "child": [
+      {
+        "anchor": "#l2",
+        "child": [
+          {
+            "anchor": "#l3",
+            "child": [
+              {
+                "anchor": "#l4",
+                "child": [],
+                "title": "L4",
+              },
+            ],
+            "title": "L3",
+          },
+        ],
+        "title": "L2",
+      },
+    ],
+    "title": "L1",
+  },
+]
+`;
+
+exports[`Test toc parse 1`] = `
+[
+  {
+    "anchor": "#1-markdown语法教程",
+    "child": [
+      {
+        "anchor": "#1.1-标题",
+        "child": [],
+        "title": "1.1 标题",
+      },
+      {
+        "anchor": "#1.2-字体",
+        "child": [],
+        "title": "1.2 字体",
+      },
+      {
+        "anchor": "#1.3-无序列表",
+        "child": [],
+        "title": "1.3 无序列表",
+      },
+      {
+        "anchor": "#1.4-有序列表",
+        "child": [],
+        "title": "1.4 有序列表",
+      },
+      {
+        "anchor": "#1.5-引用",
+        "child": [],
+        "title": "1.5 引用",
+      },
+      {
+        "anchor": "#1.6-链接",
+        "child": [],
+        "title": "1.6 链接",
+      },
+      {
+        "anchor": "#1.7-图片",
+        "child": [],
+        "title": "1.7 图片",
+      },
+      {
+        "anchor": "#1.8-分割线",
+        "child": [],
+        "title": "1.8 分割线",
+      },
+      {
+        "anchor": "#1.9-表格",
+        "child": [],
+        "title": "1.9 表格",
+      },
+      {
+        "anchor": "#1.10-代码块",
+        "child": [],
+        "title": "1.10 代码块",
+      },
+    ],
+    "title": "1 Markdown语法教程",
+  },
+  {
+    "anchor": "#2-其他语法",
+    "child": [
+      {
+        "anchor": "#2.1-html",
+        "child": [],
+        "title": "2.1 HTML",
+      },
+      {
+        "anchor": "#github-警告",
+        "child": [],
+        "title": "Github 警告",
+      },
+    ],
+    "title": "2 其他语法",
+  },
+]
+`;

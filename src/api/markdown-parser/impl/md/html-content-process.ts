@@ -1,6 +1,6 @@
 import reactParse, { Element } from 'html-react-parser'
 import type React from 'react'
-import HtmlTagHandlerFactory from '@/api/datasource/HtmlTagHandlerFactory'
+import HtmlTagHandlerFactory from '@/api/markdown-parser/impl/md/HtmlTagHandlerFactory'
 
 
 /**

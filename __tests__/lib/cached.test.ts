@@ -1,5 +1,4 @@
-import { expect, test } from '@jest/globals'
-import cached from "@/lib/cached";
+import cached from '@/lib/cached'
 
 test('cached_withSideEffect_invokeOnce', () => {
 
@@ -31,9 +30,9 @@ test('cached_invokePromise_invokeOnce', async () => {
 
     @cached() wrapper(): Promise<number> {
       return new Promise<number>(resolve => {
-          const old = this.invoked
-          this.invoked += 1
-          resolve(old)
+        const old = this.invoked
+        this.invoked += 1
+        resolve(old)
       })
     }
 

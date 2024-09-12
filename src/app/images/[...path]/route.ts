@@ -1,6 +1,4 @@
 import datasource from '@/api/datasource'
-import * as fs from 'node:fs'
-import mime from 'mime'
 
 function base64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4)
@@ -21,7 +19,7 @@ type StaticParams = { path: string[] }[]
 
 export async function generateStaticParams(): Promise<StaticParams> {
   const resource = await datasource.getAllStaticResource()
-  const r: StaticParams = resource.map(v => ({ path: v.accessPath }))
+  const r: StaticParams = resource.map(v => ({ path: v.visitPath }))
 
   if (r.length > 0) {
     return r
@@ -51,9 +49,9 @@ export async function GET(_: unknown, { params }: ResourceRouteParam) {
       status: 200
     })
   }
-  return new Response(base64ToUint8Array(fs.readFileSync(res.filepath, { encoding: 'base64' })), {
+  return new Response(base64ToUint8Array(res.base64), {
     headers: {
-      'Content-Type': mime.getType(res.filepath) ?? 'plain/text'
+      'Content-Type': res.contentType
     }
   })
 }

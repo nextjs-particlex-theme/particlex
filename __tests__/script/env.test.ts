@@ -2,7 +2,6 @@
  * Test /script/env.mjs
  */
 import env from '../../scripts/env.mjs'
-import { expect, test } from '@jest/globals'
 
 
 test('Test env order', async () => {

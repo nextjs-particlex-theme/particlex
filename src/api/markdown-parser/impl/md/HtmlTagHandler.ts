@@ -1,6 +1,6 @@
 import type { Element, HTMLReactParserOptions } from 'html-react-parser'
 
-type HtmlTagHandler = {
+interface HtmlTagHandler {
 
   /**
    * 支持的 Html TAG.

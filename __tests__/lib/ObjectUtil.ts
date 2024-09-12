@@ -1,5 +1,4 @@
-import { expect, test } from '@jest/globals'
-import {arraySpliceKeepOriginal, deepCopy, isPromise, toMapAble} from '@/lib/ObjectUtils'
+import { arraySpliceKeepOriginal, deepCopy, isPromise, toMapAble } from '@/lib/ObjectUtils'
 
 
 test('deepCopy_normalData_copySuccess', () => {
@@ -63,9 +62,9 @@ test('isPromise_normalData', () => {
 test('toMapAble_normalData', () => {
   const map = new Map<string, number>()
 
-  map.set("1", 1);
-  map.set("2", 2);
-  map.set("3", 3);
+  map.set('1', 1)
+  map.set('2', 2)
+  map.set('3', 3)
   const r = toMapAble(map).map((value) => value + 1)
 
   expect(r).toStrictEqual([2, 3, 4])

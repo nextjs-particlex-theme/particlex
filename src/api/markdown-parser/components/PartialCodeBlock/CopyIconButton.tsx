@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import style from '@/components/PartialCodeBlock/post-content.module.scss'
+import style from '@/api/markdown-parser/components/PartialCodeBlock/post-content.module.scss'
 import { Icons } from '@/app/svg-symbols'
 import { arraySpliceKeepOriginal } from '@/lib/ObjectUtils'
 

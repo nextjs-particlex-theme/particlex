@@ -13,9 +13,9 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = async (props) => {
   const meta = await datasource.getConfig()
   let aboutPageUrl: string
-  if ((await datasource.getPostByWebUrl(['about']))) {
+  if ((await datasource.getPageByWebUrl(['about']))) {
     aboutPageUrl = '/about'
-  } else if (await datasource.getPostByWebUrl(['about', 'index'])) {
+  } else if (await datasource.getPageByWebUrl(['about', 'index'])) {
     aboutPageUrl = '/about/index'
   } else {
     aboutPageUrl = ''

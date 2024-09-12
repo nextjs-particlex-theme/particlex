@@ -2,6 +2,7 @@
   "name": "nextjs-particlex-theme",
   "version": "1.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "NODE_OPTIONS='--trace-deprecation' next dev",
     "dev-expose": "NODE_OPTIONS='--trace-deprecation' node scripts/dev.cjs",
@@ -10,14 +11,18 @@
     "start": "next start",
     "lint": "eslint ./src --fix",
     "tsc": "tsc --noEmit",
-    "test": "jest",
+    "test": "NODE_OPTIONS='--experimental-vm-modules' jest",
     "analyze": "cross-env ANALYZE=true npm run build"
   },
   "dependencies": {
+    "@mdx-js/react": "^3.0.1",
+    "@next/mdx": "^14.2.8",
+    "@types/mdx": "^2.0.13",
     "glob": "^11.0.0",
     "highlight.js": "^11.10.0",
     "html-react-parser": "^5.1.12",
     "jsdom": "^24.1.1",
+    "lru-cache": "^11.0.1",
     "mime": "^4.0.4",
     "next": "14.2.5",
     "react": "^18",
@@ -26,10 +31,12 @@
     "yaml": "^2.5.0"
   },
   "devDependencies": {
-    "@jest/globals": "^29.7.0",
+    "@babel/preset-react": "^7.24.7",
     "@next/bundle-analyzer": "^14.2.5",
+    "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.4.6",
-    "@testing-library/react": "^16.0.0",
+    "@testing-library/react": "^16.0.1",
+    "@types/jest": "^29.5.12",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

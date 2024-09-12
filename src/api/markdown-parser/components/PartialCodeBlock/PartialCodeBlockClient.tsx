@@ -2,14 +2,21 @@
 import React, { useRef, useState } from 'react'
 import style from './post-content.module.scss'
 import { Icons } from '@/app/svg-symbols'
-import CopyIconButton from '@/components/PartialCodeBlock/CopyIconButton'
+import CopyIconButton from '@/api/markdown-parser/components/PartialCodeBlock/CopyIconButton'
 
 interface PartialCodeBlockProps {
-  content: string
+  /**
+   * 高亮的富文本
+   */
+  html: string
   lang: string
 }
 
-const _PartialCodeBlock: React.FC<PartialCodeBlockProps> = props => {
+/**
+ * 代码块.
+ * @param props 当 html 非空时，将优先使用 html 作为代码块内容，否则使用 children 作为代码块内容.
+ */
+const PartialCodeBlockClient: React.FC<PartialCodeBlockProps> = props => {
   const [wrapLineActive, setWrapLineActive] = React.useState(false)
   const codeContainer = useRef<HTMLDivElement>(null)
   const [expandActive, setExpandActive] = useState(false)
@@ -52,14 +59,14 @@ const _PartialCodeBlock: React.FC<PartialCodeBlockProps> = props => {
     setExpandActive(!expandActive)
   }
 
-
   return (
     <pre className="hljs">
       <div className="z-50 relative pt-12 pb-5">
         <div className={style.codeContent} 
           ref={codeContainer}
           style={{ textWrap: wrapLineActive ? 'wrap' : undefined, maxHeight: expandActive ? undefined : '50vh' }}
-          dangerouslySetInnerHTML={{ __html: props.content }}/>
+          dangerouslySetInnerHTML={{ __html: props.html }}>
+        </div>
         <div className={style.languageTag}>{props.lang}</div>
         <div className={style.toolBar}>
           <span title="自动换行">
@@ -77,6 +84,5 @@ const _PartialCodeBlock: React.FC<PartialCodeBlockProps> = props => {
   )
 }
 
-const PartialCodeBlock = React.memo(_PartialCodeBlock)
 
-export default PartialCodeBlock
+export default PartialCodeBlockClient
