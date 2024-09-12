@@ -1,5 +1,14 @@
 # Particlex
 
+> [!NOTE]
+> 🎉🎉 已支持 [mdx](https://www.mdxjs.cn/docs/using-mdx/) 🎉🎉
+> 
+> 同时支持在 mdx 中直接使用 [tailwindcss](https://www.tailwindcss.cn/)
+>
+> 无需任何配置更变，只需将你的博客文件后缀改为 `.mdx` 即可自动使用相关解析器。 Example: [markdown.test.mdx](https://github.com/nextjs-particlex-theme/particlex/blob/master/__tests__/api/markdown-parser/markdown.test.mdx?plain=1).
+
+
+
 基于 Next.js SSG 构建模式的博客主题框架。能够为任意一套基于 Markdown 文件为基础的博客系统生成博客静态文件。
 
 对整个博客文件系统几乎**无侵入**，无需修改现有任何文件来适配，支持从 Hexo 博客快速迁移。
