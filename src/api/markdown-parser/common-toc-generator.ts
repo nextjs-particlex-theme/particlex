@@ -1,33 +1,4 @@
 import type { TocItem } from '@/api/datasource/types/definitions'
-import os from 'node:os'
-
-
-
-/**
- * 判断左边是不是 EOL
- * @param src 字符串
- * @param pos 起始位置(包括)
- */
-function isLeftEOL(src: string, pos: number): boolean {
-  for (let i = 0, len = os.EOL.length; i < len; i++) {
-    if (os.EOL[len - i - 1] !== src[pos - i]) {
-      return false
-    }
-  }
-  return true
-}
-
-function rightHeadingLevel(src: string, pos: number): number {
-  let lvl = 0
-  for (let i = pos; i < src.length; ++i) {
-    if (src[i] === '#') {
-      lvl++
-    } else {
-      break
-    }
-  }
-  return lvl
-}
 
 type WrappedTocItem = {
   item: TocItem

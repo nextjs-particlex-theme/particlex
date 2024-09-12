@@ -1,7 +1,7 @@
 import type React from 'react'
 import hljs from 'highlight.js'
 import PartialCodeBlockClient from '@/api/markdown-parser/components/PartialCodeBlock/PartialCodeBlockClient'
-import {strTrimStart} from "@/lib/ObjectUtils";
+import { strTrimStart } from '@/lib/ObjectUtils'
 
 interface PartialCodeBlockProps {
   /**

@@ -1,14 +1,11 @@
-import type {Datasource, DatasourceItem, StaticResourceContent} from '@/api/datasource/Datasource'
-import { WebVisitPath } from '@/api/datasource/Datasource'
+import type { Datasource, DatasourceItem, StaticResourceContent } from '@/api/datasource/Datasource'
 import type { DataSourceConfig } from './types/definitions'
 import path from 'node:path'
 import { globSync } from 'glob'
 import fs from 'node:fs'
 import yaml from 'yaml'
 import cached from '@/lib/cached'
-import {StaticResource} from "@/api/datasource/types/resource/StaticResource";
-import mime from "mime";
-import {getType} from "jest-get-type";
+import mime from 'mime'
 
 type FileSystemDatasourceConfig = {
   /**
