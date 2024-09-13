@@ -8,6 +8,7 @@ import MdxImage from '@/api/markdown-parser/impl/mdx/components/MdxImage'
 import MdxBlockQuote from '@/api/markdown-parser/impl/mdx/components/MdxBlockQuote'
 import generateTocByMarkdown from '@/api/markdown-parser/common-toc-generator'
 import createCommonHeadingWithId from '@/api/markdown-parser/impl/mdx/components/CommonHeadingWithId'
+import PintoraDiagram from '@/api/markdown-parser/impl/mdx/components/PintoraDiagram'
 
 const components = {
   pre: MdxCodeBlock,
@@ -17,8 +18,10 @@ const components = {
   h2: createCommonHeadingWithId('h2'),
   h3: createCommonHeadingWithId('h3'),
   h4: createCommonHeadingWithId('h4'),
-  h5: createCommonHeadingWithId('h5')
+  h5: createCommonHeadingWithId('h5'),
+  PintoraDiagram
 }
+
 
 async function parseMarkdownContent0(content: string): Promise<React.ReactNode> {
   const code = String(

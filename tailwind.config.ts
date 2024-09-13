@@ -1,7 +1,6 @@
 import type { Config } from 'tailwindcss'
 import path from 'node:path'
 
-console.log(path.resolve(process.env.BLOG_PATH, process.env.BLOG_POST_DIRECTORY))
 const config: Config = {
   darkMode: 'selector',
   content: [
