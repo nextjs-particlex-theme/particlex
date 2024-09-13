@@ -17,6 +17,7 @@
   "dependencies": {
     "@mdx-js/react": "^3.0.1",
     "@next/mdx": "^14.2.8",
+    "@pintora/cli": "^0.7.6",
     "@types/mdx": "^2.0.13",
     "glob": "^11.0.0",
     "highlight.js": "^11.10.0",
