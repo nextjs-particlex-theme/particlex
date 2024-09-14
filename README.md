@@ -7,7 +7,7 @@
 >
 > 无需任何配置更变，只需将你的博客文件后缀改为 `.mdx` 即可自动使用相关解析器。 
 > 
-> [Example](http://localhost:3000/example#2.2-mdx)
+> [Example](https://nextjs-particlex-theme.github.io/example#2.2-mdx)
 
 
 
