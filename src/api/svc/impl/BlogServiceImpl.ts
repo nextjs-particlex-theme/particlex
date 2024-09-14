@@ -97,7 +97,7 @@ export default class BlogServiceImpl implements BlogService {
   @cached()
   async getPageByWebUrl(url: WebVisitPath): Promise<Readonly<Post> | undefined> {
     const map = await this.pageMap
-    const item = map.get(url.join('-'))
+    const item = map.get(BlogServiceImpl.visitPathToString(url))
     if (!item) {
       return
     }

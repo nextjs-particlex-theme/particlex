@@ -18,7 +18,7 @@ const PintoraDiagram: React.FC<PintoraDiagramProps> = async props => {
     code: props.code,
     pintoraConfig: props.config,
     mimeType: 'image/svg+xml',
-    width: 1000,
+    width: 800,
     backgroundColor: 'currentColor',
     renderInSubprocess: false
   })
