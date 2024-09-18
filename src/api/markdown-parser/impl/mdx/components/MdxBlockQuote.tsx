@@ -2,69 +2,73 @@ import React from 'react'
 import os from 'node:os'
 import type { GithubCodeBlockProps } from '@/api/markdown-parser/components/GithubBlockquote'
 import GithubBlockquote, { SUPPORTED_TYPE } from '@/api/markdown-parser/components/GithubBlockquote'
-import { deepCopy } from '@/lib/ObjectUtils'
-
 
 type ChildItem = Array<string | {
   props: {
     children: ChildItem
   }
+  type: string
   key: any
-}>
+}> | string
 
-interface MdxBlockQuoteProps {
+type MdxProps = {
   children: ChildItem
 }
 
-function splitType(line: string): string | undefined {
-  const cols = line.split(os.EOL)
-  const type = cols[0]
-  if (type.length <= 3) {
-    return
-  }
-  return type.substring(2, type.length - 1)
-}
+const SEARCH_REGX = /\[!(\w+)]/
 
-function resolveAndRemoveType(originalContent: ChildItem): [ChildItem, GithubCodeBlockProps] | undefined {
-  if (originalContent.length < 2) {
+function resolveAndRemoveType(props: MdxProps): [React.ReactNode, GithubCodeBlockProps] | undefined {
+  // What an ugly code😅... Does someone can help me to refactor it?
+  let paragraph = props.children?.[1]
+  if (typeof paragraph === 'string') {
     return
   }
-  let type: string | undefined
-  
-  const item = originalContent[1]
-  if (typeof item === 'string') {
-    type = splitType(item)
-    let attr
-    if (!type || !(attr = SUPPORTED_TYPE[type])) {
-      return 
-    }
-    const copied = [...originalContent]
-    copied[1] = item.substring(type.length + 3)
-    return [copied, attr]
-  } 
-  // obj
-  const ch = item.props.children[0]
-  if (typeof ch === 'string') {
-    type = splitType(ch)
-    let attr
-    if (!type || !(attr = SUPPORTED_TYPE[type])) {
+  if (typeof paragraph.props.children === 'string') {
+    const matched = SEARCH_REGX.exec(paragraph.props.children)
+    if (!matched) {
       return
     }
-    const copied = [...originalContent]
-    const copiedChild = deepCopy(item)
-    copiedChild.key = '1'
-    copied[1] = copiedChild
-    // item.props.children = copiedChild
-    copiedChild.props.children[0] = ch.substring(type.length + 3)
-    return [copied, attr]
+    const attr = SUPPORTED_TYPE[matched[1]]
+    if (!attr) {
+      return
+    }
+    const copiedRoot = [...props.children]
+    const copiedParagraph = { ...paragraph }
+    copiedRoot[1] = copiedParagraph
+
+    copiedParagraph.props = {
+      children: paragraph.props.children.substring(3 + os.EOL.length + matched[1].length)
+    }
+
+    return [copiedRoot, attr]
   }
-  return undefined
+  const line = paragraph.props.children[0]
+  if (typeof line !== 'string') {
+    return
+  }
+  const matched = SEARCH_REGX.exec(line)
+  if (!matched) {
+    return
+  }
+  const attr = SUPPORTED_TYPE[matched[1]]
+  if (!attr) {
+    return
+  }
+  const copiedRoot = [...props.children]
+  const copiedParagraph = { ...paragraph }
+  copiedParagraph.props = { ...copiedParagraph.props }
+  copiedRoot[1] = copiedParagraph
+
+  const cpiedParagraphChild = [...paragraph.props.children]
+  cpiedParagraphChild[0] = line.substring(3 + os.EOL.length + matched[1].length)
+  copiedParagraph.props.children = cpiedParagraphChild
+  return [copiedRoot, attr]
 }
 
 const MdxBlockQuote:React.FC = (p) => {
-  const props = p as MdxBlockQuoteProps
+  const props = p as MdxProps
 
-  const result = resolveAndRemoveType(props.children)
+  const result = resolveAndRemoveType(props)
   if (!result) {
     return React.createElement('blockquote', props)
   }
@@ -72,7 +76,7 @@ const MdxBlockQuote:React.FC = (p) => {
 
   return (
     <GithubBlockquote {...attr}>
-      { root as React.ReactNode }
+      { root }
     </GithubBlockquote>
   )
 }

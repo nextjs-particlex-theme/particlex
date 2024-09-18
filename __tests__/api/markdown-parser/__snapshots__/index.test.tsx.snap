@@ -87,3 +87,40 @@ exports[`Test md render 1`] = `
   CAUTION 123</p>
 </blockquote></div>"
 `;
+
+exports[`Test mdx render 1`] = `
+"<div><blockquote><div class="flex items-center mt-4"><svg width="15" height="15"><use xlink:href="#icon-info"></use></svg><span class="ml-2">Note</span></div>
+<p>NOTE</p>
+</blockquote>
+<blockquote><div class="flex items-center mt-4"><svg width="15" height="15"><use xlink:href="#fc-lightbulb"></use></svg><span class="ml-2">Tip</span></div>
+<p>TIP</p>
+</blockquote>
+<blockquote><div class="flex items-center mt-4"><svg width="15" height="15"><use xlink:href="#fc-star"></use></svg><span class="ml-2">Important</span></div>
+<p>IMPORTANT</p>
+</blockquote>
+<blockquote><div class="flex items-center mt-4"><svg width="17" height="17"><use xlink:href="#icon-warning"></use></svg><span class="ml-2">Warning</span></div>
+<p>WARNING</p>
+</blockquote>
+<blockquote><div class="flex items-center mt-4"><svg width="15" height="15"><use xlink:href="#icon-info"></use></svg><span class="ml-2">Caution</span></div>
+<p>CAUTION</p>
+</blockquote>
+<blockquote><div class="flex items-center mt-4"><svg width="15" height="15"><use xlink:href="#icon-info"></use></svg><span class="ml-2">Note</span></div>
+<p>ee
+hello world
+[!NOTE]</p>
+</blockquote>
+<blockquote>
+<p>hello [!INFO]
+world</p>
+</blockquote>
+<blockquote><div class="flex items-center mt-4"><svg width="15" height="15"><use xlink:href="#icon-info"></use></svg><span class="ml-2">Note</span></div>
+<p>NOTE</p>
+<pre class="hljs"><div class="z-50 relative pt-12 pb-5"><div style="max-height: 50vh;">[!NOTE]
+NOTE
+</div><div>markdown</div><div><span title="自动换行"><svg width="18" height="18"><use xlink:href="#wrap-line"></use></svg></span><span title="展开"><svg width="15" height="15"><use xlink:href="#fc-arrows-up-down"></use></svg></span><div title="复制"><svg width="15" height="15"><use xlink:href="#fc-copy"></use></svg></div></div></div></pre>
+</blockquote>
+<blockquote><div class="flex items-center mt-4"><svg width="15" height="15"><use xlink:href="#icon-info"></use></svg><span class="ml-2">Caution</span></div>
+<p>在 mdx 中必须使用 React 语法，例如 <code>class</code> 需要写成 <code>className</code>, <code>style</code>需要提供一个对象而不是直接的字符串。</p>
+<p><strong>由于使用 SSR 渲染，所以无法绑定事件</strong>。</p>
+</blockquote></div>"
+`;
