@@ -1,16 +1,34 @@
-import {useState} from "react"
+> [!NOTE]
+> NOTE
 
-export function Adder(val) {
-  const [value, setValue] = useState(0)
-  const onClick = () => {
-    setValue((v) => (v + 1))
-  }
+> [!TIP]
+> TIP
 
-  return (
-    <span role="button" onClick={onClick}>{value}</span>
-  )
-}
+> [!IMPORTANT]
+> IMPORTANT
 
-<div style={{ display: 'flex', justifyContent: 'space-around' }}>
-  <Adder/>
-</div>
+> [!WARNING]
+> WARNING
+
+> [!CAUTION]
+> CAUTION
+
+> [!NOTE] eee
+> hello world
+> [!NOTE]
+
+> hello [!INFO]
+> world
+
+> [!NOTE]
+> NOTE
+>
+> ```markdown
+> [!NOTE]
+> NOTE
+> ```
+
+> [!CAUTION]
+> 在 mdx 中必须使用 React 语法，例如 `class` 需要写成 `className`, `style`需要提供一个对象而不是直接的字符串。
+>
+> **由于使用 SSR 渲染，所以无法绑定事件**。

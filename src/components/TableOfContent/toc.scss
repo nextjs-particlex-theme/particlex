@@ -35,10 +35,14 @@
     }
 
     @mixin subTitleBase($level: 0) {
-        color: rgb(148 163 184);
         border-color: rgb(148 163 184);
         border-left-width: px2Rem(2px);
         padding-left: px2Rem(10px) * $level;
+        @if $level >= 3 {
+            color: rgb(203 213 225);
+        } @else {
+            color: rgb(148 163 184);
+        }
         z-index: 10 - $level;
     }
 
@@ -48,7 +52,6 @@
 
     .title-3 {
         @include subTitleBase(3);
-        color: rgb(203 213 225);
     }
 
     .title-4 {
