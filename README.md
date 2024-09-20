@@ -1,5 +1,5 @@
 # Particlex
-ee1
+ee12
 > [!NOTE]
 > 🎉🎉 已支持 [mdx](https://www.mdxjs.cn/docs/using-mdx/) 🎉🎉
 > 
