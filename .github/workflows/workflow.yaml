@@ -58,6 +58,7 @@ jobs:
 
   run_unit_test:
     name: 'Run unit test'
+    runs-on: ubuntu-latest
     if: ${{ job.lint_project.stpes.lint_result.changed == 0 }}
     steps:
       - name: Check out the repository
