@@ -55,11 +55,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: ${{ github.event.pull_request.head.ref }}
+    outputs:
+      changed: ${{ job.lint_project.stpes.lint_result.changed }}
 
   run_unit_test:
     name: 'Run unit test'
     runs-on: ubuntu-latest
-    if: ${{ job.lint_project.stpes.lint_result.changed == 0 }}
+    needs: lint_project
+    if: ${{ needs.lint_project.outputs.changed == 0 }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@v3
@@ -78,3 +81,4 @@ jobs:
 
       - name: Run test
         run: npm run test
+
