@@ -33,7 +33,6 @@ jobs:
           #!/bin/bash
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          echo "`$date`" > changes.txt
 
           if [ $? -ne 0 ]; then
               exit $?
@@ -43,7 +42,6 @@ jobs:
           status=`git status --short | wc -l`
 
           if [ $status -eq 0 ]; then
-              echo "changed=1" >> $GITHUB_OUTPUT
               exit 0
           fi
 
@@ -54,6 +52,7 @@ jobs:
           if [ $status -ne 0 ]; then
               exit $status
           fi
+          echo "changed=1" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: ${{ github.event.pull_request.head.ref }}
