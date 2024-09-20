@@ -9,7 +9,7 @@
 > 
 > [Example](https://nextjs-particlex-theme.github.io/example#2.2-mdx)
 
-
+ceaw
 
 基于 Next.js SSG 构建模式的博客主题框架。能够为任意一套基于 Markdown 文件为基础的博客系统生成博客静态文件。
 
