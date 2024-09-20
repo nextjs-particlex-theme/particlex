@@ -9,6 +9,8 @@ jobs:
   lint_project:
     runs-on: ubuntu-latest
     name: 'Lint project'
+    permissions:
+      contents: write
     steps:
       - name: Check out the repository
         uses: actions/checkout@v3
