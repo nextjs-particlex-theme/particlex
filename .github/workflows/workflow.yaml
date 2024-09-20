@@ -1,10 +1,10 @@
-name: Create pull request checks
+name: PR CI checks
 
 on:
   pull_request:
     types: [synchronize, opened]
     branches:
-      - main
+      - master
 jobs:
   lint_project:
     runs-on: ubuntu-latest
