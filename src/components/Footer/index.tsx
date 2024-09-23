@@ -1,11 +1,11 @@
 import React from 'react'
-import datasource from '@/api/datasource'
 import Link from 'next/link'
 import styles from './footer.module.scss'
 import { concatClassName } from '@/lib/DomUtils'
+import ServiceBeans from '@/api/svc/ServiceBeans'
 
 const Footer:React.FC =  async () => {
-  const config = await datasource.getConfig()
+  const config = await ServiceBeans.blogService.getConfig()
   return (
     <div id="footer" className={concatClassName('link-styled-container', styles.footerContainer, 'md:w-[56rem]')}>
       <div className="mt-2">

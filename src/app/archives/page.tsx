@@ -1,13 +1,13 @@
 import React from 'react'
-import datasource from '@/api/datasource'
 import Header from '@/components/Header'
 import SearchableArchives from '@/app/archives/SearchableArchives'
 import type { Metadata } from 'next'
 import CommentComponentInject from '@/components/CommentComponentInject'
+import ServiceBeans from '@/api/svc/ServiceBeans'
 
 
 export async function generateMetadata(): Promise<Metadata> {
-  const config = await datasource.getConfig()
+  const config = await ServiceBeans.blogService.getConfig()
   return {
     title: `文章列表 | ${config.title}`,
     description: 'Archives for all blog posts',
@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ArchivesPage() {
-  const homePosts = await datasource.pageHomePosts(0, 999)
+  const homePosts = await ServiceBeans.blogService.pageHomePosts(0, 999)
 
   return (
     <div>

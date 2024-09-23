@@ -1,14 +1,15 @@
-import datasource from '@/api/datasource'
 import React from 'react'
 import HomeBase from '@/app/(root)/HomeBase'
+import ServiceBeans from '@/api/svc/ServiceBeans'
 
 type Params = {
   page: string
 }
 
 export async function generateStaticParams() {
-  const config = await datasource.getConfig()
-  const size = Math.ceil(await datasource.homePostSize() / config.indexPageSize)
+  const service = ServiceBeans.blogService
+  const config = await service.getConfig()
+  const size = Math.ceil(await service.homePostSize() / config.indexPageSize)
 
   const result: Params[] = []
   for (let i = 1; i <= size; i++) {

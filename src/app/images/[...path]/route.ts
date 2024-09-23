@@ -1,4 +1,4 @@
-import datasource from '@/api/datasource'
+import ServiceBeans from '@/api/svc/ServiceBeans'
 
 function base64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4)
@@ -18,7 +18,7 @@ function base64ToUint8Array(base64String: string) {
 type StaticParams = { path: string[] }[]
 
 export async function generateStaticParams(): Promise<StaticParams> {
-  const resource = await datasource.getAllStaticResource()
+  const resource = await ServiceBeans.blogService.getAllStaticResource()
   const r: StaticParams = resource.map(v => ({ path: v.visitPath }))
 
   if (r.length > 0) {
@@ -40,7 +40,7 @@ interface ResourceRouteParam {
 }
 
 export async function GET(_: unknown, { params }: ResourceRouteParam) {
-  const res = await datasource.getStaticResourceByWebUrl(params.path)
+  const res = await ServiceBeans.blogService.getStaticResourceByWebUrl(params.path)
 
   if (!res) {
     return new Response('If you see this page, it means you don\'t have any files in your source/images folder.' +

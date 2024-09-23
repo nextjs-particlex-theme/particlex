@@ -1,16 +1,16 @@
 import type React from 'react'
 import Header from '@/components/Header'
-import datasource from '@/api/datasource'
 import type { Metadata } from 'next'
 import { Icons } from '@/app/svg-symbols'
 import { toMapAble } from '@/lib/ObjectUtils'
 import CategoryItem from '@/components/CategoryItem'
 import CommentComponentInject from '@/components/CommentComponentInject'
+import ServiceBeans from '@/api/svc/ServiceBeans'
 
 
 
 export async function generateMetadata(): Promise<Metadata> {
-  const config = await datasource.getConfig()
+  const config = await ServiceBeans.blogService.getConfig()
   return {
     title: 'Categories | 分类 | ' + config.title,
     description: 'Categories for all blog posts. 博客文章的分类.',
@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 
 const Categories: React.FC = async () => {
-  const categories = await datasource.getCategoriesMapping()
+  const categories = await ServiceBeans.blogService.getCategoriesMapping()
 
   return (
     <>

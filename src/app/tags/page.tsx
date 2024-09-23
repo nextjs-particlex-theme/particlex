@@ -3,12 +3,12 @@ import Header from '@/components/Header'
 import { Icons } from '@/app/svg-symbols'
 import { toMapAble } from '@/lib/ObjectUtils'
 import CategoryItem from '@/components/CategoryItem'
-import datasource from '@/api/datasource'
 import type { Metadata } from 'next'
 import CommentComponentInject from '@/components/CommentComponentInject'
+import ServiceBeans from '@/api/svc/ServiceBeans'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const config = await datasource.getConfig()
+  const config = await ServiceBeans.blogService.getConfig()
   return {
     title: 'Tags | 标签 | ' + config.title,
     description: 'Tags for all blog posts. 博客文章的标签.',
@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 
 const TagsPage: React.FC = async () => {
-  const tags = await datasource.getTagMapping()
+  const tags = await ServiceBeans.blogService.getTagMapping()
   return (
     <>
       <Header />
