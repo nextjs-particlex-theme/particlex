@@ -1,10 +1,7 @@
-import ServiceBeans from '@/api/svc/ServiceBeans'
+import FileSystemDatasource from '@/api/datasource/FileSystemDatasource'
 
 
-let datasource = ServiceBeans.blogService
+let datasource = new FileSystemDatasource()
 
-/**
- * @deprecated
- * @see {@link ServiceBeans#blogService}
- */
+
 export default datasource

@@ -54,4 +54,10 @@ export interface Datasource {
    * @return base64 字符串
    */
   getResource(id: DatasourceItem['id']): Promise<StaticResourceContent | undefined>
+
+  /**
+   * 列出某个目录下的所有页面
+   * @param relativeDirectory 根目录
+   */
+  listPages(relativeDirectory: string): Promise<DatasourceItem[]>
 }
