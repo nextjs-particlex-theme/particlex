@@ -36,8 +36,12 @@ function resolveAndRemoveType(props: MdxProps): [React.ReactNode, GithubCodeBloc
     const copiedParagraph = { ...paragraph }
     copiedRoot[1] = copiedParagraph
 
+    let begin = paragraph.props.children.substring(matched[0].length)
+    if (begin.startsWith(os.EOL)) {
+      begin = begin.substring(os.EOL.length)
+    }
     copiedParagraph.props = {
-      children: paragraph.props.children.substring(3 + os.EOL.length + matched[1].length)
+      children: begin
     }
 
     return [copiedRoot, attr]

@@ -105,7 +105,7 @@ exports[`Test mdx render 1`] = `
 <p>CAUTION</p>
 </blockquote>
 <blockquote><div class="flex items-center mt-4"><svg width="15" height="15"><use xlink:href="#icon-info"></use></svg><span class="ml-2">Note</span></div>
-<p>ee
+<p> eee
 hello world
 [!NOTE]</p>
 </blockquote>
