@@ -1,4 +1,3 @@
-import datasource from '@/api/datasource'
 import React from 'react'
 import Header from '@/components/Header'
 import type { Metadata } from 'next'
@@ -7,10 +6,11 @@ import PostMetadata from '@/components/PostMetadata'
 import TableOfContent, { MAIN_CONTENT_ID } from '@/components/TableOfContent'
 import CommentComponentInject from '@/components/CommentComponentInject'
 import PostContainer from '@/components/PostContainer'
+import ServiceBeans from '@/api/svc/ServiceBeans'
 
 
 export async function generateStaticParams(): Promise<Param[]> {
-  const posts = await datasource.getAllPagesUrl()
+  const posts = await ServiceBeans.blogService.getAllPagesUrl()
   const r: Param[] = posts.map(v => ({ path: v.visitPath }))
 
   if (r.length > 0) {
@@ -24,14 +24,15 @@ export async function generateStaticParams(): Promise<Param[]> {
 }
 
 export async function generateMetadata({ params }: {params: Param}): Promise<Metadata> {
-  const post = await datasource.getPageByWebUrl(params.path)
+  const service = ServiceBeans.blogService
+  const post = await service.getPageByWebUrl(params.path)
 
   if (!post) {
     return {
       title: 'Fallback Page'
     }
   }
-  const config = await datasource.getConfig()
+  const config = await service.getConfig()
   const { seo } = post
 
   let title: string
@@ -57,7 +58,7 @@ interface Param {
 }
 
 const PostPage: React.FC<{params: Param}> = async ({ params }) => {
-  const post = await datasource.getPageByWebUrl(params.path)
+  const post = await ServiceBeans.blogService.getPageByWebUrl(params.path)
 
   if (!post) {
     return (

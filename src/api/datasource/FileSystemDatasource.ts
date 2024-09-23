@@ -9,17 +9,17 @@ import mime from 'mime'
 
 type FileSystemDatasourceConfig = {
   /**
-   * 首页文章目录.
-   */
-  homePostGlob: string
-  /**
-   * 所有文章的共同根目录
-   */
-  pageGlob: string[]
-  /**
    * 资源目录
    */
   resourceGlob: string
+  /**
+   * 首页文章目录.
+   */
+  homePostRoot: string
+  /**
+   * 所有文章的共同根目录
+   */
+  pageRoots: string[]
 }
 
 export default class FileSystemDatasource implements Datasource {
@@ -39,15 +39,21 @@ export default class FileSystemDatasource implements Datasource {
         [process.env.BLOG_POST_DIRECTORY, process.env.BLOG_HOME_POST_DIRECTORY],
     }
     this.config = {
-      homePostGlob: `${config.homePostDirectory}/**/*.{md,mdx}`,
-      pageGlob: config.postDirectory.map(v => `${v}/**/*.{md,mdx}`),
+      homePostRoot: `${config.homePostDirectory}`,
+      pageRoots: config.postDirectory,
       resourceGlob: `${config.resourceDirectory}/**/*`
     }
     this.postPaths = path.normalize(process.env.BLOG_POST_DIRECTORY).split(path.sep)
     this.homePaths = path.normalize(process.env.BLOG_HOME_POST_DIRECTORY).split(path.sep)
   }
 
-
+  listPages(pageRelativePath: string, recursion?: boolean): Promise<DatasourceItem[]> {
+    const searchGlobs: string[] = []
+    for (let root of this.config.pageRoots) {
+      searchGlobs.push(path.join(root, pageRelativePath, recursion ? '/**/*.{md,mdx}' : '/*.{md,mdx}').replaceAll('\\', '/'))
+    }
+    return Promise.resolve(globSync(searchGlobs, { cwd: process.env.BLOG_PATH }).map(v => ({ id: v, visitPath: this.resolvePostWebPath(v), type: v })))
+  }
 
 
   /**
@@ -127,12 +133,12 @@ export default class FileSystemDatasource implements Datasource {
 
   @cached()
   getAllPages(): Promise<DatasourceItem[]> {
-    return Promise.resolve(globSync(this.config.pageGlob, { cwd: process.env.BLOG_PATH }).map(v => ({ id: v, visitPath: this.resolvePostWebPath(v), type: v })))
+    return this.listPages('', true)
   }
 
   @cached()
   getAllHomePosts(): Promise<Array<DatasourceItem>> {
-    return Promise.resolve(globSync(this.config.homePostGlob, { cwd: process.env.BLOG_PATH }).map(v => ({ id: v, visitPath: this.resolvePostWebPath(v), type: v })))
+    return this.listPages(this.config.homePostRoot, true)
   }
 
   @cached()

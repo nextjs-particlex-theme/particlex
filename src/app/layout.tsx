@@ -1,14 +1,14 @@
 import './globals.css'
 import { PreloadResources } from './preload-resources'
 import type { Metadata } from 'next'
-import datasource from '@/api/datasource'
 import React from 'react'
 import SvgSymbols from '@/app/svg-symbols'
 import Footer from '@/components/Footer'
+import ServiceBeans from '@/api/svc/ServiceBeans'
 
 
 export async function generateMetadata(): Promise<Metadata> {
-  const config = await datasource.getConfig()
+  const config = await ServiceBeans.blogService.getConfig()
 
   const metadata: Metadata = {
     title: config.title,

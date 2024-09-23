@@ -1,9 +1,9 @@
-import datasource from '@/api/datasource'
 import Header from '@/components/Header'
 import RootImageHeader from '@/app/(root)/RootImageHeader'
 import PostPreview from '@/app/(root)/PostPreview'
 import React from 'react'
 import HomePagination from '@/app/(root)/HomePagination'
+import ServiceBeans from '@/api/svc/ServiceBeans'
 
 interface RootLayoutProps {
   /**
@@ -13,9 +13,10 @@ interface RootLayoutProps {
 }
 
 const HomeBase: React.FC<RootLayoutProps> = async props => {
-  const { title, background, indexPageSize,description, subtitle } = await datasource.getConfig()
-  const posts = await datasource.pageHomePosts(props.currentPage, indexPageSize)
-  const total = await datasource.homePostSize()
+  const service = ServiceBeans.blogService
+  const { title, background, indexPageSize,description, subtitle } = await service.getConfig()
+  const posts = await service.pageHomePosts(props.currentPage, indexPageSize)
+  const total = await service.homePostSize()
   const p = Math.ceil(total / indexPageSize)
 
   return (

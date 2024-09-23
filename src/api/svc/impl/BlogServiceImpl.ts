@@ -2,19 +2,16 @@ import type { DataSourceConfig, Tag, Category } from '@/api/datasource/types/def
 import type { SEO } from '@/api/datasource/types/resource/Post'
 import Post from '@/api/datasource/types/resource/Post'
 import type { BlogService } from '@/api/svc/BlogService'
-import type { Datasource, DatasourceItem, StaticResourceContent, WebVisitPath } from '@/api/datasource/Datasource'
-import FileSystemDatasource from '@/api/datasource/FileSystemDatasource'
+import type { DatasourceItem, StaticResourceContent, WebVisitPath } from '@/api/datasource/Datasource'
 import path from 'node:path'
 import type { Markdown } from '@/api/markdown-parser'
 import parseMarkdown, { splitMarkdownContent } from '@/api/markdown-parser'
 import cached from '@/lib/cached'
+import datasource from '@/api/datasource'
 
 type PostConstructor = ConstructorParameters<typeof Post>[0]
 
 export default class BlogServiceImpl implements BlogService {
-
-
-  private readonly datasource: Datasource = new FileSystemDatasource()
 
   private static visitPathToString(visitPath: WebVisitPath): string {
     return visitPath.join('/')
@@ -64,11 +61,11 @@ export default class BlogServiceImpl implements BlogService {
   }
 
   getConfig(): Promise<Readonly<DataSourceConfig>> {
-    return this.datasource.getConfig()
+    return datasource.getConfig()
   }
 
   async pageHomePosts(page: number = 0, size: number = 5): Promise<Readonly<Post[]>> {
-    const posts = await this.datasource.getAllHomePosts()
+    const posts = await datasource.getAllHomePosts()
     const head = page * size
     const sliced = posts.slice(head, head + size)
     const result: Post[] = []
@@ -83,15 +80,15 @@ export default class BlogServiceImpl implements BlogService {
   }
 
   async homePostSize(): Promise<number> {
-    return (await this.datasource.getAllPages()).length
+    return (await datasource.getAllPages()).length
   }
 
   getAllPagesUrl(): Promise<Readonly<Array<DatasourceItem>>> {
-    return this.datasource.getAllPages()
+    return datasource.getAllPages()
   }
 
   getAllStaticResource(): Promise<Readonly<DatasourceItem[]>> {
-    return this.datasource.getAllStaticResource()
+    return datasource.getAllStaticResource()
   }
 
   @cached()
@@ -101,7 +98,7 @@ export default class BlogServiceImpl implements BlogService {
     if (!item) {
       return
     }
-    const pageContent = await this.datasource.getPage(item.id)
+    const pageContent = await datasource.getPage(item.id)
     const { metadata, content } = splitMarkdownContent(pageContent, item.id)
     const parsedMarkdown = await parseMarkdown(content, item.type)
 
@@ -173,11 +170,11 @@ export default class BlogServiceImpl implements BlogService {
     if (!r) {
       return undefined
     }
-    return this.datasource.getResource(r.id)
+    return datasource.getResource(r.id)
   }
 
   async getTagMapping(): Promise<Map<Tag, Readonly<Post[]>>> {
-    const pages = await this.datasource.getAllPages()
+    const pages = await datasource.getAllPages()
     const r = new Map<Tag, Post[]>()
     for (let page of pages) {
       const p = await this.getPageByWebUrl(page.visitPath)
@@ -197,7 +194,7 @@ export default class BlogServiceImpl implements BlogService {
   }
 
   async getCategoriesMapping(): Promise<Map<Category, Readonly<Post[]>>> {
-    const pages = await this.datasource.getAllPages()
+    const pages = await datasource.getAllPages()
     const r = new Map<Category, Post[]>()
     for (let page of pages) {
       const p = await this.getPageByWebUrl(page.visitPath)

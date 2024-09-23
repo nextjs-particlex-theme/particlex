@@ -1,6 +1,6 @@
 import React from 'react'
-import datasource from '@/api/datasource'
 import HeaderClientAdapter from '@/components/Header/HeaderClientAdapter'
+import ServiceBeans from '@/api/svc/ServiceBeans'
 
 interface HeaderProps {
   /**
@@ -11,11 +11,12 @@ interface HeaderProps {
 
 
 const Header: React.FC<HeaderProps> = async (props) => {
-  const meta = await datasource.getConfig()
+  const service = ServiceBeans.blogService
+  const meta = await service.getConfig()
   let aboutPageUrl: string
-  if ((await datasource.getPageByWebUrl(['about']))) {
+  if ((await service.getPageByWebUrl(['about']))) {
     aboutPageUrl = '/about'
-  } else if (await datasource.getPageByWebUrl(['about', 'index'])) {
+  } else if (await service.getPageByWebUrl(['about', 'index'])) {
     aboutPageUrl = '/about/index'
   } else {
     aboutPageUrl = ''
