@@ -47,10 +47,13 @@ export default class FileSystemDatasource implements Datasource {
     this.homePaths = path.normalize(process.env.BLOG_HOME_POST_DIRECTORY).split(path.sep)
   }
 
-  listPages(pageRelativePath: string, recursion?: boolean): Promise<DatasourceItem[]> {
-    const searchGlobs: string[] = []
-    for (let root of this.config.pageRoots) {
-      searchGlobs.push(path.join(root, pageRelativePath, recursion ? '/**/*.{md,mdx}' : '/*.{md,mdx}').replaceAll('\\', '/'))
+  listPages(pageRelativePath: string | string[], recursion?: boolean): Promise<DatasourceItem[]> {
+    let searchGlobs: string[] = []
+    pageRelativePath = Array.isArray(pageRelativePath) ? pageRelativePath : [pageRelativePath]
+
+    const append = recursion ? '/**/*.{md,mdx}' : '/*.{md,mdx}'
+    for (let root of pageRelativePath) {
+      searchGlobs.push(path.join(root, append).replaceAll('\\', '/'))
     }
     return Promise.resolve(globSync(searchGlobs, { cwd: process.env.BLOG_PATH }).map(v => ({ id: v, visitPath: this.resolvePostWebPath(v), type: v })))
   }
@@ -67,7 +70,7 @@ export default class FileSystemDatasource implements Datasource {
     return path.normalize(inner).startsWith(path.normalize(outer))
   }
 
-  private resolvePostWebPath(filepath: string): string[] {
+  public resolvePostWebPath(filepath: string): string[] {
     const sp = filepath.split(path.sep)
     if (sp[sp.length - 1].endsWith('.md')) {
       const t = sp[sp.length - 1]
@@ -133,7 +136,7 @@ export default class FileSystemDatasource implements Datasource {
 
   @cached()
   getAllPages(): Promise<DatasourceItem[]> {
-    return this.listPages('', true)
+    return this.listPages(this.config.pageRoots, true)
   }
 
   @cached()
