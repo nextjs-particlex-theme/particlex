@@ -1,30 +1,32 @@
 import type React from 'react'
-import type { PintoraConfig } from '@pintora/cli'
 import { render } from '@pintora/cli'
+import DraggableSvg from '@/api/markdown-parser/impl/mdx/components/PintoraDiagram/DraggableSvg'
 
 
 interface PintoraDiagramProps {
   code: string
-  config?: PintoraConfig
+  draggable?: boolean
 }
 
 /**
  * @see https://pintorajs.vercel.app/
  */
 const PintoraDiagram: React.FC<PintoraDiagramProps> = async props => {
-  // const r = pintora.parseAndDraw(props.code, { config: props.config })
-  // console.log(r)
   const svg = await render({
     code: props.code,
-    pintoraConfig: props.config,
     mimeType: 'image/svg+xml',
     width: 800,
     backgroundColor: 'currentColor',
     renderInSubprocess: false
-  })
-  return (
-    <div style={{ color: 'var(--color-card)', display: 'flex', justifyContent: 'center' }} dangerouslySetInnerHTML={{ __html: svg }}></div>
-  )
+  }) as string
+
+  if (props.draggable) {
+    return (
+      <DraggableSvg pruneSvgHTML={svg}/>
+    )
+  }
+  return <div style={{ color: 'var(--color-card)', display: 'flex', justifyContent: 'center' }}
+    dangerouslySetInnerHTML={{ __html: svg }}></div>
 }
 
 export default PintoraDiagram
