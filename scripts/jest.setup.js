@@ -3,7 +3,7 @@ import path from "node:path"
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
-const root = path.resolve('__test__/__blog__')
+const root = path.resolve('__tests__/__blog__')
 
 process.env.BLOG_PATH = root
 process.env.BLOG_HOME_POST_DIRECTORY = '_post'
