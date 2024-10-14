@@ -31,6 +31,9 @@ export default class FileSystemDatasource implements Datasource {
   private readonly homePaths: string[]
   
   public constructor() {
+    if (!fs.existsSync(process.env.BLOG_PATH) || !fs.statSync(process.env.BLOG_PATH).isDirectory()) {
+      throw new Error(`The path '${process.env.BLOG_PATH}' must be a directory. Please check you BLOG_PATH configuration.`)
+    }
     const config = {
       homePostDirectory: process.env.BLOG_HOME_POST_DIRECTORY,
       resourceDirectory: process.env.BLOG_RESOURCE_DIRECTORY,
@@ -51,7 +54,7 @@ export default class FileSystemDatasource implements Datasource {
     let searchGlobs: string[] = []
     pageRelativePath = Array.isArray(pageRelativePath) ? pageRelativePath : [pageRelativePath]
 
-    const append = recursion ? '/**/*.{md,mdx}' : '/*.{md,mdx}'
+    const append = recursion ? './**/*.{md,mdx}' : './*.{md,mdx}'
     for (let root of pageRelativePath) {
       searchGlobs.push(path.join(root, append).replaceAll('\\', '/'))
     }
