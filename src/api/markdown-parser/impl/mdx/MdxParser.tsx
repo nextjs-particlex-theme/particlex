@@ -6,7 +6,6 @@ import os from 'node:os'
 import MdxCodeBlock from '@/api/markdown-parser/impl/mdx/components/MdxCodeBlock'
 import MdxImage from '@/api/markdown-parser/impl/mdx/components/MdxImage'
 import MdxBlockQuote from '@/api/markdown-parser/impl/mdx/components/MdxBlockQuote'
-import generateTocByMarkdown from '@/api/markdown-parser/common-toc-generator'
 import createCommonHeadingWithId from '@/api/markdown-parser/impl/mdx/components/CommonHeadingWithId'
 import PintoraDiagram from '@/api/markdown-parser/impl/mdx/components/PintoraDiagram'
 import ListPage from '@/api/markdown-parser/impl/mdx/components/ListPage'
@@ -94,12 +93,8 @@ async function parseMarkdownContent(content: string): Promise<React.ReactNode> {
 
 const mdxParser: MarkdownParser = {
   async parse(markdown: string): Promise<ParsedMarkdown> {
-    let node = await parseMarkdownContent(markdown)
 
-    return {
-      toc: generateTocByMarkdown(markdown),
-      page: node
-    }
+    return await parseMarkdownContent(markdown)
   }
 }
 

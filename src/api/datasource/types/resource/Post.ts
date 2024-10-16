@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { deepCopy } from '@/lib/ObjectUtils'
-import type { Category, Resource, Tag, TocItem } from '@/api/datasource/types/definitions'
+import type { Category, Resource, Tag } from '@/api/datasource/types/definitions'
 
 /**
  * 构造器参数. 注意: <b>任何对象，都不应该直接使用数据源提供的对象，以免代入多余属性</b>
@@ -14,7 +14,6 @@ type PostConstructor = {
   source: string[]
   categories: Category[]
   tags: Tag[]
-  toc: TocItem[]
   seo: SEO
   wordCount: number
 }
@@ -84,10 +83,6 @@ export default class Post implements Resource {
    * tag
    */
   public tags: Tag[]
-  /**
-   * Toc
-   */
-  public toc: TocItem[]
 
   /**
    * seo
@@ -108,7 +103,6 @@ export default class Post implements Resource {
     this.source = data.source
     this.categories = data.categories
     this.tags = data.tags
-    this.toc = data.toc
     this.seo = data.seo
     this.wordCount = data.wordCount
   }

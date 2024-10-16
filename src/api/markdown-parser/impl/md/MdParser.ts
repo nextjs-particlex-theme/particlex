@@ -3,7 +3,6 @@ import showdown from 'showdown'
 import type React from 'react'
 import reactParse, { Element } from 'html-react-parser'
 import HtmlTagHandlerFactory from '@/api/markdown-parser/impl/md/HtmlTagHandlerFactory'
-import generateTocByMarkdown from '@/api/markdown-parser/common-toc-generator'
 
 showdown.setFlavor('github')
 
@@ -32,13 +31,10 @@ function processPostContent(html: string): React.ReactNode {
 
 
 const mdParser: MarkdownParser = {
-  parse(markdown: string): Promise<ParsedMarkdown> {
+  async parse(markdown: string): Promise<ParsedMarkdown> {
     const html = markdownToHtml(markdown)
     const node = processPostContent(html)
-    return Promise.resolve({
-      page: node,
-      toc: generateTocByMarkdown(markdown)
-    })
+    return Promise.resolve(node)
   }
 } 
 
