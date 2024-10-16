@@ -2,69 +2,69 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { createPortal } from 'react-dom'
-import type { TocItem } from '@/api/datasource/types/definitions'
 import('./toc.scss')
 
 
-type ExpandedTocItem = Omit<TocItem, 'child'> & {
+type ExpandedTocItem = {
   level: number
+  /**
+   * 标题，该值为 html 文本！
+   */
+  title: string
+  /**
+   * 锚点，以 # 开头
+   */
+  anchor: string
+  ele: HTMLHeadingElement
+}
+
+const LEVEL_MAPPING: Record<string, number> = {
+  h1: 1,
+  h2: 2,
+  h3: 3,
+  h4: 4,
+  h5: 5,
+  h6: 6,
+}
+
+/**
+ * 根据 html 自动生成 Toc.
+ */
+function generateToc(root: HTMLElement): ExpandedTocItem[] {
+  let result: ExpandedTocItem[] = []
+  for (let v of root.childNodes) {
+    const currentLevel = LEVEL_MAPPING[v.nodeName.toLowerCase()]
+    if (currentLevel === undefined) {
+      continue
+    }
+    const heading = v as HTMLHeadingElement
+
+    result.push({
+      title: heading.innerHTML,
+      anchor: '#' + heading.getAttribute('id'),
+      level: currentLevel,
+      ele: heading
+    })
+  }
+  return result
 }
 
 export const MAIN_CONTENT_ID = 'main-content'
 
-interface TableOfContentProps {
-  tocItems: TocItem[]
-}
+interface TableOfContentProps {}
 
-type HeadingElement = {
-  ele: HTMLHeadingElement
-  level: number
-}
 
 /**
  * 目录组件.
  * 使用时必须将为文章容器元素添加id： {@link MAIN_CONTENT_ID}
  * TODO 适配移动端.
  */
-const TableOfContent:React.FC<TableOfContentProps> = props => {
-  const topics = useRef<HeadingElement[]>([])
-  const [expandedTocItems, setExpandedTocItems] = useState<ExpandedTocItem[]>([])
+const TableOfContent:React.FC<TableOfContentProps> = () => {
+  // 平铺的标题
+  const [tocItems, setTocItems] = useState<ExpandedTocItem[]>([])
   const [activeIndex, setActiveIndex] = useState(-1)
   const [containerWidth, setContainerWidth] = useState(0)
   const lock = useRef(false)
-
-  useEffect(() => {
-    const r: ExpandedTocItem[] = []
-
-    type StackItem = {
-      level: number
-      item: TocItem
-    }
-    const stack: StackItem[] = []
-
-    for (let tocItem of props.tocItems) {
-      stack.push({
-        item: tocItem,
-        level: 1
-      })
-      while (stack.length) {
-        const p = stack.pop()!
-        r.push({
-          ...p.item,
-          level: p.level
-        })
-        for (let i = p.item.child.length - 1; i >= 0; --i) {
-          const nextChild = p.item.child[i]
-          stack.push({
-            item: nextChild,
-            level: p.level + 1
-          })
-        }
-      }
-    }
-  
-    setExpandedTocItems(r)
-  }, [props.tocItems])
 
   useEffect(() => {
     const mainContainer = document.getElementById(MAIN_CONTENT_ID)
@@ -72,21 +72,7 @@ const TableOfContent:React.FC<TableOfContentProps> = props => {
       console.error('没有为内容元素添加id: ' + MAIN_CONTENT_ID)
       return
     }
-    const r: HeadingElement[] = []
-    mainContainer.childNodes.forEach(n => {
-      if (!(n instanceof HTMLHeadingElement)) {
-        return
-      }
-      let level: number
-      if (Number.isNaN(level = Number.parseInt(n.nodeName[1]))) {
-        return
-      }
-      r.push({
-        ele: n,
-        level
-      })
-    })
-    topics.current = r
+    setTocItems(generateToc(mainContainer))
   }, [])
 
   useEffect(() => {
@@ -94,9 +80,9 @@ const TableOfContent:React.FC<TableOfContentProps> = props => {
       if (lock.current) {
         return
       }
-      let i = topics.current.length - 1
+      let i = tocItems.length - 1
       for (; i >= 0; --i) {
-        const toc = topics.current[i]
+        const toc = tocItems[i]
         // 检查当前元素是否在以当前窗口<b>中间</b>为界限的上面
         if (toc.ele.offsetTop < (document.documentElement.scrollTop + window.innerHeight / 3)) {
           setActiveIndex(i)
@@ -124,7 +110,7 @@ const TableOfContent:React.FC<TableOfContentProps> = props => {
       window.removeEventListener('scroll', scrollListener)
       window.removeEventListener('resize', resizeListener)
     }
-  }, [])
+  }, [tocItems])
 
   const onTocItemClick = (index: number) => {
     lock.current = true
@@ -134,7 +120,7 @@ const TableOfContent:React.FC<TableOfContentProps> = props => {
     }, 100)
   }
 
-  if (expandedTocItems.length === 0) {
+  if (tocItems.length === 0) {
     return null
   }
 
@@ -145,11 +131,12 @@ const TableOfContent:React.FC<TableOfContentProps> = props => {
           <div className="toc-container">
             <div className="text-xl">目录</div>
             {
-              expandedTocItems.map((v, index) => (
+              tocItems.map((v, index) => (
                 <Link key={v.anchor}
                   onClick={() => onTocItemClick(index)}
                   href={v.anchor}
-                  className={`title-${v.level} ${activeIndex === index ? 'active-title' : ''}`} dangerouslySetInnerHTML={{ __html: v.title }}>
+                  className={`title-${v.level} ${activeIndex === index ? 'active-title' : ''}`}>
+                  {v.title}
                 </Link>
               ))
             }

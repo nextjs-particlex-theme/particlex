@@ -1,8 +1,11 @@
 import React from 'react'
-import { titleToId } from '@/api/markdown-parser/common-toc-generator'
 
 interface CommonHeadingWithIdProps {
   tag: string
+}
+
+function titleToId(title: string): string {
+  return title.replaceAll(' ', '-')
 }
 
 const CommonHeadingWithId:React.FC<React.PropsWithChildren<CommonHeadingWithIdProps>> = props => {

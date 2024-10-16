@@ -6,12 +6,12 @@ import '@testing-library/jest-dom'
 
 test('Test md render', async () => {
   const parsed = await parseMarkdown(splitMarkdownContent(md).content, '.md')
-  const rendered = render(parsed.page)
+  const rendered = render(parsed)
   expect(rendered.baseElement.innerHTML).toMatchSnapshot()
 })
 
 test('Test mdx render', async () => {
   const parsed = await parseMarkdown(splitMarkdownContent(mdx as unknown as string).content, '.mdx')
-  const rendered = render(parsed.page)
+  const rendered = render(parsed)
   expect(rendered.baseElement.innerHTML).toMatchSnapshot()
 })

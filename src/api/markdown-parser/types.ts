@@ -1,10 +1,6 @@
 import type React from 'react'
-import type { TocItem } from '@/api/datasource/types/definitions'
 
-export type ParsedMarkdown = {
-  page: React.ReactNode
-  toc: TocItem[]
-}
+export type ParsedMarkdown = React.ReactNode
 
 export interface MarkdownParser {
   /**

@@ -78,7 +78,7 @@ const PostPage: React.FC<{params: Param}> = async ({ params }) => {
         <div className={`${postStyle.postContainer} link-styled-container`} id={MAIN_CONTENT_ID}>
           { post.content }
         </div>
-        <TableOfContent tocItems={post.toc}/>
+        <TableOfContent />
         <CommentComponentInject/>
       </PostContainer>
     </div>

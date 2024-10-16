@@ -1,7 +1,7 @@
 {
   "extends": ["next/core-web-vitals", "eslint:recommended", "plugin:react/recommended"],
   "plugins": ["@typescript-eslint"],
-  "ignorePatterns": ["**/*.cjs", "scripts/*.js"],
+  "ignorePatterns": ["**/*.cjs", "scripts/*.js", "**/*.mjs"],
   "rules": {
     "quotes": ["error", "single"],
     "key-spacing": ["error", { "beforeColon": false }],
@@ -10,7 +10,9 @@
     "object-curly-spacing": ["error", "always"],
     "indent": ["error", 2],
     "@typescript-eslint/no-unused-vars": "error",
-    "@typescript-eslint/consistent-type-imports": "error"
+    "@typescript-eslint/consistent-type-imports": "error",
+    "no-redeclare": "off",
+    "@typescript-eslint/no-redeclare": "error"
   },
   "env": {
     "jest": true
