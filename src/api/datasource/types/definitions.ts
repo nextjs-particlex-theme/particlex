@@ -48,4 +48,8 @@ export type DataSourceConfig = {
    * 图标链接
    */
   favicon?: string
+  /**
+   * head 的元数据
+   */
+  metadata?: Record<string, string>
 }

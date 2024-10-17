@@ -14,6 +14,13 @@ export async function generateMetadata(): Promise<Metadata> {
     title: config.title,
     description: config.description,
   }
+
+  if (config.metadata) {
+    metadata.other = {
+      ...config.metadata
+    }
+  }
+
   if (config.favicon) {
     metadata.icons = config.favicon
   }
@@ -30,6 +37,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh" className="text-[14px] md:text-[16px]">
+      <head>
+        <link rel="stylesheet" href={`${process.env.NEXT_PUBLIC_CND_PUBLIC_PATH_BASE_URL ?? ''}/fonts/fonts.min.css`}></link>
+        <link rel="stylesheet" href={`${process.env.NEXT_PUBLIC_CND_PUBLIC_PATH_BASE_URL ?? ''}/css/github.min.css`}></link>
+      </head>
       <PreloadResources/>
       <body>
         <SvgSymbols/>
