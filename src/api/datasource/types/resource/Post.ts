@@ -3,7 +3,7 @@ import { deepCopy } from '@/lib/ObjectUtils'
 import type { Category, Resource, Tag } from '@/api/datasource/types/definitions'
 
 /**
- * 构造器参数. 注意: <b>任何对象，都不应该直接使用数据源提供的对象，以免代入多余属性</b>
+ * 构造器参数.
  * <p>
  */
 type PostConstructor = {

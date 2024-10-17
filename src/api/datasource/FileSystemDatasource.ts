@@ -124,7 +124,8 @@ export default class FileSystemDatasource implements Datasource {
       indexPageSize: theme.indexPageSize ?? 5,
       background: theme.background ?? [],
       avatar: theme.avatar ?? '',
-      favicon: theme.favicon
+      favicon: theme.favicon,
+      metadata: parsed.metadata
     })
   }
 
