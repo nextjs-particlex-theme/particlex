@@ -5,7 +5,7 @@ interface CommonHeadingWithIdProps {
 }
 
 function titleToId(title: string): string {
-  return encodeURI(title.replaceAll(' ', '-'))
+  return title.replaceAll(' ', '-')
 }
 
 const CommonHeadingWithId:React.FC<React.PropsWithChildren<CommonHeadingWithIdProps>> = props => {

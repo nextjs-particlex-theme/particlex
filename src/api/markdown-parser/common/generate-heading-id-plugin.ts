@@ -22,7 +22,7 @@ export default function generateHeadingId() {
           idBuilder.push(child.value)
         }
       }
-      Object.assign(node.properties, { id: encodeURI(idBuilder.join('-')) })
+      Object.assign(node.properties, { id: idBuilder.join('-').replaceAll(' ', '-') })
     })
   }
 }
