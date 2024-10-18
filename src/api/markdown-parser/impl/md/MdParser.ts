@@ -1,7 +1,6 @@
 import type { MarkdownParser, ParsedMarkdown } from '@/api/markdown-parser/types'
-import showdown from 'showdown'
 import type React from 'react'
-import reactParse, { domToReact, Element } from 'html-react-parser'
+import reactParse, { Element } from 'html-react-parser'
 import HtmlTagHandlerFactory from '@/api/markdown-parser/impl/md/HtmlTagHandlerFactory'
 import { unified } from 'unified'
 import remarkParse from 'remark-parse'
@@ -11,7 +10,6 @@ import remarkRehype from 'remark-rehype'
 import rehypeStringify from 'rehype-stringify'
 import generateHeadingId from '@/api/markdown-parser/common/generate-heading-id-plugin'
 
-showdown.setFlavor('github')
 
 const markdownToHtml = async (markdownContent: string): Promise<string> => {
   const parsed = await unified()
