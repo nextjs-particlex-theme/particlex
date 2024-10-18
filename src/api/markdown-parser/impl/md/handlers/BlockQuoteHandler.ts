@@ -4,8 +4,10 @@ import { domToReact, Text } from 'html-react-parser'
 import GithubBlockquote, { SUPPORTED_TYPE } from '@/api/markdown-parser/components/GithubBlockquote'
 import React from 'react'
 import type { DOMNode } from 'html-dom-parser'
+import os from "node:os";
 
-const TYPE_SEARCH_REGX = /\[!(?<type>[A-Z]+)]/
+const TYPE_SEARCH_REGX = /^\[!(?<type>[A-Z]+)]/
+
 
 
 /**
@@ -25,7 +27,8 @@ const blockQuoteHandler: HtmlTagHandler = {
     if (!(type instanceof Text)) {
       return
     }
-    const result = TYPE_SEARCH_REGX.exec(type.nodeValue ?? '')
+    const line = type.nodeValue ?? ''
+    const result = TYPE_SEARCH_REGX.exec(line)
     if (!result || !result.groups || !result.groups.type) {
       return
     }
@@ -33,8 +36,13 @@ const blockQuoteHandler: HtmlTagHandler = {
     if (!attrs) {
       return
     }
-    // remove the blockquote type marker and html tag `br`.
-    nested.children = nested.children.slice(2)
+    const pos = line.indexOf(os.EOL)
+    if (pos >= 0) {
+      type.nodeValue = type.nodeValue.substring(pos + 2)
+    } else {
+      // remove the blockquote type marker and html tag `br`.
+      nested.children = nested.children.slice(2)
+    }
     const children = domToReact(node.children.slice(1) as DOMNode[])
     return React.createElement(GithubBlockquote, { ...attrs }, children)
   }

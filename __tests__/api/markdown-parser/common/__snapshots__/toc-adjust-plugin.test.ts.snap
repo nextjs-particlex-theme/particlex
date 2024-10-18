@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`No toc adjust 1`] = `
+"<h2>h1</h2>
+<p>ee</p>
+<h3>h2</h3>
+<p>eee</p>"
+`;
+
+exports[`Toc adjust 1`] = `
+"<h2>h1</h2>
+<p>ee</p>
+<h3>h2</h3>
+<p>eee</p>"
+`;
