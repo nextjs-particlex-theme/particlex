@@ -4,7 +4,7 @@ import { domToReact, Text } from 'html-react-parser'
 import GithubBlockquote, { SUPPORTED_TYPE } from '@/api/markdown-parser/components/GithubBlockquote'
 import React from 'react'
 import type { DOMNode } from 'html-dom-parser'
-import os from "node:os";
+import os from 'node:os'
 
 const TYPE_SEARCH_REGX = /^\[!(?<type>[A-Z]+)]/
 
@@ -38,7 +38,7 @@ const blockQuoteHandler: HtmlTagHandler = {
     }
     const pos = line.indexOf(os.EOL)
     if (pos >= 0) {
-      type.nodeValue = type.nodeValue.substring(pos + 2)
+      type.nodeValue = type.nodeValue.substring(pos + os.EOL.length)
     } else {
       // remove the blockquote type marker and html tag `br`.
       nested.children = nested.children.slice(2)
