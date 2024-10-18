@@ -9,6 +9,7 @@ import MdxBlockQuote from '@/api/markdown-parser/impl/mdx/components/MdxBlockQuo
 import createCommonHeadingWithId from '@/api/markdown-parser/impl/mdx/components/CommonHeadingWithId'
 import PintoraDiagram from '@/api/markdown-parser/impl/mdx/components/PintoraDiagram'
 import ListPage from '@/api/markdown-parser/impl/mdx/components/ListPage'
+import adjustToc from '@/api/markdown-parser/common/toc-adjust-plugin'
 
 const components = {
   pre: MdxCodeBlock,
@@ -25,9 +26,8 @@ const components = {
 
 
 async function parseMarkdownContent0(content: string): Promise<React.ReactNode> {
-  const code = String(
-    await compile(content, { outputFormat: 'function-body' })
-  )
+  const code = String(await compile(content, { outputFormat: 'function-body', remarkPlugins: [adjustToc] }))
+
   // @ts-ignore
   const { default: MDXContent } = await run(code, {
     ...runtime,
