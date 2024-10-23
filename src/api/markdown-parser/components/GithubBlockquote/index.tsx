@@ -15,6 +15,7 @@ export interface GithubCodeBlockProps {
 
 function initConstant(): Record<string, GithubCodeBlockProps | undefined> {
   let map0: Record<BlockquoteAvailableTypes, GithubCodeBlockProps>
+  // eslint-disable-next-line prefer-const
   map0 = {
     NOTE: {
       icon: Icons.INFO,

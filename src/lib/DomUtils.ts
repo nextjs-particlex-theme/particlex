@@ -3,7 +3,7 @@
  */
 export function concatClassName(...classNames: unknown[]): undefined | string {
   const classes: string[] = []
-  for (let className of classNames) {
+  for (const className of classNames) {
     if (typeof className === 'string') {
       classes.push(className)
     }

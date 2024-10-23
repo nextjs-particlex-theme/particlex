@@ -29,7 +29,7 @@ const CommentComponentInject: React.FC = () => {
       if (e.tagName === 'SCRIPT') {
         const names = e.getAttributeNames()
         const scriptElement = document.createElement('script')
-        for (let name of names) {
+        for (const name of names) {
           const v = e.getAttribute(name)
           if (v) {
             scriptElement.setAttribute(name, v)

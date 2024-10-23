@@ -31,8 +31,8 @@ const LEVEL_MAPPING: Record<string, number> = {
  * 根据 html 自动生成 Toc.
  */
 function generateToc(root: HTMLElement): ExpandedTocItem[] {
-  let result: ExpandedTocItem[] = []
-  for (let v of root.childNodes) {
+  const result: ExpandedTocItem[] = []
+  for (const v of root.childNodes) {
     const currentLevel = LEVEL_MAPPING[v.nodeName.toLowerCase()]
     if (currentLevel === undefined) {
       continue
@@ -51,7 +51,6 @@ function generateToc(root: HTMLElement): ExpandedTocItem[] {
 
 export const MAIN_CONTENT_ID = 'main-content'
 
-interface TableOfContentProps {}
 
 
 /**
@@ -59,7 +58,7 @@ interface TableOfContentProps {}
  * 使用时必须将为文章容器元素添加id： {@link MAIN_CONTENT_ID}
  * TODO 适配移动端.
  */
-const TableOfContent:React.FC<TableOfContentProps> = () => {
+const TableOfContent:React.FC = () => {
   // 平铺的标题
   const [tocItems, setTocItems] = useState<ExpandedTocItem[]>([])
   const [activeIndex, setActiveIndex] = useState(-1)

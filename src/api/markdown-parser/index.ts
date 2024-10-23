@@ -75,7 +75,7 @@ const REPLACE_REGX = /^\t+/g
  * 创建一个错误，指出哪里使用了 TAB
  */
 function indicateWhereContainsTab(yamlLines: string[], filePath: string): Error {
-  let msg: string[] = [`Failed to parse YAML in the markdown file '${filePath}'. The lines below start with a TAB (TABs are replaced by a '→'):`]
+  const msg: string[] = [`Failed to parse YAML in the markdown file '${filePath}'. The lines below start with a TAB (TABs are replaced by a '→'):`]
   for (let i = 0; i < yamlLines.length; i++) {
     const line = yamlLines[i]
     if (line.startsWith('\t')) {
@@ -95,9 +95,9 @@ function indicateWhereContainsTab(yamlLines: string[], filePath: string): Error 
 export const splitMarkdownContent = (content: string[] | string, filepath: string = '<Unknown>'): Markdown => {
   const metadataStrArr: string[] = []
   let metadataCollectStatus = CollectStatus.EXPECT_START
-  let contentArr: string[] = Array.isArray(content) ? content : content.split(os.EOL)
+  const contentArr: string[] = Array.isArray(content) ? content : content.split(os.EOL)
 
-  for (let line of contentArr) {
+  for (const line of contentArr) {
     if (metadataCollectStatus == CollectStatus.DONE) {
       break
     }
@@ -138,7 +138,7 @@ export const splitMarkdownContent = (content: string[] | string, filepath: strin
       const str = metadataStrArr.map(replacePrefixIndent).join('\n')
       try {
         metadata = yaml.parse(str)
-      } catch (e) {
+      } catch (_) {
         throw indicateWhereContainsTab(metadataStrArr, filepath)
       }
     } else {

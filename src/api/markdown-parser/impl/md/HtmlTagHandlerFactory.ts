@@ -12,7 +12,7 @@ const instanceHolder = new Map<string, HtmlTagHandler>()
  */
 const registerHandler = (caster: HtmlTagHandler) => {
   const tags = Array.isArray(caster.supportedTag) ? caster.supportedTag : [caster.supportedTag]
-  for (let tag of tags) {
+  for (const tag of tags) {
     const old = instanceHolder.get(tag)
     if (old) {
       throw new Error(`Duplicate MarkdownTagCaster, tag name: ${tag}`)

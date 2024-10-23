@@ -23,7 +23,7 @@ const ICONS_ID = {
 const _Icons = {}
 
 Object.entries(ICONS_ID).forEach(([k, v]) => {
-  // @ts-ignore
+  // @ts-expect-error I know what I'm doing...
   _Icons[k] = '#' + v
 })
 
