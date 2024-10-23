@@ -3,7 +3,7 @@ import { LRUCache } from 'lru-cache'
 
 type CachedValue = {
   isPromise: boolean
-  data: any
+  data: unknown
 }
 
 /**
@@ -12,7 +12,7 @@ type CachedValue = {
  * @param cacheKeyBuilder 如何构建缓存的键
  */
 export default function cached(cacheKeyBuilder?: (...args: unknown[]) => string, maxSize: number = 1000) {
-  return function(_: any, __: string, descriptor: PropertyDescriptor) {
+  return function(_: unknown, __: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value
     if (process.env.NODE_ENV === 'development') {
       // no cache in development.
@@ -22,7 +22,7 @@ export default function cached(cacheKeyBuilder?: (...args: unknown[]) => string,
       max: maxSize,
     })
 
-    descriptor.value = function (...args: any[]) {
+    descriptor.value = function (...args: unknown[]) {
       const cacheKey = cacheKeyBuilder ? cacheKeyBuilder(args) : JSON.stringify(args)
       const cachedValue = cache.get(cacheKey)
       if (cachedValue) {

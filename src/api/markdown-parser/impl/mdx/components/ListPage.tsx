@@ -25,7 +25,7 @@ interface ListPageProps {
 const ListPage: React.FC<ListPageProps> = async props => {
   const pages = await datasource.listPages(props.root, props.recursion)
   const result: Post[] = []
-  for (let page of pages) {
+  for (const page of pages) {
     const entity = await ServiceBeans.blogService.getPageByWebUrl(page.visitPath)
     if (entity) {
       result.push(entity)

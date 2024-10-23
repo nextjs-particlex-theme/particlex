@@ -28,7 +28,7 @@ const components = {
 async function parseMarkdownContent0(content: string): Promise<React.ReactNode> {
   const code = String(await compile(content, { outputFormat: 'function-body', remarkPlugins: [adjustToc] }))
 
-  // @ts-ignore
+  // @ts-expect-error copied from doc
   const { default: MDXContent } = await run(code, {
     ...runtime,
     baseUrl: import.meta.url,
@@ -58,7 +58,7 @@ function isParseAeeror(err: unknown): err is ParseError {
 }
 
 function takeAboveLines(self: string[], lines: string[], startLine: number, lineCnt: number) {
-  let cnt = Math.min(startLine, lineCnt - 1)
+  const cnt = Math.min(startLine, lineCnt - 1)
 
   for (let i = startLine - cnt; i <= startLine; i++) {
     self.push(` ${i.toString(10).padStart(4, ' ')} | ${lines[i]}`)

@@ -29,7 +29,7 @@ const PartialCodeBlock: React.FC<PartialCodeBlockProps> = props => {
     if (langList.length === 0) {
       lang = ['plaintext']
     } else {
-      let cur = strTrimStart(langList[0], 'language-')
+      const cur = strTrimStart(langList[0], 'language-')
       const fb = LANGUAGE_MAPPING_FALLBACK[cur]
       if (fb) {
         lang = [fb, 'plaintext']

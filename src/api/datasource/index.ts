@@ -1,7 +1,7 @@
 import FileSystemDatasource from '@/api/datasource/FileSystemDatasource'
 
 
-let datasource = new FileSystemDatasource()
+const datasource = new FileSystemDatasource()
 
 
 export default datasource

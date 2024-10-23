@@ -7,19 +7,18 @@ export const deepCopy = <T> (target: T): T => {
   }
   if (Array.isArray(target)) {
     const result = []
-    for (let objElement of target) {
+    for (const objElement of target) {
       result.push(deepCopy(objElement))
     }
-    // @ts-ignore
+    // @ts-expect-error value has copied
     return result
   } else if (typeof target === 'object') {
     const result = {}
-    // @ts-ignore
     Object.entries(target).forEach(([k, v]) => {
-      // @ts-ignore
+      // @ts-expect-error value has copied
       result[k] = deepCopy(v)
     })
-    // @ts-ignore
+    // @ts-expect-error value has copied
     return result
   } else {
     return target

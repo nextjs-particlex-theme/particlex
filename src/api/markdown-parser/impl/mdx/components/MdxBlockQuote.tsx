@@ -8,6 +8,7 @@ type ChildItem = Array<string | {
     children: ChildItem
   }
   type: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   key: any
 }> | string
 
@@ -19,7 +20,7 @@ const SEARCH_REGX = /\[!(\w+)]/
 
 function resolveAndRemoveType(props: MdxProps): [React.ReactNode, GithubCodeBlockProps] | undefined {
   // What an ugly code😅... Does someone can help me to refactor it?
-  let paragraph = props.children?.[1]
+  const paragraph = props.children?.[1]
   if (typeof paragraph === 'string') {
     return
   }

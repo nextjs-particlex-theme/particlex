@@ -25,7 +25,7 @@ export default class BlogServiceImpl implements BlogService {
 
     return this.getAllStaticResource().then(resources => {
       const map = new Map<string, DatasourceItem>()
-      for (let resource of resources) {
+      for (const resource of resources) {
         map.set(BlogServiceImpl.visitPathToString(resource.visitPath), resource)
       }
       this._resourceMap = map
@@ -41,7 +41,7 @@ export default class BlogServiceImpl implements BlogService {
     const r = this.getAllPagesUrl()
     return r.then(resources => {
       const map = new Map<string, DatasourceItem>()
-      for (let resource of resources) {
+      for (const resource of resources) {
         map.set(BlogServiceImpl.visitPathToString(resource.visitPath), resource)
       }
       this._pageMap = map
@@ -69,7 +69,7 @@ export default class BlogServiceImpl implements BlogService {
     const head = page * size
     const sliced = posts.slice(head, head + size)
     const result: Post[] = []
-    for (let datasourceItem of sliced) {
+    for (const datasourceItem of sliced) {
       const p = await this.getPageByWebUrl(datasourceItem.visitPath)
       if (!p) {
         continue
@@ -112,6 +112,7 @@ export default class BlogServiceImpl implements BlogService {
       categories: this.parseTagAndCategories(metadata.categories),
       wordCount: content.length,
       // will init later before return.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       seo: (null as any)
     }
 
@@ -119,7 +120,7 @@ export default class BlogServiceImpl implements BlogService {
     return new Post(postData)
   }
 
-  private parseTagAndCategories(val?: any): string[] {
+  private parseTagAndCategories(val?: unknown): string[] {
     if (!val) {
       return []
     }
@@ -129,15 +130,17 @@ export default class BlogServiceImpl implements BlogService {
     if (typeof val === 'string') {
       return [val]
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const any = val as any
     // 兼容历史遗留写法. 这个写法是之前 hexo particlex 主题特有的
     //  categories:
     //    data:
     //      - { name: "Hello", path: "/hello/" }
-    if (!val.data || !Array.isArray(val.data)) {
+    if (!any.data || !Array.isArray(any.data)) {
       return []
     }
     const r: string[] = []
-    for (let datum of val.data) {
+    for (const datum of any.data) {
       if (typeof datum.name === 'string') {
         r.push(datum.name)
       }
@@ -175,12 +178,12 @@ export default class BlogServiceImpl implements BlogService {
   async getTagMapping(): Promise<Map<Tag, Readonly<Post[]>>> {
     const pages = await datasource.getAllPages()
     const r = new Map<Tag, Post[]>()
-    for (let page of pages) {
+    for (const page of pages) {
       const p = await this.getPageByWebUrl(page.visitPath)
       if (!p) {
         continue
       }
-      for (let category of p.tags) {
+      for (const category of p.tags) {
         let o = r.get(category)
         if (!o) {
           o = []
@@ -195,12 +198,12 @@ export default class BlogServiceImpl implements BlogService {
   async getCategoriesMapping(): Promise<Map<Category, Readonly<Post[]>>> {
     const pages = await datasource.getAllPages()
     const r = new Map<Category, Post[]>()
-    for (let page of pages) {
+    for (const page of pages) {
       const p = await this.getPageByWebUrl(page.visitPath)
       if (!p) {
         continue
       }
-      for (let category of p.categories) {
+      for (const category of p.categories) {
         let o = r.get(category)
         if (!o) {
           o = []

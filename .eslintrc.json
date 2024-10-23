@@ -1,7 +1,7 @@
 {
-  "extends": ["next/core-web-vitals", "eslint:recommended", "plugin:react/recommended"],
+  "extends": ["next/core-web-vitals", "eslint:recommended", "plugin:react/recommended", "plugin:@typescript-eslint/recommended"],
   "plugins": ["@typescript-eslint"],
-  "ignorePatterns": ["**/*.cjs", "scripts/*.js", "**/*.mjs"],
+  "ignorePatterns": ["**/*.cjs", "scripts/*.js", "**/*.mjs", "node_modules/**", ".next/**"],
   "rules": {
     "quotes": ["error", "single"],
     "key-spacing": ["error", { "beforeColon": false }],
@@ -9,10 +9,18 @@
     "block-spacing": "error",
     "object-curly-spacing": ["error", "always"],
     "indent": ["error", 2],
-    "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/consistent-type-imports": "error",
     "no-redeclare": "off",
-    "@typescript-eslint/no-redeclare": "error"
+    "@typescript-eslint/no-redeclare": "error",
+    "@typescript-eslint/no-unused-vars": ["error", {
+      "args": "all",
+      "argsIgnorePattern": "^_",
+      "caughtErrors": "all",
+      "caughtErrorsIgnorePattern": "^_",
+      "destructuredArrayIgnorePattern": "^_",
+      "varsIgnorePattern": "^_",
+      "ignoreRestSiblings": true
+    }]
   },
   "env": {
     "jest": true

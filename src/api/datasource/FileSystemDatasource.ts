@@ -51,11 +51,11 @@ export default class FileSystemDatasource implements Datasource {
   }
 
   listPages(pageRelativePath: string | string[], recursion?: boolean): Promise<DatasourceItem[]> {
-    let searchGlobs: string[] = []
+    const searchGlobs: string[] = []
     pageRelativePath = Array.isArray(pageRelativePath) ? pageRelativePath : [pageRelativePath]
 
     const append = recursion ? './**/*.{md,mdx}' : './*.{md,mdx}'
-    for (let root of pageRelativePath) {
+    for (const root of pageRelativePath) {
       searchGlobs.push(path.join(root, append).replaceAll('\\', '/'))
     }
     return Promise.resolve(globSync(searchGlobs, { cwd: process.env.BLOG_PATH }).map(v => ({ id: v, visitPath: this.resolvePostWebPath(v), type: v })))
