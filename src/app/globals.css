@@ -118,7 +118,7 @@ a:hover {
     border-radius: 100px;
 }
 ::selection {
-    background-color: var(--scroll-bar-color);
+    background-color: var(--color-primary-sub);
     color: unset;
 }
 
