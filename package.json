@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@babel/preset-react": "^7.24.7",
-    "@next/bundle-analyzer": "^15.0.0",
+    "@next/bundle-analyzer": "^15.0.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.4.6",
     "@testing-library/react": "^16.0.1",
