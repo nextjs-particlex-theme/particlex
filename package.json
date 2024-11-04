@@ -15,7 +15,7 @@
     "analyze": "cross-env ANALYZE=true npm run build"
   },
   "dependencies": {
-    "@mdx-js/react": "^3.0.1",
+    "@mdx-js/react": "^3.1.0",
     "@next/mdx": "^15.0.0",
     "@pintora/cli": "^0.7.6",
     "glob": "^11.0.0",
