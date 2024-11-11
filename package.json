@@ -9,7 +9,8 @@
     "build": "node scripts/build.mjs",
     "check-and-build": "eslint ./src --fix && npm run build",
     "start": "next start",
-    "lint": "eslint ./src --fix",
+    "lint": "eslint ./",
+    "lint-fix": "eslint ./ --fix",
     "tsc": "tsc --noEmit",
     "test": "NODE_OPTIONS='--experimental-vm-modules' jest",
     "analyze": "cross-env ANALYZE=true npm run build"
