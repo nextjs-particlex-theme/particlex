@@ -64,6 +64,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
           labels: > 
-            ${{ needs.ci.outputs.lint_success != '0' && 'ci:lint-fail,' || '' }}
-            ${{ needs.ci.outputs.test_success != '0' && 'ci:test-fail,' || '' }}
+            ${{ needs.ci.outputs.lint_success != '1' && 'ci:lint-fail,' || '' }}
+            ${{ needs.ci.outputs.test_success != '1' && 'ci:test-fail,' || '' }}
             ${{ (needs.ci.outputs.test_success == '1' && needs.ci.outputs.lint_success == '1') && 'ci:success,' || '' }}
