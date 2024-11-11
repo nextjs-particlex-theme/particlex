@@ -77,7 +77,7 @@
 body {
     background: var(--background-color);
     color: var(--color-text);
-    font: 500 0.9375rem Lexend, "Noto Sans SC", sans-serif;
+    font: normal 1rem Lexend, "Noto Sans SC", sans-serif;
     overflow-x: hidden;
     width: 100%;
 }
