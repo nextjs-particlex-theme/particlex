@@ -39,8 +39,8 @@ jobs:
         id: test
         run: npm run test && echo "success=1" >> $GITHUB_OUTPUT
     outputs:
-      lint_success: ${{ job.ci.steps.lint.success }}
-      test_success: ${{ job.ci.steps.test.success }}
+      lint_success: ${{ steps.lint.success }}
+      test_success: ${{ steps.test.success }}
 
   add_label_for_pr:
     name: 'Add label for pull request'
