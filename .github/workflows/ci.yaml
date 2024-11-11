@@ -39,10 +39,11 @@ jobs:
         id: test
         run: npm run test && echo "success=1" >> $GITHUB_OUTPUT
     outputs:
-      lint_success: ${{ job.ci.steps.lint.success }}
-      test_success: ${{ job.ci.steps.test.success }}
+      lint_success: ${{ steps.lint.outputs.success }}
+      test_success: ${{ steps.test.outputs.success }}
 
   add_label_for_pr:
+    name: 'Add label for pull request'
     needs: ci
     if: ${{ always() && github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
@@ -54,15 +55,15 @@ jobs:
         with:
           actions: 'remove-labels'
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.issue.number }}
+          issue-number: ${{ github.event.pull_request.number }}
           labels: 'ci:success,ci:test-fail,ci:lint-fail'
       - name: Add label
         uses: actions-cool/issues-helper@v3
         with:
           actions: 'add-labels'
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.issue.number }}
+          issue-number: ${{ github.event.pull_request.number }}
           labels: > 
-            ${{ needs.ci.outputs.lint_success != '0' && 'ci:lint-fail,' || '' }}
-            ${{ needs.ci.outputs.test_success != '0' && 'ci:test-fail,' || '' }}
-            ${{ needs.ci.outputs.test_success == '1' && needs.ci.outputs.lint_success == '1' && 'ci:success,' || '' }}
+            ${{ needs.ci.outputs.lint_success != '1' && 'ci:lint-fail,' || '' }}
+            ${{ needs.ci.outputs.test_success != '1' && 'ci:test-fail,' || '' }}
+            ${{ (needs.ci.outputs.test_success == '1' && needs.ci.outputs.lint_success == '1') && 'ci:success,' || '' }}

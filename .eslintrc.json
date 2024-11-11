@@ -1,7 +1,7 @@
 {
   "extends": ["next/core-web-vitals", "eslint:recommended", "plugin:react/recommended", "plugin:@typescript-eslint/recommended"],
   "plugins": ["@typescript-eslint"],
-  "ignorePatterns": ["**/*.cjs", "scripts/*.js", "**/*.mjs", "node_modules/**", ".next/**"],
+  "ignorePatterns": ["**/*.cjs", "scripts/*.js", "**/*.mjs", "node_modules/**", ".next/**", "out/**"],
   "rules": {
     "quotes": ["error", "single"],
     "key-spacing": ["error", { "beforeColon": false }],
