@@ -1,0 +1,68 @@
+name: CI checks
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [ synchronize, opened ]
+    branches:
+      - master
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    name: 'Lint project'
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: Install Dependencies
+        run: 'npm install'
+
+      - name: Run lint
+        id: lint
+        run: npm run lint && echo "success=1" >> $GITHUB_OUTPUT
+
+      - name: Run test
+        id: test
+        run: npm run test && echo "success=1" >> $GITHUB_OUTPUT
+    outputs:
+      lint_success: ${{ job.ci.steps.lint.success }}
+      test_success: ${{ job.ci.steps.test.success }}
+
+  add_label_for_pr:
+    needs: ci
+    if: ${{ always() && github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Clear old label
+        uses: actions-cool/issues-helper@v3
+        with:
+          actions: 'remove-labels'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          labels: 'ci:success,ci:test-fail,ci:lint-fail'
+      - name: Add label
+        uses: actions-cool/issues-helper@v3
+        with:
+          actions: 'add-labels'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          labels: > 
+            ${{ needs.ci.outputs.lint_success != '0' && 'ci:lint-fail,' || '' }}
+            ${{ needs.ci.outputs.test_success != '0' && 'ci:test-fail,' || '' }}
+            ${{ success() && 'ci:success,' || '' }}
