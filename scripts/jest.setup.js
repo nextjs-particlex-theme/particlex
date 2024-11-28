@@ -1,7 +1,7 @@
-import { TextEncoder, TextDecoder } from 'util';
-import path from "node:path"
-global.TextEncoder = TextEncoder;
-global.TextDecoder = TextDecoder;
+import { TextEncoder, TextDecoder } from 'util'
+import path from 'node:path'
+global.TextEncoder = TextEncoder
+global.TextDecoder = TextDecoder
 
 const root = path.resolve('__tests__/__blog__')
 

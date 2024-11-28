@@ -116,7 +116,7 @@ export const splitMarkdownContent = (content: string[] | string, filepath: strin
       metadataStrArr.push(line)
       break
     }
-    // eslint-disable-next-line no-fallthrough
+     
     default:
       throw new Error('Unreachable branch!')
     }

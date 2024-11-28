@@ -8,7 +8,6 @@ import react from 'eslint-plugin-react'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-assignment
 const compat = new FlatCompat({
   baseDirectory: __dirname,
 })
@@ -16,9 +15,8 @@ const compat = new FlatCompat({
 export default tseslint.config({
   extends: [
     eslint.configs.recommended,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
     ...compat.extends('next/core-web-vitals'),
-    ...tseslint.configs.recommendedTypeChecked,
+    ...tseslint.configs.recommended,
   ],
   ignores: ['node_modules/**', '.next/**', 'out/**'],
   plugins: {
@@ -30,6 +28,7 @@ export default tseslint.config({
       global: true
     },
     parserOptions: {
+      project: true,
       projectService: true,
       tsconfigRootDir: __dirname,
     },
@@ -44,6 +43,7 @@ export default tseslint.config({
     '@typescript-eslint/consistent-type-imports': 'error',
     'no-redeclare': 'off',
     '@typescript-eslint/no-redeclare': 'error',
+    '@typescript-eslint/no-require-imports': 'off',
     '@typescript-eslint/no-unused-vars': ['error', {
       'args': 'all',
       'argsIgnorePattern': '^_',

@@ -1,7 +1,7 @@
 import * as child_process from 'child_process'
-import env from "./env.mjs"
-import fs from "node:fs"
-import path from "node:path"
+import env from './env.mjs'
+import fs from 'node:fs'
+import path from 'node:path'
 
 
 function rmDir(target) {
@@ -15,7 +15,7 @@ function environmentCheck() {
     throw new Error('environment variable `BLOG_PATH` must be provided! It is your hexo blog root directory.')
   }
   let temp
-  if ((temp = process.env.NEXT_PUBLIC_CND_PUBLIC_PATH_BASE_URL) && temp.endsWith("/")) {
+  if ((temp = process.env.NEXT_PUBLIC_CND_PUBLIC_PATH_BASE_URL) && temp.endsWith('/')) {
     process.env.NEXT_PUBLIC_CND_PUBLIC_PATH_BASE_URL = temp.substring(0, temp.length - 1)
   }
 }

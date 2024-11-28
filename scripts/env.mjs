@@ -1,5 +1,5 @@
-import fs from "node:fs"
-import readline from "node:readline"
+import fs from 'node:fs'
+import readline from 'node:readline'
 
 const envFiles = ['.env.local', '.env']
 
