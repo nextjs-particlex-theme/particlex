@@ -1,4 +1,4 @@
-import path from "node:path"
+import path from 'node:path'
 import analyzer from '@next/bundle-analyzer'
 
 const withBundleAnalyzer = analyzer({
@@ -14,7 +14,7 @@ const nextConfig = {
     ignoreDuringBuilds: true
   },
   sassOptions: {
-    prependData: `@import '@/lib/global.scss';`
+    prependData: '@import \'@/lib/global.scss\';'
   },
   webpack(config) {
     config.module.rules.push(
@@ -28,10 +28,10 @@ const nextConfig = {
         include: [path.resolve('node_modules/hexo')],
         use: 'ignore-loader',
       }
-    );
+    )
 
-    return config;
+    return config
   },
-};
+}
 
-export default withBundleAnalyzer(nextConfig);
+export default withBundleAnalyzer(nextConfig)
