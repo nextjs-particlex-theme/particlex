@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
-    "@eslint/js": "^9.15.0",
+    "@eslint/js": "^9.16.0",
     "@babel/preset-react": "^7.25.9",
     "@next/bundle-analyzer": "^15.0.1",
     "@testing-library/dom": "^10.4.0",
