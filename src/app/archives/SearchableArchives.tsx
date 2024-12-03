@@ -7,18 +7,20 @@ import type { ClientSafePost } from '@/api/datasource/types/resource/Post'
 import Fuse from 'fuse.js'
 
 
-const ArchiveItem: React.FC<{post: ClientSafePost}> = ({ post }) => {
+const ArchiveItem: React.FC<{post: ClientSafePost, style?: React.CSSProperties}> = ({ post, style }) => {
   return (
     <div className={styles.timeline}>
-      <div className={styles.timelineTail}/>
-      <div className={styles.timelineContent}>
-        <div className="text-subtext">{post.formattedTime}</div>
-        <Link href={post.source} className="text-2xl font-bold mt-2.5 mb-2.5">{post.title}</Link>
-        <PostMetadata post={post} hideDate/>
+      <div className="absolute top-0 w-full" style={style}>
+        <div className={styles.timelineTail}/>
+        <div className={styles.timelineContent}>
+          <div className="text-subtext">{post.formattedTime}</div>
+          <Link href={post.source} className="text-2xl font-bold mt-2.5 mb-2.5">{post.title}</Link>
+          <PostMetadata post={post} hideDate/>
+        </div>
       </div>
     </div>
   )
-} 
+}
 
 
 interface SearchableArchivesProps {
@@ -50,15 +52,17 @@ const SearchableArchives: React.FC<SearchableArchivesProps> = props => {
       }
     }, 100)
   }
-  
+
   return (
     <div>
       <input className={styles.searchBar} placeholder="搜索" onInput={onInput}/>
-      {
-        archives.map(p => (
-          <ArchiveItem key={p.id} post={p} />
-        ))
-      }
+      <div className="relative">
+        {
+          archives.map((p, i) => (
+            <ArchiveItem style={{ transform: `translateY(${i * 180}px)` }} key={p.id} post={p} />
+          ))
+        }
+      </div>
     </div>
   )
 }
