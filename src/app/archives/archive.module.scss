@@ -21,9 +21,27 @@
   }
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .timeline {
-  margin-bottom: px2Rem(30px);
-  transition: margin-top 0.5s, opacity 0.3s, visibility 0.3s;
+  width: 100%;
+  > div {
+    transition: all 0.8s;
+    animation: 1s fadeIn 1;
+  }
+  &:after {
+    content: '';
+    height: px2Rem(180px);
+    width: 1px;
+    display: block;
+  }
 }
 
 .timelineTail {
@@ -36,6 +54,8 @@
 }
 
 .timelineContent {
+  justify-content: center;
+  height: px2Rem(150px);
   background: var(--color-card);
   border: px2Rem(1px) solid #0002;
   border-radius: px2Rem(3px);
