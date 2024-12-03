@@ -4,6 +4,7 @@ import styles from './archive.module.scss'
 import Link from 'next/link'
 import PostMetadata from '@/components/PostMetadata'
 import type { ClientSafePost } from '@/api/datasource/types/resource/Post'
+import Fuse from 'fuse.js'
 
 
 const ArchiveItem: React.FC<{post: ClientSafePost}> = ({ post }) => {
@@ -25,27 +26,28 @@ interface SearchableArchivesProps {
 }
 
 const SearchableArchives: React.FC<SearchableArchivesProps> = props => {
-  const loverCaseTitles = useRef<string[]>([])
   const [archives, setArchives] = React.useState<ClientSafePost[]>(props.posts)
   const lastSearchTimeout = useRef<ReturnType<typeof setTimeout>>()
-
+  const fuse = useRef<Fuse<ClientSafePost>>()
+  
   useEffect(() => {
-    loverCaseTitles.current = props.posts.filter(v => !!v.title).map(v => v.title!.toLowerCase())
+    fuse.current = new Fuse(props.posts, {
+      keys: ['title', 'categories', 'tags']
+    })
   }, [props.posts])
 
   const onInput: React.FormEventHandler<HTMLInputElement> = (e) => {
+    const f = fuse.current!
     if (lastSearchTimeout.current) {
       clearTimeout(lastSearchTimeout.current)
     }
-    const value = e.currentTarget.value.toLowerCase()
+    const value = e.currentTarget.value
     lastSearchTimeout.current = setTimeout(() => {
-      const result: ClientSafePost[] = []
-      for (let i = 0; i < loverCaseTitles.current.length; i++) {
-        if (loverCaseTitles.current[i].includes(value)) {
-          result.push(props.posts[i])
-        }
+      if (value.length === 0) {
+        setArchives(props.posts)
+      } else {
+        setArchives(f.search(value).map(i => i.item))
       }
-      setArchives(result)
     }, 100)
   }
   
