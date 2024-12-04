@@ -24,24 +24,22 @@
 @keyframes fadeIn {
   from {
     opacity: 0;
+    transform: scale(0.9, 0.95);
   }
   to {
     opacity: 1;
+    transform: scale(1, 1);
   }
+}
+
+.cardIn {
+  animation: fadeIn .8s 1;
 }
 
 .timeline {
   width: 100%;
-  > div {
-    transition: all 0.8s;
-    animation: 1s fadeIn 1;
-  }
-  &:after {
-    content: '';
-    height: px2Rem(180px);
-    width: 1px;
-    display: block;
-  }
+  margin-bottom: px2Rem(30px);
+  animation: fadeIn .8s 1;
 }
 
 .timelineTail {
