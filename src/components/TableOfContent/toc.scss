@@ -15,7 +15,8 @@
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
-    max-height: 60vh;
+    max-height: 80vh;
+    width: px2Rem(300px);
     max-width: px2Rem(300px);
     padding: 0 px2Rem(4px);
 
@@ -39,9 +40,9 @@
         border-left-width: px2Rem(2px);
         padding-left: px2Rem(10px) * $level;
         @if $level >= 3 {
-            color: rgb(203 213 225);
-        } @else {
             color: rgb(148 163 184);
+        } @else {
+            color: rgb(82, 94, 113);
         }
         z-index: 10 - $level;
     }
