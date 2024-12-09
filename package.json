@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@mdx-js/react": "^3.1.0",
-    "@next/mdx": "^15.0.3",
+    "@next/mdx": "^15.0.4",
     "@pintora/cli": "^0.7.6",
     "fuse.js": "^7.0.0",
     "glob": "^11.0.0",
