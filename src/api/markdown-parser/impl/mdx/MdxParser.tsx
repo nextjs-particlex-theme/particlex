@@ -10,6 +10,7 @@ import createCommonHeadingWithId from '@/api/markdown-parser/impl/mdx/components
 import PintoraDiagram from '@/api/markdown-parser/impl/mdx/components/PintoraDiagram'
 import ListPage from '@/api/markdown-parser/impl/mdx/components/ListPage'
 import adjustToc from '@/api/markdown-parser/common/toc-adjust-plugin'
+import remarkGfm from 'remark-gfm'
 
 const components = {
   pre: MdxCodeBlock,
@@ -26,7 +27,7 @@ const components = {
 
 
 async function parseMarkdownContent0(content: string): Promise<React.ReactNode> {
-  const code = String(await compile(content, { outputFormat: 'function-body', remarkPlugins: [adjustToc] }))
+  const code = String(await compile(content, { outputFormat: 'function-body', remarkPlugins: [adjustToc, remarkGfm] }))
 
   // @ts-expect-error copied from doc
   const { default: MDXContent } = await run(code, {
