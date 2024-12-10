@@ -38,7 +38,7 @@
     "yaml": "^2.6.1"
   },
   "devDependencies": {
-    "@babel/preset-react": "^7.25.9",
+    "@babel/preset-react": "^7.26.3",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.16.0",
     "@next/bundle-analyzer": "^15.0.4",
