@@ -1,6 +1,8 @@
 import type { Category, DataSourceConfig, Tag } from '@/api/datasource/types/definitions'
 import type Post from '@/api/datasource/types/resource/Post'
-import type { DatasourceItem, StaticResourceContent, WebVisitPath } from '@/api/datasource/Datasource'
+import type { WebVisitPath } from '@/api/datasource/Datasource'
+import type { CommonMetadata, DatasourceItem, StaticResource } from 'blog-helper'
+
 
 
 export interface BlogService {
@@ -43,19 +45,18 @@ export interface BlogService {
    * @param url url
    */
   getPageByWebUrl(url: WebVisitPath): Promise<Readonly<Post> | undefined>
-
   /**
    * 根据访问路径获取静态资源
    * @return base64 文件内容
    */
-  getStaticResourceByWebUrl(url: WebVisitPath): Promise<Readonly<StaticResourceContent> | undefined>
+  getStaticResourceByWebUrl(url: WebVisitPath): Promise<Readonly<StaticResource> | undefined>
   /**
    * 获取标签下对应的所有 Post
    */
-  getTagMapping(): Promise<Map<Tag, Readonly<Post[]>>>
+  getTagMapping(): Promise<Map<Tag, DatasourceItem<CommonMetadata>[]>>
 
   /**
    * 获取某个分类下对应的所有 Post
    */
-  getCategoriesMapping(): Promise<Map<Category, Readonly<Post[]>>>
+  getCategoriesMapping(): Promise<Map<Category, DatasourceItem<CommonMetadata>[]>>
 }

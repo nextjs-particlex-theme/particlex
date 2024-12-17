@@ -23,7 +23,8 @@ interface ListPageProps {
  * 列出某个目录下的所有页面
  */
 const ListPage: React.FC<ListPageProps> = async props => {
-  const pages = await datasource.listPages(props.root, props.recursion)
+  // TODO 处理递归搜素
+  const pages = await datasource.listPages(props.root)
   const result: Post[] = []
   for (const page of pages) {
     const entity = await ServiceBeans.blogService.getPageByWebUrl(page.visitPath)
