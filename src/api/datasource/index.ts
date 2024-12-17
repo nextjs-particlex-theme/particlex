@@ -17,6 +17,4 @@ const hexo = new HexoDatasource<ParticlexPageMetadata>({
   rootDirectory: process.env.BLOG_PATH,
   staticResourceDirectory: process.env.RESOURCE_DIRECTORY ?? 'source/static',
 })
-
-
 export default hexo

@@ -18,8 +18,23 @@ type PostConstructor = ConstructorParameters<typeof Post>[0]
 export default class BlogServiceImpl implements BlogService {
 
 
-  getConfig(): Promise<Readonly<DataSourceConfig>> {
-    return datasource.getConfig()
+  async getConfig(): Promise<Readonly<DataSourceConfig>> {
+    const parsed = await datasource.getConfig()
+    const theme = parsed.theme_config ?? {}
+
+    return Promise.resolve({
+      title: parsed.title,
+      subtitle: parsed.subtitle,
+      description: parsed.description,
+      author: parsed.author,
+      authorHome: parsed.authorHome ?? '#',
+      indexPageSize: theme.indexPageSize ?? 5,
+      background: theme.background ?? [],
+      avatar: theme.avatar ?? '',
+      favicon: theme.favicon,
+      metadata: parsed.metadata
+    })
+    
   }
 
   async pageHomePosts(page: number = 0, size: number = 5): Promise<Readonly<Post[]>> {
@@ -81,7 +96,7 @@ export default class BlogServiceImpl implements BlogService {
   async getPageByWebUrl(url: WebVisitPath): Promise<Readonly<Post> | undefined> {
     const item = datasource.getPageByWebVisitPath(url)
     if (!item) {
-      throw Error('Markdown not exist, visit path: ' + url)
+      return undefined
     }
     return this.parsePost(item)
   }

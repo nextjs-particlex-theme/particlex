@@ -16,9 +16,11 @@
     "analyze": "cross-env ANALYZE=true npm run build"
   },
   "dependencies": {
+    "@blog-helper/react-mdx": "1.0.0-pre2",
     "@mdx-js/react": "^3.1.0",
     "@next/mdx": "^15.0.4",
     "@pintora/cli": "^0.7.6",
+    "blog-helper": "1.0.0-pre1",
     "fuse.js": "^7.0.0",
     "glob": "^11.0.0",
     "highlight.js": "^11.10.0",
@@ -26,8 +28,6 @@
     "jsdom": "^25.0.1",
     "lru-cache": "^11.0.2",
     "mime": "^4.0.4",
-    "blog-helper": "file:D:\\Project\\self\\blog-datasource\\blog-helper\\dist\\blog-helper\\src",
-    "@blog-helper/react-mdx": "file:D:\\Project\\self\\blog-datasource\\react-mdx\\src",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",

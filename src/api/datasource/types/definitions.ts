@@ -43,7 +43,7 @@ export type DataSourceConfig = {
   /**
    * 主页
    */
-  homePage: string
+  authorHome: string
   /**
    * 图标链接
    */
