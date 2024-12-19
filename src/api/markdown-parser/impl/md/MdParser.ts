@@ -2,7 +2,7 @@ import type { MarkdownParser, ParsedMarkdown } from '@/api/markdown-parser/types
 import type React from 'react'
 import reactParse, { Element } from 'html-react-parser'
 import HtmlTagHandlerFactory from '@/api/markdown-parser/impl/md/HtmlTagHandlerFactory'
-import { createMdParser } from '../../../../../../blog-datasource/blog-helper'
+import { createMdParser } from 'blog-helper'
 
 
 const markdownParser = createMdParser()
@@ -26,6 +26,6 @@ const mdParser: MarkdownParser = {
     const node = processPostContent(html)
     return Promise.resolve(node)
   }
-} 
+}
 
 export default mdParser
