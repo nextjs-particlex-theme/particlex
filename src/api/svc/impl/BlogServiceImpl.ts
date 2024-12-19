@@ -1,10 +1,9 @@
-import type { DataSourceConfig, Tag, Category } from '@/api/datasource/types/definitions'
-import type { SEO } from '@/api/datasource/types/resource/Post'
-import Post from '@/api/datasource/types/resource/Post'
+import type { MyBlogConfig, Tag, Category } from '@/api/datasource/types/definitions'
+import type { SEO } from '@/api/datasource/types/Post'
+import Post from '@/api/datasource/types/Post'
 import type { BlogService } from '@/api/svc/BlogService'
-import type { StaticResourceContent, WebVisitPath } from '@/api/datasource/Datasource'
 import type { Markdown } from '@/api/markdown-parser'
-import type { CommonMetadata, DatasourceItem } from 'blog-helper'
+import type { CommonMetadata, DatasourceItem, WebVisitPath, StaticResourceContent } from 'blog-helper'
 import { cached } from 'blog-helper'
 import parseMarkdown from '@/api/markdown-parser'
 import datasource from '@/api/datasource'
@@ -18,8 +17,9 @@ type PostConstructor = ConstructorParameters<typeof Post>[0]
 export default class BlogServiceImpl implements BlogService {
 
 
-  async getConfig(): Promise<Readonly<DataSourceConfig>> {
-    const parsed = await datasource.getConfig()
+  async getConfig(): Promise<Readonly<MyBlogConfig>> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const parsed = (await datasource.getConfig()) as Record<string, any>
     const theme = parsed.theme_config ?? {}
 
     return Promise.resolve({
@@ -86,7 +86,7 @@ export default class BlogServiceImpl implements BlogService {
   }
 
   getAllPagesUrl(): Promise<Readonly<Array<DatasourceItem>>> {
-    return datasource.getAllPagesUrl()
+    return datasource.getAllPages()
   }
 
   getAllStaticResource(): Promise<Readonly<DatasourceItem[]>> {
@@ -148,7 +148,7 @@ export default class BlogServiceImpl implements BlogService {
 
 
   async getStaticResourceByWebUrl(url: WebVisitPath): Promise<Readonly<StaticResourceContent> | undefined> {
-    return await datasource.getStaticResourceByWebUrl(url)
+    return await datasource.readStaticResourceByWebUrl(url)
   }
 
   async getTagMapping(): Promise<Map<Tag, DatasourceItem<CommonMetadata>[]>> {

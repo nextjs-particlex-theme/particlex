@@ -1,7 +1,6 @@
-import type { Category, DataSourceConfig, Tag } from '@/api/datasource/types/definitions'
-import type Post from '@/api/datasource/types/resource/Post'
-import type { WebVisitPath } from '@/api/datasource/Datasource'
-import type { CommonMetadata, DatasourceItem, StaticResource } from 'blog-helper'
+import type { Category, MyBlogConfig, Tag } from '@/api/datasource/types/definitions'
+import type Post from '@/api/datasource/types/Post'
+import type { CommonMetadata, DatasourceItem, StaticResource, WebVisitPath } from 'blog-helper'
 
 
 
@@ -9,7 +8,7 @@ export interface BlogService {
   /**
    * 获取配置
    */
-  getConfig(): Promise<Readonly<DataSourceConfig>>
+  getConfig(): Promise<Readonly<MyBlogConfig>>
   /**
    * 分页获取用于首页展示的博客文章.
    * @param page 从0开始的页码
@@ -18,7 +17,7 @@ export interface BlogService {
   pageHomePosts(page?: number, size?: number): Promise<Readonly<Post[]>>
 
   /**
-   * {@link BlogDataSource#pageHomePosts} 的总博客文章数量
+   * 总博客文章数量
    */
   homePostSize(): Promise<number>
 

@@ -1,7 +1,7 @@
 import type React from 'react'
 import ServiceBeans from '@/api/svc/ServiceBeans'
 import datasource from '@/api/datasource'
-import type Post from '@/api/datasource/types/resource/Post'
+import type Post from '@/api/datasource/types/Post'
 
 interface ListPageProps {
   /**
