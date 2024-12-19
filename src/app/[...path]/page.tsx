@@ -11,7 +11,7 @@ import ServiceBeans from '@/api/svc/ServiceBeans'
 
 export async function generateStaticParams(): Promise<Param[]> {
   const posts = await ServiceBeans.blogService.getAllPagesUrl()
-  const r: Param[] = posts.map(v => ({ path: v.visitPath }))
+  const r: Param[] = posts.map(v => ({ path: v.metadata.visitPath }))
 
   if (r.length > 0) {
     return r

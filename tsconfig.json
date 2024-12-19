@@ -20,8 +20,10 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": ["./src/*"],
+//      "blog-helper": ["node_modules/monorepo-root/blog-helper/dist/blog-helper/src/index"],
+//      "@blog-helper/react-mdx": ["node_modules/monorepo-root/blog-helper/src/index.ts"]
+    },
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "**/*.cjs", "**/*.mjs", "**/*.js"],
   "exclude": ["node_modules"]

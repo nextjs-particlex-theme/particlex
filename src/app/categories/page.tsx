@@ -2,7 +2,8 @@ import type React from 'react'
 import Header from '@/components/Header'
 import type { Metadata } from 'next'
 import { Icons } from '@/app/svg-symbols'
-import { toMapAble } from '@/lib/ObjectUtils'
+import type { CategoryItemProps } from '@/components/CategoryItem'
+import { parseMapData } from '@/components/CategoryItem'
 import CategoryItem from '@/components/CategoryItem'
 import CommentComponentInject from '@/components/CommentComponentInject'
 import ServiceBeans from '@/api/svc/ServiceBeans'
@@ -20,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 
 const Categories: React.FC = async () => {
-  const categories = await ServiceBeans.blogService.getCategoriesMapping()
+  const entities: CategoryItemProps[] = await parseMapData(await ServiceBeans.blogService.getCategoriesMapping())
 
   return (
     <>
@@ -36,12 +37,8 @@ const Categories: React.FC = async () => {
         </div>
         <div>
           {
-            toMapAble(categories).map((value, key) => (
-              <CategoryItem name={key} key={key} resources={[...value].sort((a, b) => {
-                const val1 = a.date ?? Number.MIN_VALUE
-                const val2 = b.date ?? Number.MIN_VALUE
-                return val2 - val1
-              })}/>
+            entities.map(value => (
+              <CategoryItem {...value} key={value.name}/>
             ))
           }
         </div>

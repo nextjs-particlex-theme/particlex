@@ -1,4 +1,3 @@
-import path from 'node:path'
 import analyzer from '@next/bundle-analyzer'
 
 const withBundleAnalyzer = analyzer({
@@ -15,23 +14,7 @@ const nextConfig = {
   },
   sassOptions: {
     prependData: '@import \'@/lib/global.scss\';'
-  },
-  webpack(config) {
-    config.module.rules.push(
-      {
-        test: /\.d\.ts$/,
-        include: [path.resolve('node_modules/hexo')],
-        use: 'ignore-loader',
-      },
-      {
-        test: /\.js\.map$/,
-        include: [path.resolve('node_modules/hexo')],
-        use: 'ignore-loader',
-      }
-    )
-
-    return config
-  },
+  }
 }
 
 export default withBundleAnalyzer(nextConfig)

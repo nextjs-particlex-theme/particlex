@@ -11,7 +11,7 @@ const Footer:React.FC =  async () => {
       <div className="mt-2">
         <span>{config.title}</span>
         <span>&nbsp;</span>
-        <Link id="copyright" href={config.homePage}>@{config.author}</Link>
+        <Link id="copyright" href={config.authorHome ?? '/'}>@{config.author}</Link>
       </div>
       <div className="mt-2">
         Based on <Link href="https://nextjs.org/">Next.js</Link> & <Link href="https://github.com/IceOfSummer/hexo-theme-particlex-nextjs">hexo-theme-particlex-nextjs</Link>

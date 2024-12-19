@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react'
 import styles from './archive.module.scss'
 import Link from 'next/link'
 import PostMetadata from '@/components/PostMetadata'
-import type { ClientSafePost } from '@/api/datasource/types/resource/Post'
+import type { ClientSafePost } from '@/api/datasource/types/Post'
 import type { FuseResult } from 'fuse.js'
 import Fuse from 'fuse.js'
 

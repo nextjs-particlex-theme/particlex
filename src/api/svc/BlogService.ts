@@ -1,13 +1,14 @@
-import type { Category, DataSourceConfig, Tag } from '@/api/datasource/types/definitions'
-import type Post from '@/api/datasource/types/resource/Post'
-import type { DatasourceItem, StaticResourceContent, WebVisitPath } from '@/api/datasource/Datasource'
+import type { Category, MyBlogConfig, Tag } from '@/api/datasource/types/definitions'
+import type Post from '@/api/datasource/types/Post'
+import type { CommonMetadata, DatasourceItem, StaticResource, WebVisitPath } from 'blog-helper'
+
 
 
 export interface BlogService {
   /**
    * 获取配置
    */
-  getConfig(): Promise<Readonly<DataSourceConfig>>
+  getConfig(): Promise<Readonly<MyBlogConfig>>
   /**
    * 分页获取用于首页展示的博客文章.
    * @param page 从0开始的页码
@@ -16,7 +17,7 @@ export interface BlogService {
   pageHomePosts(page?: number, size?: number): Promise<Readonly<Post[]>>
 
   /**
-   * {@link BlogDataSource#pageHomePosts} 的总博客文章数量
+   * 总博客文章数量
    */
   homePostSize(): Promise<number>
 
@@ -43,19 +44,18 @@ export interface BlogService {
    * @param url url
    */
   getPageByWebUrl(url: WebVisitPath): Promise<Readonly<Post> | undefined>
-
   /**
    * 根据访问路径获取静态资源
    * @return base64 文件内容
    */
-  getStaticResourceByWebUrl(url: WebVisitPath): Promise<Readonly<StaticResourceContent> | undefined>
+  getStaticResourceByWebUrl(url: WebVisitPath): Promise<Readonly<StaticResource> | undefined>
   /**
    * 获取标签下对应的所有 Post
    */
-  getTagMapping(): Promise<Map<Tag, Readonly<Post[]>>>
+  getTagMapping(): Promise<Map<Tag, DatasourceItem<CommonMetadata>[]>>
 
   /**
    * 获取某个分类下对应的所有 Post
    */
-  getCategoriesMapping(): Promise<Map<Category, Readonly<Post[]>>>
+  getCategoriesMapping(): Promise<Map<Category, DatasourceItem<CommonMetadata>[]>>
 }
