@@ -1,8 +1,3 @@
----
-title: example
-date: 2024/07/31 16:22:39
----
-
 Markdown是一种轻量级的「标记语言」。
 
 ## 1 Markdown语法教程
