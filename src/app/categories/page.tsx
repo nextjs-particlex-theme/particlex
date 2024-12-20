@@ -11,7 +11,7 @@ import ServiceBeans from '@/api/svc/ServiceBeans'
 
 
 export async function generateMetadata(): Promise<Metadata> {
-  const config = await ServiceBeans.blogService.getConfig()
+  const config = ServiceBeans.blogService.getConfig()
   return {
     title: 'Categories | 分类 | ' + config.title,
     description: 'Categories for all blog posts. 博客文章的分类.',
@@ -21,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 
 const Categories: React.FC = async () => {
-  const entities: CategoryItemProps[] = await parseMapData(await ServiceBeans.blogService.getCategoriesMapping())
+  const entities: CategoryItemProps[] = await parseMapData(ServiceBeans.blogService.getCategoriesMapping())
 
   return (
     <>

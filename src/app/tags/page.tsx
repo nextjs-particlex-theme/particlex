@@ -7,7 +7,7 @@ import CommentComponentInject from '@/components/CommentComponentInject'
 import ServiceBeans from '@/api/svc/ServiceBeans'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const config = await ServiceBeans.blogService.getConfig()
+  const config = ServiceBeans.blogService.getConfig()
   return {
     title: 'Tags | 标签 | ' + config.title,
     description: 'Tags for all blog posts. 博客文章的标签.',
@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 
 const TagsPage: React.FC = async () => {
-  const entities: CategoryItemProps[] = await parseMapData(await ServiceBeans.blogService.getTagMapping())
+  const entities: CategoryItemProps[] = await parseMapData(ServiceBeans.blogService.getTagMapping())
 
   return (
     <>

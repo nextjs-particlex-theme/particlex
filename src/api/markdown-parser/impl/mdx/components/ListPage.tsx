@@ -1,7 +1,7 @@
 import type React from 'react'
 import ServiceBeans from '@/api/svc/ServiceBeans'
-import datasource from '@/api/datasource'
 import type Post from '@/api/datasource/types/Post'
+import serviceBeans from '@/api/svc/ServiceBeans'
 
 interface ListPageProps {
   /**
@@ -24,10 +24,10 @@ interface ListPageProps {
  */
 const ListPage: React.FC<ListPageProps> = async props => {
   // TODO 处理递归搜素
-  const pages = await datasource.listPages(props.root)
+  const pages = serviceBeans.blogService.listPageByWebUrlPrefix(props.root.split('/'), props.recursion)
   const result: Post[] = []
   for (const page of pages) {
-    const entity = await ServiceBeans.blogService.getPageByWebUrl(page.visitPath)
+    const entity = await ServiceBeans.blogService.getPageByWebUrl(page.metadata.visitPath)
     if (entity) {
       result.push(entity)
     }

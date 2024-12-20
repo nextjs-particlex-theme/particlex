@@ -14,9 +14,9 @@ interface RootLayoutProps {
 
 const HomeBase: React.FC<RootLayoutProps> = async props => {
   const service = ServiceBeans.blogService
-  const { title, background, indexPageSize, description, subtitle } = await service.getConfig()
+  const { title, background, indexPageSize, description, subtitle } = service.getConfig()
   const posts = await service.pageHomePosts(props.currentPage, indexPageSize)
-  const total = await service.homePostSize()
+  const total = service.homePostSize()
   const p = Math.ceil(total / indexPageSize)
 
   return (

@@ -3,7 +3,7 @@ import type { SEO } from '@/api/datasource/types/Post'
 import Post from '@/api/datasource/types/Post'
 import type { BlogService } from '@/api/svc/BlogService'
 import type { Markdown } from '@/api/markdown-parser'
-import type { CommonMetadata, DatasourceItem, WebVisitPath, StaticResourceContent } from 'blog-helper'
+import type { CommonMetadata, DatasourceItem, WebVisitPath, StaticResource } from 'blog-helper'
 import { cached } from 'blog-helper'
 import parseMarkdown from '@/api/markdown-parser'
 import datasource from '@/api/datasource'
@@ -16,13 +16,12 @@ type PostConstructor = ConstructorParameters<typeof Post>[0]
  */
 export default class BlogServiceImpl implements BlogService {
 
-
-  async getConfig(): Promise<Readonly<MyBlogConfig>> {
+  getConfig(): Readonly<MyBlogConfig> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const parsed = (await datasource.getConfig()) as Record<string, any>
+    const parsed = (datasource.getConfig()) as Record<string, any>
     const theme = parsed.theme_config ?? {}
 
-    return Promise.resolve({
+    return {
       title: parsed.title,
       subtitle: parsed.subtitle,
       description: parsed.description,
@@ -33,12 +32,12 @@ export default class BlogServiceImpl implements BlogService {
       avatar: theme.avatar ?? '',
       favicon: theme.favicon,
       metadata: parsed.metadata
-    })
+    }
     
   }
 
   async pageHomePosts(page: number = 0, size: number = 5): Promise<Readonly<Post[]>> {
-    const posts = await datasource.pageHomePosts(page, size)
+    const posts = datasource.pageHomePosts(page, size)
     const head = page * size
     const sliced = posts.slice(head, head + size)
     const result: Post[] = []
@@ -54,7 +53,7 @@ export default class BlogServiceImpl implements BlogService {
 
   @cached()
   private async parsePost(item: DatasourceItem): Promise<Post> {
-    const md = await datasource.readContent(item.metadata.visitPath)
+    const md = datasource.readContent(item.metadata.visitPath)
     if (!md) {
       throw Error('Markdown not exist, visit path: ' + item.metadata.visitPath)
     }
@@ -81,15 +80,15 @@ export default class BlogServiceImpl implements BlogService {
     return new Post(postData)
   }
 
-  async homePostSize(): Promise<number> {
-    return await datasource.homePostSize()
+  homePostSize(): number {
+    return datasource.homePostSize()
   }
 
-  getAllPagesUrl(): Promise<Readonly<Array<DatasourceItem>>> {
+  getAllPagesUrl(): Readonly<Array<DatasourceItem<CommonMetadata>>> {
     return datasource.getAllPages()
   }
 
-  getAllStaticResource(): Promise<Readonly<DatasourceItem[]>> {
+  getAllStaticResource(): Readonly<DatasourceItem[]> {
     return datasource.getAllStaticResource()
   }
 
@@ -147,16 +146,36 @@ export default class BlogServiceImpl implements BlogService {
   }
 
 
-  async getStaticResourceByWebUrl(url: WebVisitPath): Promise<Readonly<StaticResourceContent> | undefined> {
-    return await datasource.readStaticResourceByWebUrl(url)
+  getStaticResourceByWebUrl(url: WebVisitPath): StaticResource | undefined {
+    return datasource.readStaticResourceByWebUrl(url)
   }
 
-  async getTagMapping(): Promise<Map<Tag, DatasourceItem<CommonMetadata>[]>> {
+  getTagMapping(): Map<Tag, DatasourceItem<CommonMetadata>[]> {
     return datasource.getTagMapping()
   }
 
-  async getCategoriesMapping(): Promise<Map<Category, DatasourceItem<CommonMetadata>[]>> {
+  getCategoriesMapping(): Map<Category, DatasourceItem<CommonMetadata>[]> {
     return datasource.getCategoriesMapping()
   }
 
+  listPageByWebUrlPrefix(prefix: WebVisitPath, matchNested = true): DatasourceItem<CommonMetadata>[] {
+    const all = this.getAllPagesUrl()
+    const result: DatasourceItem<CommonMetadata>[] = []
+    for (const e of all) {
+      const len = e.metadata.visitPath.length
+      if (len < prefix.length || (!matchNested && prefix.length != len - 1)) {
+        continue
+      }
+      let i = 0
+      for (; i < prefix.length; i++) {
+        if (prefix[i] != e.metadata.visitPath[i]) {
+          break
+        }
+      }
+      if (i == prefix.length) {
+        result.push(e)
+      }
+    }
+    return result
+  }
 }

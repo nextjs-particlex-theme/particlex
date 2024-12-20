@@ -8,7 +8,7 @@ export interface BlogService {
   /**
    * 获取配置
    */
-  getConfig(): Promise<Readonly<MyBlogConfig>>
+  getConfig(): Readonly<MyBlogConfig>
   /**
    * 分页获取用于首页展示的博客文章.
    * @param page 从0开始的页码
@@ -19,7 +19,7 @@ export interface BlogService {
   /**
    * 总博客文章数量
    */
-  homePostSize(): Promise<number>
+  homePostSize(): number
 
   /**
    * 获取所有文章，包括首页的文章
@@ -28,7 +28,7 @@ export interface BlogService {
    *   <li>v: 静态资源</li>
    * </ul>
    */
-  getAllPagesUrl(): Promise<Readonly<Array<DatasourceItem>>>
+  getAllPagesUrl(): Readonly<Array<DatasourceItem>>
 
   /**
    * 获取所有静态资源.
@@ -38,7 +38,7 @@ export interface BlogService {
    *   <li>v: 静态资源</li>
    * </ul>
    */
-  getAllStaticResource(): Promise<Readonly<DatasourceItem[]>>
+  getAllStaticResource(): Readonly<DatasourceItem[]>
   /**
    * 根据访问路径获取Post
    * @param url url
@@ -48,14 +48,18 @@ export interface BlogService {
    * 根据访问路径获取静态资源
    * @return base64 文件内容
    */
-  getStaticResourceByWebUrl(url: WebVisitPath): Promise<Readonly<StaticResource> | undefined>
+  getStaticResourceByWebUrl(url: WebVisitPath): StaticResource | undefined
   /**
    * 获取标签下对应的所有 Post
    */
-  getTagMapping(): Promise<Map<Tag, DatasourceItem<CommonMetadata>[]>>
+  getTagMapping(): Map<Tag, DatasourceItem<CommonMetadata>[]>
 
   /**
    * 获取某个分类下对应的所有 Post
    */
-  getCategoriesMapping(): Promise<Map<Category, DatasourceItem<CommonMetadata>[]>>
+  getCategoriesMapping(): Map<Category, DatasourceItem<CommonMetadata>[]>
+  /**
+   * 根据访问路径前缀列出符合条件的页面
+   */
+  listPageByWebUrlPrefix(prefix: WebVisitPath, matchNested?: boolean): DatasourceItem<CommonMetadata>[]
 }

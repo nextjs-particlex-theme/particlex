@@ -12,7 +12,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = async (props) => {
   const service = ServiceBeans.blogService
-  const meta = await service.getConfig()
+  const meta = service.getConfig()
   let aboutPageUrl: string
   if ((await service.getPageByWebUrl(['about']))) {
     aboutPageUrl = '/about'
