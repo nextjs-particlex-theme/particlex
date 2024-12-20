@@ -38,10 +38,8 @@ export default class BlogServiceImpl implements BlogService {
 
   async pageHomePosts(page: number = 0, size: number = 5): Promise<Readonly<Post[]>> {
     const posts = datasource.pageHomePosts(page, size)
-    const head = page * size
-    const sliced = posts.slice(head, head + size)
     const result: Post[] = []
-    for (const datasourceItem of sliced) {
+    for (const datasourceItem of posts) {
       const p = await this.getPageByWebUrl(datasourceItem.metadata.visitPath)
       if (!p) {
         continue
