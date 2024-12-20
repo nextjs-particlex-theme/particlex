@@ -3,7 +3,7 @@ import Link from 'next/link'
 import styles from './root-style.module.scss'
 import postStyle from '@/components/post.module.scss'
 import PostMetadata from '@/components/PostMetadata'
-import type Post from '@/api/datasource/types/resource/Post'
+import type Post from '@/api/datasource/types/Post'
 import PostContainer from '@/components/PostContainer'
 import { concatClassName } from '@/lib/DomUtils'
 

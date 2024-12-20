@@ -8,7 +8,7 @@ import ServiceBeans from '@/api/svc/ServiceBeans'
 
 
 export async function generateMetadata(): Promise<Metadata> {
-  const config = await ServiceBeans.blogService.getConfig()
+  const config = ServiceBeans.blogService.getConfig()
 
   const metadata: Metadata = {
     title: config.title,

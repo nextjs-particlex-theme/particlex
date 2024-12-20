@@ -10,8 +10,8 @@ import ServiceBeans from '@/api/svc/ServiceBeans'
 
 
 export async function generateStaticParams(): Promise<Param[]> {
-  const posts = await ServiceBeans.blogService.getAllPagesUrl()
-  const r: Param[] = posts.map(v => ({ path: v.visitPath }))
+  const posts = ServiceBeans.blogService.getAllPagesUrl()
+  const r: Param[] = posts.map(v => ({ path: v.metadata.visitPath }))
 
   if (r.length > 0) {
     return r
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: {params: Param}): Promise<Met
       title: 'Fallback Page'
     }
   }
-  const config = await service.getConfig()
+  const config = service.getConfig()
   const { seo } = post
 
   let title: string

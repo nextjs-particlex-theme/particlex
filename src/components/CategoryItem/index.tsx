@@ -1,19 +1,55 @@
 import type React from 'react'
-import type Post from '@/api/datasource/types/resource/Post'
 import styles from './category.module.scss'
 import { Icons } from '@/app/svg-symbols'
 import Link from 'next/link'
+import type { Tag } from '@/api/datasource/types/definitions'
+import type { Category, CommonMetadata, DatasourceItem } from 'blog-helper'
+import ServiceBeans from '@/api/svc/ServiceBeans'
 
 
-interface CategoryItemProps {
+export interface CategoryItemProps {
   /**
    * tag or category name.
    */
   name: string
-  /**
-   * 类别对于的文章。不会主动排序，需要在外面排序好。
-   */
-  resources: Post[]
+  entities: CategoryEntity[]
+}
+
+export type CategoryEntity = {
+  title?: string
+  wordCount?: number
+  date?: string
+  href?: string
+  timestamp?: number
+}
+
+export const parseMapData = async (data: Map<Tag | Category, DatasourceItem<CommonMetadata>[]>): Promise<CategoryItemProps[]> => {
+  const blogService = ServiceBeans.blogService
+  const entities: CategoryItemProps[] = []
+
+  for (const [key, items] of data) {
+    const root: CategoryItemProps = {
+      entities: [],
+      name: key
+    }
+    for (const item of items) {
+      const page = await blogService.getPageByWebUrl(item.metadata.visitPath)
+      root.entities.push({
+        date: page?.formattedTime,
+        href: page?.getAccessPath(),
+        title: page?.title,
+        wordCount: page?.wordCount,
+        timestamp: page?.date
+      })
+    }
+    root.entities.sort((a, b) => {
+      const val1 = a.timestamp ?? Number.MIN_VALUE
+      const val2 = b.timestamp ?? Number.MIN_VALUE
+      return val2 - val1
+    })
+    entities.push(root)
+  }
+  return entities
 }
 
 /**
@@ -28,15 +64,15 @@ const CategoryItem:React.FC<CategoryItemProps> = props => {
           {props.name}
         </h2>
         <div>
-          共 { props.resources.length } 篇
+          共 { props.entities.length } 篇
         </div>
       </div>
       <div className="max-h-[50vh] overflow-y-auto">
         {
-          props.resources.map(v => (
-            <Link key={v.id} className={styles.categoryItem} href={v.source.join('/')}>
+          props.entities.map(v => (
+            <Link key={v.href} className={styles.categoryItem} href={v.href ?? '/404'}>
               <div className="flex flex-col">
-                <span className="text-subtext2">{v.formattedTime}</span>
+                <span className="text-subtext2">{v.date}</span>
                 <span>{v.title}</span>
               </div>
               <div className="flex items-center" title="字数">

@@ -8,8 +8,8 @@ type Params = {
 
 export async function generateStaticParams() {
   const service = ServiceBeans.blogService
-  const config = await service.getConfig()
-  const size = Math.ceil(await service.homePostSize() / config.indexPageSize)
+  const config = service.getConfig()
+  const size = Math.ceil(service.homePostSize() / config.indexPageSize)
 
   const result: Params[] = []
   for (let i = 1; i <= size; i++) {

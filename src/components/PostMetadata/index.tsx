@@ -1,8 +1,8 @@
 import React from 'react'
 import { Icons } from '@/app/svg-symbols'
 import Link from 'next/link'
-import type { ClientSafePost } from '@/api/datasource/types/resource/Post'
-import type Post from '@/api/datasource/types/resource/Post'
+import type { ClientSafePost } from '@/api/datasource/types/Post'
+import type Post from '@/api/datasource/types/Post'
 import { concatClassName } from '@/lib/DomUtils'
 
 interface PostMetadataProps {

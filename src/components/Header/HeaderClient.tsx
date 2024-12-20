@@ -30,7 +30,6 @@ interface HeaderClientProps {
  */
 const HeaderClient:React.FC<HeaderClientProps> = props => {
 
-
   let headerClass: string | undefined
   if (props.status === HeaderStatus.VISIBLE) {
     headerClass = styles.headerNormalVisible
