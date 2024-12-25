@@ -34,12 +34,13 @@ export async function generateStaticParams(): Promise<StaticParams> {
 }
 
 interface ResourceRouteParam {
-  params: {
+  params: Promise<{
     path: string[]
-  }
+  }>
 }
 
-export async function GET(_: unknown, { params }: ResourceRouteParam) {
+export async function GET(_: unknown, props: ResourceRouteParam) {
+  const params = await props.params
   const res = ServiceBeans.blogService.getStaticResourceByWebUrl(params.path)
 
   if (!res) {

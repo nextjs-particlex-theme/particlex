@@ -75,8 +75,8 @@ const SearchableArchives: React.FC<SearchableArchivesProps> = props => {
   const [archives, setArchives] = React.useState<FuseResult<ClientSafePost>[]>(() => 
     props.posts.map((v, i) => ({ item: v, refIndex: i }))
   )
-  const lastSearchTimeout = useRef<ReturnType<typeof setTimeout>>()
-  const fuse = useRef<Fuse<ClientSafePost>>()
+  const lastSearchTimeout = useRef<ReturnType<typeof setTimeout>>(undefined)
+  const fuse = useRef<Fuse<ClientSafePost>>(undefined)
 
   useEffect(() => {
     fuse.current = new Fuse(props.posts, {

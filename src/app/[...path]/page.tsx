@@ -23,7 +23,8 @@ export async function generateStaticParams(): Promise<Param[]> {
   ]
 }
 
-export async function generateMetadata({ params }: {params: Param}): Promise<Metadata> {
+export async function generateMetadata(props: {params: Promise<Param>}): Promise<Metadata> {
+  const params = await props.params
   const service = ServiceBeans.blogService
   const post = await service.getPageByWebUrl(params.path)
 
@@ -57,7 +58,8 @@ interface Param {
   path: string[]
 }
 
-const PostPage: React.FC<{params: Param}> = async ({ params }) => {
+const PostPage: React.FC<{params: Param}> = async props => {
+  const params = await props.params
   const post = await ServiceBeans.blogService.getPageByWebUrl(params.path)
 
   if (!post) {
