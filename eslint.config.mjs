@@ -44,6 +44,7 @@ export default tseslint.config({
     'no-redeclare': 'off',
     '@typescript-eslint/no-redeclare': 'error',
     '@typescript-eslint/no-require-imports': 'off',
+    '@typescript-eslint/await-thenable': 'error',
     '@typescript-eslint/no-unused-vars': ['error', {
       'args': 'all',
       'argsIgnorePattern': '^_',

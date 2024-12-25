@@ -1,7 +1,20 @@
-import FileSystemDatasource from '@/api/datasource/FileSystemDatasource'
+import type { HexoBasePageMetadata } from 'blog-helper'
+import { HexoDatasource } from 'blog-helper'
 
 
-const datasource = new FileSystemDatasource()
+export type ParticlexPageMetadata = {
+  date?: string
+  seo?: {
+    title?: string
+    description?: string
+    keywords?: string | string[]
+  }
+} & HexoBasePageMetadata
 
-
-export default datasource
+const hexo = new HexoDatasource<ParticlexPageMetadata>({
+  pageDirectory: process.env.BLOG_POST_DIRECTORY,
+  homePageDirectory: process.env.BLOG_HOME_POST_DIRECTORY,
+  rootDirectory: process.env.BLOG_PATH,
+  staticResourceDirectory: process.env.RESOURCE_DIRECTORY ?? 'source/static',
+})
+export default hexo

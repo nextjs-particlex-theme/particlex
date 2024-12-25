@@ -6,24 +6,11 @@ export interface Resource {
 }
 
 
-export type TocItem = {
-  /**
-   * 标题，该值为 html 文本！
-   */
-  title: string
-  /**
-   * 锚点，以 # 开头
-   */
-  anchor: string
-  child: TocItem[]
-}
-
 export type Tag = string
 
 export type Category = string
 
-
-export type DataSourceConfig = {
+export type MyBlogConfig = {
   title: string
   subtitle?: string
   description?: string
@@ -43,7 +30,7 @@ export type DataSourceConfig = {
   /**
    * 主页
    */
-  homePage: string
+  authorHome: string
   /**
    * 图标链接
    */
