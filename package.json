@@ -15,10 +15,10 @@
     "analyze": "cross-env ANALYZE=true npm run build"
   },
   "dependencies": {
-    "@blog-helper/react-mdx": "1.0.0-pre3",
+    "@blog-helper/react-mdx": "1.0.0",
     "@mdx-js/react": "^3.1.0",
     "@pintora/cli": "^0.7.6",
-    "blog-helper": "1.0.0-pre4",
+    "blog-helper": "1.0.0",
     "fuse.js": "^7.0.0",
     "glob": "^11.0.0",
     "highlight.js": "^11.10.0",
