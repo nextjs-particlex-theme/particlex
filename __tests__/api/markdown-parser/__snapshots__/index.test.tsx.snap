@@ -47,7 +47,7 @@ exports[`Test md render 1`] = `
 <h3 id="1.6-链接">1.6 链接</h3>
 <p><a href="https://github.com/nextjs-particlex-theme/particlex">particlex</a></p>
 <h3 id="1.7-图片">1.7 图片</h3>
-<p><img src="/favicon.ico" alt="favicon.ico" loading="lazy"></p>
+<p><img alt="favicon.ico" loading="lazy" src="/favicon.ico"></p>
 <h3 id="1.8-分割线">1.8 分割线</h3>
 <p>可以在一行中用三个以上的减号来建立一个分隔线，同时需要在分隔线的上面空一行。如下：</p>
 <hr>
@@ -135,7 +135,7 @@ exports[`Test mdx render 1`] = `
 <h3 id="1.6-链接">1.6 链接</h3>
 <p><a href="https://github.com/nextjs-particlex-theme/particlex">particlex</a></p>
 <h3 id="1.7-图片">1.7 图片</h3>
-<p><img src="/favicon.ico" alt="favicon.ico" loading="lazy"></p>
+<p><img alt="favicon.ico" loading="lazy" src="/favicon.ico"></p>
 <h3 id="1.8-分割线">1.8 分割线</h3>
 <p>可以在一行中用三个以上的减号来建立一个分隔线，同时需要在分隔线的上面空一行。如下：</p>
 <hr>
