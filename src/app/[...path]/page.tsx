@@ -58,7 +58,7 @@ interface Param {
   path: string[]
 }
 
-const PostPage: React.FC<{params: Param}> = async props => {
+const PostPage: React.FC<{params: Promise<Param>}> = async props => {
   const params = await props.params
   const post = await ServiceBeans.blogService.getPageByWebUrl(params.path)
 
