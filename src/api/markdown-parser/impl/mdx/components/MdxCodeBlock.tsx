@@ -8,6 +8,7 @@ type MdxCodeBlockProps = {
     children: string
     props: {
       children: string
+      className?: string
     }
   }
 }

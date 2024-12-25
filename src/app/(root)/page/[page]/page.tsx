@@ -21,8 +21,6 @@ export async function generateStaticParams() {
 }
 
 
-export default async function HomePage(props: {params: Params}) {
-  return (
-    <HomeBase currentPage={Number.parseInt(props.params.page) - 1}/>
-  )
+export default async function HomePage(props: {params: Promise<Params>}) {
+  return (<HomeBase currentPage={Number.parseInt((await props.params).page) - 1}/>)
 }
