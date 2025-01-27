@@ -23,7 +23,7 @@
     "glob": "^11.0.0",
     "highlight.js": "^11.11.1",
     "html-react-parser": "^5.2.2",
-    "jsdom": "^25.0.1",
+    "jsdom": "^26.0.0",
     "lru-cache": "^11.0.2",
     "mime": "^4.0.4",
     "next": "15.1.5",
