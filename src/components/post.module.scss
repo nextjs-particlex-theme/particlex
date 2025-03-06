@@ -1,36 +1,38 @@
+@use '@/lib/util';
+
 .postContainer {
   //font-size: 0.9375rem;
   font-size: 1rem;
   color: var(--color-text-sub);
   h1 {
-    font-size: px2Rem(30px) !important;
-    margin: px2Rem(25px) 0;
+    font-size: util.px2Rem(30px) !important;
+    margin: util.px2Rem(25px) 0;
   }
 
 
   h2 {
-    font-size: px2Rem(26px);
-    margin: px2Rem(22px) 0;
+    font-size: util.px2Rem(26px);
+    margin: util.px2Rem(22px) 0;
   }
 
   h3 {
-    font-size: px2Rem(22px);
-    margin: px2Rem(18px) 0;
+    font-size: util.px2Rem(22px);
+    margin: util.px2Rem(18px) 0;
   }
 
   h4 {
-    font-size: px2Rem(18px);
-    margin: px2Rem(18px) 0;
+    font-size: util.px2Rem(18px);
+    margin: util.px2Rem(18px) 0;
   }
 
   h5 {
-    font-size: px2Rem(16px);
-    margin: px2Rem(18px) 0;
+    font-size: util.px2Rem(16px);
+    margin: util.px2Rem(18px) 0;
   }
 
   h6 {
-    font-size: px2Rem(15px);
-    margin: px2Rem(18px) 0;
+    font-size: util.px2Rem(15px);
+    margin: util.px2Rem(18px) 0;
   }
 
   h1,h2,h3,h4,h5,h6 {
@@ -40,32 +42,32 @@
 
   hr {
     border-style: solid none none;
-    border-width: px2Rem(2px)
+    border-width: util.px2Rem(2px)
   }
 
   audio,iframe,img,video {
-    border-radius: px2Rem(10px)
+    border-radius: util.px2Rem(10px)
   }
 
   mark {
     background: rgba(255,241,51,.376);
-    border-radius: px2Rem(4px);
+    border-radius: util.px2Rem(4px);
     color: unset;
     line-height: 2.5;
-    padding: px2Rem(4px) px2Rem(8px)
+    padding: util.px2Rem(4px) util.px2Rem(8px)
   }
 
   ol,p,ul {
     line-height: 1.7;
-    margin: px2Rem(15px) 0;
+    margin: util.px2Rem(15px) 0;
     list-style-type: disc;
   }
 
   pre {
-    border: px2Rem(1px) solid var(--border-color-code-block);
-    border-radius: px2Rem(15px);
-    box-shadow: 0 px2Rem(2px) px2Rem(12px) 0 rgba(0,0,0,.102);
-    margin: px2Rem(25px) 0;
+    border: util.px2Rem(1px) solid var(--border-color-code-block);
+    border-radius: util.px2Rem(15px);
+    box-shadow: 0 util.px2Rem(2px) util.px2Rem(12px) 0 rgba(0,0,0,.102);
+    margin: util.px2Rem(25px) 0;
     overflow: visible;
   }
 
@@ -80,19 +82,19 @@
 
   table thead tr th {
     background: var(--color-primary-sub);
-    padding: px2Rem(8px) px2Rem(20px)
+    padding: util.px2Rem(8px) util.px2Rem(20px)
   }
 
   table tr td {
-    padding: px2Rem(8px) px2Rem(20px)
+    padding: util.px2Rem(8px) util.px2Rem(20px)
   }
 
   ol li,ul li {
-    margin: px2Rem(8px) 0
+    margin: util.px2Rem(8px) 0
   }
 
   ol,ul {
-    padding-left: px2Rem(40px)
+    padding-left: util.px2Rem(40px)
   }
 
   code,pre {
@@ -100,10 +102,10 @@
   }
   code {
     background: rgba(189,220,247,.42);
-    border-radius: px2Rem(4px);
-    font-size: px2Rem(14px);
+    border-radius: util.px2Rem(4px);
+    font-size: util.px2Rem(14px);
     line-height: 2.5;
-    padding: px2Rem(4px) px2Rem(8px)
+    padding: util.px2Rem(4px) util.px2Rem(8px)
   }
 
   img {
@@ -112,8 +114,8 @@
 
   blockquote {
     background: #d9e8ff6b;
-    border-left: px2Rem(3px) solid var(--color-primary);
-    border-radius: px2Rem(3px);
+    border-left: util.px2Rem(3px) solid var(--color-primary);
+    border-radius: util.px2Rem(3px);
     @apply flex flex-col px-3.5 my-6;
   }
 

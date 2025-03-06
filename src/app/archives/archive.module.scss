@@ -1,22 +1,24 @@
+@use '@/lib/util';
+
 .searchBar {
-  margin-bottom: px2Rem(50px);
+  margin-bottom: util.px2Rem(50px);
   z-index: 10001;
   background: var(--background-color);
-  border: px2Rem(1px) solid #d0d7de;
-  border-radius: px2Rem(50px);
+  border: util.px2Rem(1px) solid #d0d7de;
+  border-radius: util.px2Rem(50px);
   box-sizing: border-box;
   color: #000;
   display: block;
-  font-size: px2Rem(15px);
-  height: px2Rem(50px);
-  text-indent: px2Rem(20px);
+  font-size: util.px2Rem(15px);
+  height: util.px2Rem(50px);
+  text-indent: util.px2Rem(20px);
   transition: background .25s,border .25s,box-shadow .25s;
   width: 100%;
 
   &:focus {
     background: var(--color-card);
     border-color: #0969da;
-    box-shadow: 0 0 0 px2Rem(3px) #0969da4d;
+    box-shadow: 0 0 0 util.px2Rem(3px) #0969da4d;
     outline: none;
   }
 }
@@ -38,31 +40,31 @@
 
 .timeline {
   width: 100%;
-  margin-bottom: px2Rem(30px);
+  margin-bottom: util.px2Rem(30px);
   animation: fadeIn .8s 1;
 }
 
 .timelineTail {
   background: var(--color-card);
-  border: px2Rem(2px) solid #a5c2f5;
+  border: util.px2Rem(2px) solid #a5c2f5;
   border-radius: 50%;
-  height: px2Rem(7px);
+  height: util.px2Rem(7px);
   position: absolute;
-  width: px2Rem(7px);
+  width: util.px2Rem(7px);
 }
 
 .timelineContent {
   justify-content: center;
-  height: px2Rem(150px);
+  height: util.px2Rem(150px);
   background: var(--color-card);
-  border: px2Rem(1px) solid #0002;
-  border-radius: px2Rem(3px);
-  margin-left: px2Rem(17.5px);
-  padding: px2Rem(24px);
+  border: util.px2Rem(1px) solid #0002;
+  border-radius: util.px2Rem(3px);
+  margin-left: util.px2Rem(17.5px);
+  padding: util.px2Rem(24px);
   transition: box-shadow 0.5s;
   display: flex;
   flex-direction: column;
 }
 .timelineContent:hover {
-  box-shadow: 0 px2Rem(2px) px2Rem(8px) #00000017;
+  box-shadow: 0 util.px2Rem(2px) util.px2Rem(8px) #00000017;
 }

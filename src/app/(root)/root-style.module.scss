@@ -1,5 +1,6 @@
+@use '@/lib/util';
 // 如果要修改该值，需要同步修改 './RootImageHeader.tsx' 的 `POST_CONTAINER_MARGIN` 变量
-$postContainerMargin: px2Rem(32px);
+$postContainerMargin: util.px2Rem(32px);
 
 .imageContainer {
   width: 100vw;
@@ -39,7 +40,7 @@ $postContainerMargin: px2Rem(32px);
     z-index: 10;
   }
 
-  $containerWith: px2Rem(500px);
+  $containerWith: util.px2Rem(500px);
   .loop {
     display: inline-block;
     height: $containerWith;
@@ -90,20 +91,20 @@ $postContainerMargin: px2Rem(32px);
 .postCover {
   @apply absolute bottom-0 w-full left-0;
   z-index: 60;
-  height: px2Rem(450px);
+  height: util.px2Rem(450px);
   background: linear-gradient(hsla(0,0%,100%,0), var(--color-card));
   a {
     background: linear-gradient(120deg, var(--color-primary), var(--color-pink));
     border: 0;
-    border-radius: px2Rem(20px) 0;
-    bottom: px2Rem(-5px);
-    box-shadow: px2Rem(2px) px2Rem(2px) px2Rem(10px) 0 rgba(255,187,244,.478);
+    border-radius: util.px2Rem(20px) 0;
+    bottom: util.px2Rem(-5px);
+    box-shadow: util.px2Rem(2px) util.px2Rem(2px) util.px2Rem(10px) 0 rgba(255,187,244,.478);
     color: #fff;
-    font-size: px2Rem(14px);
+    font-size: util.px2Rem(14px);
     font-weight: 700;
-    padding: px2Rem(10px) px2Rem(24px);
+    padding: util.px2Rem(10px) util.px2Rem(24px);
     position: absolute;
-    right: px2Rem(-5px);
+    right: util.px2Rem(-5px);
     transition: box-shadow .25s ease-out,right .25s ease-out;
     z-index: 2
   }
@@ -126,7 +127,7 @@ $postContainerMargin: px2Rem(32px);
 }
 
 .paginationSelectable {
-  border-radius: px2Rem(5px);
+  border-radius: util.px2Rem(5px);
   &:hover {
     background-color: var(--color-primary);
     @apply text-white;

@@ -4,5 +4,6 @@
  * px 转 rem
  */
 @function px2Rem($px){
-  @return $px / 16px * 1rem;
+  @return calc($px / 16px) * 1rem;
 }
+

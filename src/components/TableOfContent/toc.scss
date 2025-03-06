@@ -1,3 +1,4 @@
+@use '@/lib/util';
 .toc-out-container {
     position: fixed;
     right: 0;
@@ -16,29 +17,29 @@
     flex-direction: column;
     overflow-x: hidden;
     max-height: 80vh;
-    width: px2Rem(300px);
-    max-width: px2Rem(300px);
-    padding: 0 px2Rem(4px);
+    width: util.px2Rem(300px);
+    max-width: util.px2Rem(300px);
+    padding: 0 util.px2Rem(4px);
 
 
     & > * {
         box-sizing: border-box;
-        padding: px2Rem(3px) 0;
+        padding: util.px2Rem(3px) 0;
         transition: color .5s;
         position: relative;
     }
 
     .title-2 {
         position: sticky;
-        top: px2Rem(-1px);
+        top: util.px2Rem(-1px);
         background-color: var(--background-color);
         z-index: 10;
     }
 
     @mixin subTitleBase($level: 0) {
         border-color: rgb(148 163 184);
-        border-left-width: px2Rem(2px);
-        padding-left: px2Rem(10px) * $level;
+        border-left-width: util.px2Rem(2px);
+        padding-left: util.px2Rem(10px) * $level;
         @if $level >= 3 {
             color: rgb(148 163 184);
         } @else {
@@ -74,13 +75,13 @@
         &.title-6::before {
             display: block;
             content: "";
-            width: px2Rem(4px);
+            width: util.px2Rem(4px);
             top: 0;
             height: 100%;
             background-color: var(--color-primary);
             position: absolute;
-            left: px2Rem(-3px);
-            border-radius: px2Rem(10px);
+            left: util.px2Rem(-3px);
+            border-radius: util.px2Rem(10px);
         }
     }
 

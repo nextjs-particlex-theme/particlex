@@ -11,9 +11,6 @@ const nextConfig = {
   cleanDistDir: true,
   eslint: {
     ignoreDuringBuilds: true
-  },
-  sassOptions: {
-    prependData: '@import \'@/lib/global.scss\';'
   }
 }
 

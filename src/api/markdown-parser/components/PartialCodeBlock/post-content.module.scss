@@ -1,21 +1,23 @@
+@use '@/lib/util';
+
 .codeContent {
   background: none;
-  font-size: px2Rem(13px);
+  font-size: util.px2Rem(13px);
   line-height: 2;
   overflow: auto;
-  padding: 0 px2Rem(30px);
+  padding: 0 util.px2Rem(30px);
   font-weight: 500;
 }
 
 .languageTag {
   background: linear-gradient(90deg,#ed6ea0 0,#ec8c69);
-  border-radius: 0 0 px2Rem(10px) px2Rem(10px);
-  box-shadow: px2Rem(1px) px2Rem(1px) .75rem rgba(237,110,161,.302);
+  border-radius: 0 0 util.px2Rem(10px) util.px2Rem(10px);
+  box-shadow: util.px2Rem(1px) util.px2Rem(1px) .75rem rgba(237,110,161,.302);
   color: #fff;
-  font-size: px2Rem(12px);
+  font-size: util.px2Rem(12px);
   font-weight: 700;
-  left: px2Rem(30px);
-  padding: px2Rem(10px) px2Rem(15px);
+  left: util.px2Rem(30px);
+  padding: util.px2Rem(10px) util.px2Rem(15px);
   position: absolute;
   top: 0
 }
@@ -41,7 +43,7 @@
 .partialCover {
   background: linear-gradient(hsla(0,0%,100%,0),#fff);
   width: 100%;
-  height: px2Rem(200px);
+  height: util.px2Rem(200px);
   position: absolute;
   bottom: 0;
   left: 0;
@@ -74,7 +76,7 @@
   position: absolute;
   transition: all 0.5s;
   z-index: 1100;
-  bottom: px2Rem(-5px);
+  bottom: util.px2Rem(-5px);
   animation-duration: .8s;
   animation-fill-mode: both;
   animation-name: copyFadeInAndOut;
