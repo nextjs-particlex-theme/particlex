@@ -1,7 +1,9 @@
+@use '@/lib/util';
+
 .footerContainer {
-  margin: px2Rem(150px) auto px2Rem(50px);
+  margin: util.px2Rem(150px) auto util.px2Rem(50px);
   text-align: center;
-  border-top: solid px2Rem(2px) var(--border-color);
+  border-top: solid util.px2Rem(2px) var(--border-color);
   color: var(--color-text-sub);
   font-size: 0.93rem;
 }
